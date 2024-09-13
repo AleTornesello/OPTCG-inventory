@@ -72,7 +72,8 @@
     },
     "loginKo": "An error has occurred during login, please try again later",
     "loginErrors": {
-      "invalidGrant": "Email and/or password are not valid"
+      "invalidCredential": "Email and/or password are not valid",
+      "generic": "An error has occurred during login, please try again later"
     }
   },
   "user": {

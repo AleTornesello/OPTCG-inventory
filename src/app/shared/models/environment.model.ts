@@ -1,8 +1,7 @@
+import {FirebaseOptions} from "firebase/app";
+
 export interface Environment {
   production: boolean;
-  supabase: {
-    url: string;
-    key: string;
-  };
+  firebase: FirebaseOptions;
   baseHref: string;
 }

@@ -73,7 +73,8 @@
     },
     "loginKo": "Si è verificato un errore durante il login, riprovare più tardi",
     "loginErrors": {
-      "invalidGrant": "L'email e/o la password non sono valide"
+      "invalidCredential": "L'email e/o la password non sono valide",
+      "generic": "Si è verificato un errore durante il login, riprovare più tardi"
     }
   },
   "user": {

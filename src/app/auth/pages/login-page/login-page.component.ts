@@ -10,8 +10,10 @@ import {InputTextComponent} from "../../../shared/components/inputs/input-text/i
 import {
   ResultMessageDialogComponent
 } from "../../../shared/components/dialog/result-message-dialog/result-message-dialog.component";
-import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
 import {NgOptimizedImage} from "@angular/common";
+import {FirebaseAuthService} from "../../services/firebase-auth.service";
+import {FirebaseError} from "@firebase/util";
+import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
 
 @Component({
   selector: 'app-login-page',
@@ -36,6 +38,7 @@ export class LoginPageComponent {
 
   constructor(
     private _fb: FormBuilder,
+    private _firebaseAuthService: FirebaseAuthService,
     private _translationService: TranslocoService,
     private _router: Router,
     private _stringManipulationService: StringManipulationService
@@ -56,9 +59,25 @@ export class LoginPageComponent {
       return;
     }
 
-    // TODO signin
+    const {email, password} = this.form.value;
 
-    this._router.navigate([]);
+    try {
+      await this._firebaseAuthService.signIn(email, password);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code.includes('/') ? error.code.split('/')[1] : error.code;
+        const errorMessage = error.code
+          ? this._translationService.translate(`auth.loginErrors.${this._stringManipulationService.kebabToCamel(errorCode)}`)
+          : error.message;
+        this.loginResultDialog.show("error", errorMessage);
+        return;
+      }
+      this.loginResultDialog.show("error", "auth.loginErrors.generic");
+    }
+
+    if (!this._firebaseAuthService.user) {
+      await this._router.navigate([]);
+    }
   }
 
   public get registrationPageLink() {
