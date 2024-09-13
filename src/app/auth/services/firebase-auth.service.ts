@@ -32,4 +32,8 @@ export class FirebaseAuthService {
       throw error;
     }
   }
+
+  public async signOut(): Promise<void> {
+    await this._firebaseAuth.signOut();
+  }
 }

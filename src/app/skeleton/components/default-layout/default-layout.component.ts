@@ -5,7 +5,7 @@ import {TopbarComponent} from '../topbar/topbar.component';
 import {BottomNavbarComponent} from '../bottom-navbar/bottom-navbar.component';
 import {TranslocoModule, TranslocoService} from '@jsverse/transloco';
 import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
-import {faBuilding} from '@fortawesome/free-solid-svg-icons';
+import {faLayerGroup} from '@fortawesome/free-solid-svg-icons';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {ToastModule} from "primeng/toast";
 import {OverlayLoaderComponent} from "../../../shared/components/overlay-loader/overlay-loader.component";
@@ -41,9 +41,9 @@ export class DefaultLayoutComponent {
   constructor(private _translateService: TranslocoService) {
     this.navigationItems = [
       {
-        label: this._translateService.translate('building.building'),
+        label: this._translateService.translate('cards.cards'),
         route: `/`,
-        icon: faBuilding,
+        icon: faLayerGroup,
         sidebarVisible: true,
         navbarVisible: true,
       },

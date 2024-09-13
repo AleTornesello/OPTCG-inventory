@@ -3,9 +3,9 @@ import {ButtonModule} from 'primeng/button';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
 import {faArrowRightFromBracket, faBars} from '@fortawesome/free-solid-svg-icons';
-import {SupabaseAuthService} from "../../../auth/services/supabase-auth.service";
 import {Router} from "@angular/router";
 import {OptcgRoute} from "../../../app.routes";
+import {FirebaseAuthService} from "../../../auth/services/firebase-auth.service";
 
 @Component({
   selector: 'app-topbar',
@@ -20,7 +20,7 @@ export class TopbarComponent {
   public faArrowRightFromBracket: IconDefinition = faArrowRightFromBracket;
 
   constructor(
-    private _authService: SupabaseAuthService,
+    private _authService: FirebaseAuthService,
     private _router: Router
   ) {
     this.toggleSidebar = new EventEmitter();

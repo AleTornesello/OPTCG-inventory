@@ -76,8 +76,10 @@ export class LoginPageComponent {
     }
 
     if (!this._firebaseAuthService.user) {
-      await this._router.navigate([]);
+      return;
     }
+
+    await this._router.navigate([OptcgRoute.CARDS]);
   }
 
   public get registrationPageLink() {

@@ -80,5 +80,8 @@
   "user": {
     "email": "Email",
     "password": "Password"
+  },
+  "cards": {
+    "cards": "Carte"
   }
 }
