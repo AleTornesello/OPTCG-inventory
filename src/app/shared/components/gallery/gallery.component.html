@@ -1,0 +1,37 @@
+<div class="carousel-container" [ngClass]="{ 'hidden': !visible }">
+  <div class="close-button-container">
+    <button
+      class="close-button"
+      type="button"
+      (click)="onCloseButtonClick()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M10,5V10H9V5H5V13H9V12H10V17H9V14H5V19H12V17H13V19H19V17H21V21H3V3H21V15H19V10H13V15H12V9H19V5H10Z"/>
+      </svg>
+    </button>
+  </div>
+  <div class="glide">
+    <div class="glide__track" data-glide-el="track">
+      <ul class="glide__slides">
+        @for (image of images; track image.imageUri) {
+          <li class="glide__slide">
+            <div class="image-wrapper">
+              <img [src]="image.imageUri" alt="">
+              @if (image.label) {
+                <div class="label">{{ image.label }}</div>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="glide__arrows" data-glide-el="controls">
+      <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+        <fa-icon [icon]="faChevronLeft" size="2xl"></fa-icon>
+      </button>
+      <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+        <fa-icon [icon]="faChevronRight" size="2xl"></fa-icon>
+      </button>
+    </div>
+  </div>
+</div>

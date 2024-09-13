@@ -1,0 +1,17 @@
+<p-sidebar [visible]="visible" styleClass="sidebar bg-glass" (onHide)="onSidebarHide()">
+  <div id="sidebar-content">
+    <div id="sidebar-navigation">
+      @for (item of items; track $index) {
+        <a
+          class="navigation-item"
+          [routerLink]="item.route"
+          [routerLinkActive]="isRouteActive(item.route)"
+        >
+          <fa-icon class="navigation-item__icon" [icon]="item.icon"></fa-icon>
+          <h4 class="navigation-item__label">{{ item.label }}</h4>
+        </a>
+      }
+    </div>
+    <div id="sidebar-bottom">v{{ version }}</div>
+  </div>
+</p-sidebar>

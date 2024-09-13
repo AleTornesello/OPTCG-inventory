@@ -1,0 +1,12 @@
+.input-error-label {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--error);
+
+  label {
+    line-height: 0.75rem;
+  }
+}

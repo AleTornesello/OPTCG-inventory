@@ -1,0 +1,49 @@
+.simple-dialog {
+  .p-dialog {
+    width: 50vw;
+
+    .p-dialog-header {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0.75rem 0.75rem 0;
+
+      .title {
+        font-weight: 700;
+        font-size: 24px;
+        margin: 0;
+      }
+    }
+
+    .p-dialog-content {
+      padding: 0.75rem 0.75rem;
+    }
+
+    .p-dialog-footer {
+      padding: 0.75rem 0.75rem;
+    }
+
+    &.w-xs {
+      width: 30vw;
+    }
+
+    &.w-sm {
+      width: 45vw;
+    }
+
+    &.w-lg {
+      width: 60vw;
+    }
+
+    &.w-xl {
+      width: 80vw;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .simple-dialog {
+    .p-dialog {
+      width: 90vw !important;
+    }
+  }
+}

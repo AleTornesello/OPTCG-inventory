@@ -1,0 +1,22 @@
+<app-input-wrapper
+  [label]="label"
+  [for]="for"
+  [required]="required"
+>
+  @if (textMode) {
+    <div>
+      {{ value ? trueLabel : falseLabel }}
+    </div>
+  } @else {
+    <div [class]="'flex align-items-center gap-2 py-2 ' + styleClass">
+      <label class="font-bold">{{ falseLabel }}</label>
+      <p-inputSwitch
+        [id]="for | camelToKebab"
+        [(ngModel)]="value"
+        [attr.aria-labelledby]="for | camelToKebab"
+        (onChange)="onSwitchChange($event)"
+      ></p-inputSwitch>
+      <label class="font-bold">{{ trueLabel }}</label>
+    </div>
+  }
+</app-input-wrapper>

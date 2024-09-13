@@ -1,0 +1,24 @@
+<app-simple-dialog
+  #dialog
+  [closable]="closable"
+  [header]="header"
+  [hideCloseButton]="hideCloseButton"
+  [headerStyle]="headerStyle"
+  [styleClass]="styleClass"
+  [size]="size"
+  (closed)="onDialogClosed()"
+>
+  <div class="result-message-container">
+    <div
+      class="result-message-icon animate__animated animate__zoomIn"
+      [ngClass]="iconClasses"
+    >
+      <fa-icon [icon]="icon"></fa-icon>
+    </div>
+    <div class="result-message-text">{{ message }}</div>
+    <app-button
+      [label]="'common.ok' | transloco"
+      (onClick)="close()"
+    ></app-button>
+  </div>
+</app-simple-dialog>

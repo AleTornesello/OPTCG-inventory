@@ -1,0 +1,26 @@
+<app-simple-dialog
+  #dialog
+  [closable]="closable"
+  [header]="header "
+  [hideCloseButton]="hideCloseButton"
+  [headerStyle]="headerStyle"
+  [styleClass]="styleClass"
+  [size]="size"
+  (closed)="onDialogClosed()"
+>
+  <div class="confirm-message-container">
+    {{ message }}
+  </div>
+  <div buttons class="dialog-actions-container">
+    <app-button
+      buttonStyle="text"
+      [label]="'common.cancel' | transloco"
+      (onClick)="close()"
+    ></app-button>
+    <app-button
+      color="danger"
+      [label]="'common.delete' | transloco"
+      (onClick)="onConfirmDeleteClick()"
+    ></app-button>
+  </div>
+</app-simple-dialog>

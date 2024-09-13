@@ -1,0 +1,16 @@
+.loading-spinner-wrapper {
+  position: fixed;
+  z-index: 999997;
+  width: 100%;
+  height: 100%;
+  background: rgba(#ffffff, 0.8); //var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 32px;
+
+  .loading-logo {
+    width: 200px;
+  }
+}

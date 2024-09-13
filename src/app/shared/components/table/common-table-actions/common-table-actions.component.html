@@ -1,0 +1,11 @@
+<div class="common-table-actions">
+  <app-button
+    buttonStyle="text"
+    [icon]="faEllipsisV"
+    (onClick)="onToggleMenuButtonClick($event)"
+    (dblclick)="$event.stopPropagation()"
+  >
+  </app-button>
+</div>
+
+<app-menu-panel #menu [context]="row" [items]="menuItems"></app-menu-panel>

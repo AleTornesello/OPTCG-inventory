@@ -1,0 +1,37 @@
+.empty-message-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .icon-container {
+    height: 80px;
+    width: 80px;
+    border-radius: 100%;
+    background: var(--primary-500);
+    color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:not(.shrink) {
+    min-height: 20vh;
+  }
+
+  .title {
+    margin-top: 1.5rem;
+  }
+
+  .message {
+    max-width: 50vw;
+    margin-top: 1rem;
+  }
+
+  &.secondary {
+    .icon-container {
+      background: var(--secondary-500);
+      color: var(--gold-500);
+    }
+  }
+}

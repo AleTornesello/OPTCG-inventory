@@ -1,0 +1,35 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [resizable]="false"
+  [styleClass]="dialogStyleClass"
+  [baseZIndex]="9999"
+  [closable]="false"
+  [draggable]="false"
+  maskStyleClass="simple-dialog"
+  appendTo="body"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <div class="title" [style]="headerStyle">
+        {{ header }}
+      </div>
+      @if (!hideCloseButton) {
+        <app-button
+          buttonStyle="text"
+          [icon]="faTimes"
+          (onClick)="close()"
+        >
+        </app-button>
+      }
+    </div>
+  </ng-template>
+  <div>
+    <ng-content></ng-content>
+  </div>
+  <ng-template pTemplate="footer">
+    <div>
+      <ng-content select="[buttons]"></ng-content>
+    </div>
+  </ng-template>
+</p-dialog>

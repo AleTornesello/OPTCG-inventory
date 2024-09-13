@@ -1,0 +1,21 @@
+<div
+  class="empty-message-container"
+  [ngClass]="{ shrink: shrink, secondary: secondary }"
+>
+  <div class="icon-bg">
+    <div class="icon-container" [ngClass]="iconContainerClass">
+      <fa-icon [icon]="icon" size="2xl"></fa-icon>
+    </div>
+  </div>
+
+  @if (title) {
+    <h1 class="title">
+      {{ title }}
+    </h1>
+  }
+  @if (message) {
+    <div class="message">
+      {{ message }}
+    </div>
+  }
+</div>

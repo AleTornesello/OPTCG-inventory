@@ -1,0 +1,38 @@
+#topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  height: 4rem;
+  padding: 0 0.5rem;
+  border-radius: 12px;
+
+  .title-container {
+    flex-grow: 1;
+    text-align: center;
+
+    img {
+      max-width: 100%;
+      width: 200px;
+    }
+  }
+
+  #sidebar-toggle {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #topbar {
+    justify-content: unset;
+
+    .title-container {
+      text-align: left;
+    }
+
+    #sidebar-toggle {
+      display: block;
+    }
+  }
+}

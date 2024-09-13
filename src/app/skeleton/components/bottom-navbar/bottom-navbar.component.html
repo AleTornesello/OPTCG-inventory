@@ -1,0 +1,14 @@
+<div id="bottom-navbar" class="bg-glass">
+  @for (item of items; track $index) {
+  <div class="bottom-navbar-item">
+    <a
+      class="bottom-navbar-item__link"
+      [routerLink]="item.route"
+      [routerLinkActive]="isRouteActive(item.route)"
+    >
+      <fa-icon class="bottom-navbar-item__icon" [icon]="item.icon"></fa-icon>
+      <h4 class="bottom-navbar-item__label">{{ item.label }}</h4>
+    </a>
+  </div>
+  }
+</div>

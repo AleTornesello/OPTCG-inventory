@@ -1,0 +1,83 @@
+{
+  "common": {
+    "ok": "OK, va bene",
+    "save": "Salva",
+    "delete": "Elimina",
+    "copy": "Copia",
+    "warning": "Attenzione",
+    "cancel": "Annulla",
+    "info": "Info",
+    "validationErrors": {
+      "alpha": "Il campo {{field}} può contenere solo caratteri alfabetici",
+      "alphaNum": "Il campo {{field}} può contenere solo caratteri alfanumerici",
+      "alphaDash": "Il campo {{field}} può contenere caratteri alfa-numerici così come lineette e trattini di sottolineatura",
+      "alphaSpaces": "Il campo {{field}} può contenere solo caratteri alfanumerici così come spazi",
+      "between": "Il campo {{field}} deve essere compreso tra {{min}} e {{max}}",
+      "confirmed": "Il campo {{field}} non corrisponde",
+      "digits": "Il campo {{field}} deve essere numerico e contenere esattamente {{length}} cifre",
+      "dimensions": "Il campo {{field}} deve essere {{width}} x {{height}}",
+      "email": "Il campo {{field}} deve essere un indirizzo email valido",
+      "excluded": "Il campo {{field}} deve avere un valore valido",
+      "ext": "Il campo {{field}} deve essere un file valido",
+      "image": "Il campo {{field}} deve essere un'immagine",
+      "integer": "Il campo {{field}} deve essere un numero",
+      "isNot": "Il campo {{field}} non è valido",
+      "length": "La lunghezza del campo {{field}} deve essere {{length}}",
+      "maxValue": "Il campo {{field}} deve essere minore o uguale a {{max}}",
+      "maxDate": "Il campo {{field}} deve essere una data antecedente o uguale al {{max}}",
+      "max": "Il campo {{field}} non può essere più lungo di {{length}} caratteri",
+      "mimes": "Il campo {{field}} deve avere un tipo di file valido",
+      "minValue": "Il campo {{field}} deve essere maggiore o uguale a {{min}}",
+      "min": "Il campo {{field}} deve avere almeno {{length}} caratteri",
+      "numeric": "Il campo {{field}} può contenere solo caratteri numerici",
+      "oneOf": "Il campo {{field}} deve avere un valore valido",
+      "regex": "Il campo {{field}} non ha un formato valido",
+      "regexWithSuggestion": "Il campo {{field}} non ha un formato valido (es.: {{suggestion}})",
+      "required": "Il campo {{field}} è richiesto",
+      "requiredIf": "Il campo {{field}} è richiesto",
+      "size": "Il campo {{field}} deve essere inferiore a {{size}}KB",
+      "generic": "C'è un errore sul campo {{field}}",
+      "dateIsBefore": "La data del campo {{field}} non può essere precedente al campo {{comparisonField}}",
+      "maxlength": "Il campo {{field}} ha una lunghezza massima di {{num}} caratteri",
+      "minlength": "Il campo {{field}} ha una lunghezza minima di {{num}} caratteri",
+      "passwordsAreNotEquals": "Le password non corrispondono",
+      "passwordInvalidCharacters": "La password contiene caratteri non validi",
+      "passwordWeak": "La password deve contenere almeno 8 caratteri, almeno un numero e almeno una lettera"
+    },
+    "table": {
+      "search": "Cerca",
+      "results": "{count, plural, =0 {Nessun risultato} one {1 risultato} other {# risultati}}",
+      "new": "Aggiungi",
+      "noResultTitle": "Non ci sono risultati",
+      "noResultSubtitle": "Prova a cambiare i criteri di ricerca e riprovare",
+      "actions": {
+        "edit": "Modifica",
+        "delete": "Cancella"
+      }
+    }
+  },
+  "auth": {
+    "welcome": "Benvenuto in One Piece TCG Inventory management",
+    "accessToPortal": "Accedi al portale",
+    "login": "Accedi",
+    "missingAccount": "Non sei ancora registrato?",
+    "register": "Registrati",
+    "alreadyHaveAccount": "Hai già un account?",
+    "confirmPassword": "Conferma Password",
+    "registrationOk": "Registrazione effettuata con successo, riceverai un'email di conferma alla casella di posta da te indicata in fase di registrazione",
+    "registrationKo": "Si è verificato un e rrore durante la registrazione, riprovare più tardi",
+    "verifyEmailOk": "La verifica della email è stata effettuata con successo, ora puoi accedere al tuo account",
+    "verifyEmailKo": "Si è verificato un errore durante la verifica della email, riprovare più tardi",
+    "verificationEmailErrors": {
+      "accessDenied": "Si è verificato un errore, il link di verifica non è valido o è scaduto"
+    },
+    "loginKo": "Si è verificato un errore durante il login, riprovare più tardi",
+    "loginErrors": {
+      "invalidGrant": "L'email e/o la password non sono valide"
+    }
+  },
+  "user": {
+    "email": "Email",
+    "password": "Password"
+  }
+}

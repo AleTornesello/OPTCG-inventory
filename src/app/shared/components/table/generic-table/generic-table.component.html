@@ -1,0 +1,215 @@
+<div class="table-wrapper">
+  <p-table
+    withUnsort
+    [lazy]="true"
+    [value]="items"
+    [columns]="columns"
+    [customSort]="true"
+    [(selection)]="selection"
+    (onSort)="onSort($event)"
+    (selectionChange)="onSelectionChange($event)"
+    (onRowReorder)="onRowReorder($event)"
+  >
+    <ng-template pTemplate="caption">
+      @if (!hideCaption) {
+        <div class="table-caption">
+          <div class="table-caption__title-container">
+            @if (title) {
+              <h2 class="table-caption__title-container__title">
+                {{ title }}
+              </h2>
+            }
+          </div>
+
+          <div class="table-caption__search-container">
+            @if (!hideSearch) {
+              <div class="search-input-container">
+                <app-input-text
+                  [placeholder]="'common.table.search' | transloco"
+                  type="text"
+                  class="search-input"
+                  [clear]="true"
+                  [(ngModel)]="searchText"
+                  (keydown.enter)="onSearch()"
+                  (onClear)="onSearch()"
+                >
+                </app-input-text>
+              </div>
+              <p-button
+                [ariaLabel]="'common.table.search' | transloco"
+                styleClass="p-button-secondary search-button border-noround-left"
+                (click)="onSearch()"
+              >
+                <div class="font-bold">
+                  {{ "common.table.search" | transloco }}
+                </div>
+              </p-button>
+            }
+            @if (!hideAddButton) {
+              <app-button
+                [label]="newButtonLabel"
+                [icon]="faPlus"
+                (onClick)="emitAddEvent()"
+              ></app-button>
+            }
+
+            <ng-content select="[addActions]"></ng-content>
+            <!--          @if(addActions.length > 0) {-->
+            <!--          <app-add-action-button [actions]="addActions"></app-add-action-button>-->
+            <!--          }-->
+            <ng-content select="[actions]"></ng-content>
+            <!--          @if(actions.length > 0) {-->
+            <!--          <app-action-button [actions]="actions"></app-action-button>-->
+            <!--          }-->
+          </div>
+        </div>
+      }
+
+      <!--      <app-common-table-filters-->
+      <!--        #filters-->
+      <!--        [visible]="isFiltersVisible"-->
+      <!--        [firstLevelFilters]="getFirstLevelFilters()"-->
+      <!--        [advancedSearchTopic]="advancedSearchTopic"-->
+      <!--        [advancedSearchSaveKey]="advancedSearchSaveKey"-->
+      <!--        [tableFilterDirectives]="tableFilterDirectives"-->
+      <!--        (applyFilters)="onApplyFilters()"-->
+      <!--        (updateFilters)="onUpdateFilters($event)"-->
+      <!--        (clean)="onCleanFilters()"-->
+      <!--      ></app-common-table-filters>-->
+
+      @if (showSelectionToggle) {
+        <app-switch
+          [label]="'common.table.selectAll' | transloco"
+          [falseLabel]="'' | transloco | capitalize"
+          [trueLabel]="'' | transloco"
+          (onChangeValue)="onSelectAllInputChange($event)"
+        ></app-switch>
+      }
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <!--      <ng-template pTemplate="filters"></ng-template>-->
+      <tr>
+        @if (reorderable) {
+          <th style="width: 3rem"></th>
+        }
+        @if (!hideSelection) {
+          <th style="width: 4rem">
+            <!--          <p-checkbox-->
+            <!--            inputId="select-all"-->
+            <!--            value="0"-->
+            <!--            (onChange)="onSelectAllInputChange($event)"-->
+            <!--          ></p-checkbox>-->
+          </th>
+        }
+        @if (!hideSingleSelection) {
+          <th style="width: 4rem"></th>
+        }
+        @for (col of columns; track $index) {
+          <th
+            [pSortableColumn]="col!.field"
+            [pSortableColumnDisabled]="!col!.sortable"
+            [class]="col!.class"
+            [ngStyle]="{
+            minWidth: parseWidth(col!, true),
+            width: parseWidth(col!),
+            maxWidth: parseWidth(col!, false)
+          }"
+            [attr.aria-label]="col!.header"
+          >
+            <div class="table-header">
+              <div class="table-header__title">
+                {{ col!.header }}
+              </div>
+              @if (col!.sortable) {
+                <p-sortIcon [field]="col!.field"></p-sortIcon>
+              }
+            </div>
+          </th>
+        }
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item let-index="rowIndex">
+      <tr
+        class="table-row"
+        [class]="getRowClass(item)"
+        [pReorderableRow]="index"
+        (click)="onRowClick($event, item)"
+        (dblclick)="onRowDblClick(item)"
+      >
+        @if (reorderable) {
+          <td>
+            <fa-icon [icon]="faBars" pReorderableRowHandle></fa-icon>
+          </td>
+        }
+        @if (!hideSelection) {
+          <td>
+            <p-checkbox
+              [(ngModel)]="selectedRows"
+              inputId="select-all"
+              [value]="getSelectionItem(item)"
+              (onChange)="onRowSelectInputChange($event)"
+            ></p-checkbox>
+          </td>
+        }
+        @if (!hideSingleSelection) {
+          <td>
+            <p-tableRadioButton [value]="item"></p-tableRadioButton>
+          </td>
+        }
+        @for (col of columns; track $index) {
+          <td [class]="col!.class">
+            <ng-container
+              *ngTemplateOutlet="
+              getCellTemplate(col!.field) ?? defaultCellTemplate;
+              context: { $implicit: item, column: col! }
+            "
+            ></ng-container>
+          </td>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td
+          [colSpan]="
+            columns.length + (hideSelection && hideSingleSelection ? 0 : 1)
+          "
+        >
+          <div #ref>
+            <ng-content select="[empty]"></ng-content>
+          </div>
+          @if (!ref.hasChildNodes() && !customEmptyMessage) {
+            <app-empty-search></app-empty-search>
+          }
+          @if (!ref.hasChildNodes() && customEmptyMessage) {
+            <app-empty-message [title]="customEmptyMessage"></app-empty-message>
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  @if (!hidePaginator) {
+    <div class="table-paginator">
+      <span class="results">
+        {{
+          "common.table.results"
+            | transloco : {count: totalItems}
+        }}
+      </span>
+      <p-paginator
+        [showFirstLastIcon]="false"
+        [rows]="itemsPerPage"
+        [totalRecords]="totalItems"
+        [rowsPerPageOptions]="paginatorItemsPerPageOptions"
+        (onPageChange)="onPaginatorChange($event)"
+        dropdownAppendTo="body"
+      ></p-paginator>
+    </div>
+  }
+</div>
+
+<ng-template #defaultCellTemplate let-item let-column="column">
+  {{ item[column.field] | avoidEmptyValue }}
+</ng-template>

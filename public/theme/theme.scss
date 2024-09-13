@@ -1,0 +1,104 @@
+@import "_eraser.scss";
+@import "_skeleton.scss";
+@import "_card.scss";
+@import "_inputs.scss";
+@import "_buttons.scss";
+@import "_dialog.scss";
+@import "_sidebar.scss";
+@import "_table.scss";
+@import "utils";
+
+:root {
+  --border-radius: 1rem;
+
+  // Colors
+  --bg-color: #f9f8fd;
+  --text-color: #000000;
+
+  --border-color: #ebebef;
+
+  --white: #ffffff;
+  --white-opaque-50: rgba(255, 255, 255, 0.05);
+  --white-opaque-100: rgba(255, 255, 255, 0.1);
+  --white-opaque-200: rgba(255, 255, 255, 0.2);
+  --white-opaque-300: rgba(255, 255, 255, 0.3);
+  --white-opaque-400: rgba(255, 255, 255, 0.4);
+  --white-opaque-500: rgba(255, 255, 255, 0.5);
+  --white-opaque-600: rgba(255, 255, 255, 0.6);
+  --white-opaque-700: rgba(255, 255, 255, 0.7);
+  --white-opaque-800: rgba(255, 255, 255, 0.8);
+  --white-opaque-900: rgba(255, 255, 255, 0.9);
+
+  --black: #000000;
+
+  // Status
+  --success: #4caf50;
+  --error: #f44336;
+  --warning: #ff9800;
+  --info: #2196f3;
+
+  // Primary
+  --primary-50: #e4edf6;
+  --primary-100: #bcd3e9;
+  --primary-200: #90b6da;
+  --primary-300: #6399cb;
+  --primary-400: #4183c0;
+  --primary-500: #206db5;
+  --primary-600: #1c65ae;
+  --primary-700: #185aa5;
+  --primary-800: #13509d;
+  --primary-900: #0b3e8d;
+
+  --primary-text-color: #ffffff;
+
+  // Secondary
+  --secondary-50: #e1e6e4;
+  --secondary-100: #b5c1ba;
+  --secondary-200: #83988d;
+  --secondary-300: #516f5f;
+  --secondary-400: #2c503c;
+  --secondary-500: #07311a;
+  --secondary-600: #062c17;
+  --secondary-700: #052513;
+  --secondary-800: #041f0f;
+  --secondary-900: #021308;
+
+  --secondary-text-color: #ffffff;
+
+  // Gold
+  --gold-50: #faf6eb;
+  --gold-100: #f3e8cd;
+  --gold-200: #ebd8ab;
+  --gold-300: #e3c889;
+  --gold-400: #ddbd70;
+  --gold-500: #d7b157;
+  --gold-600: #d3aa4f;
+  --gold-700: #cda146;
+  --gold-800: #c7983c;
+  --gold-900: #be882c;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 6px;
+  background-color: var(--gray-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--gray-500);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gray-600);
+}

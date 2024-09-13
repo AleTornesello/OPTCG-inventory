@@ -1,0 +1,11 @@
+@if (reserveSpace || isOnError) {
+<div class="input-error-label">
+  @if (isOnError) {
+  <fa-icon [icon]="faCircleExclamation"></fa-icon>
+  } @if (errorMessage == "" && reserveSpace) {
+  <label>&nbsp;</label>
+  } @else {
+  <label>{{ errorMessage }}</label>
+  }
+</div>
+}

@@ -1,0 +1,82 @@
+{
+  "common": {
+    "ok": "OK",
+    "save": "Save",
+    "delete": "Delete",
+    "copy": "Copy",
+    "warning": "Warning",
+    "cancel": "Cancel",
+    "info": "Info",
+    "validationErrors": {
+      "alpha": "The {{field}} field can only contain alphabetic characters",
+      "alphaNum": "The {{field}} field can only contain alphanumeric characters",
+      "alphaDash": "The {{field}} field can only contain alphanumeric characters, dashes and underscores",
+      "alphaSpaces": "The {{field}} field can only contain alphabetic characters and spaces",
+      "between": "The {{field}} field must be between {{min}} and {{max}}",
+      "confirmed": "The {{field}} field does not match",
+      "digits": "The {{field}} field must be exactly {{length}} digits",
+      "dimensions": "The {{field}} field must be {{width}} x {{height}}",
+      "email": "The {{field}} field must be a valid email address",
+      "ext": "The {{field}} field must be a valid file",
+      "image": "The {{field}} field must be an image",
+      "integer": "The {{field}} field must be an integer",
+      "isNot": "The {{field}} field is not valid",
+      "length": "The {{field}} field must be {{length}} characters",
+      "maxValue": "The {{field}} field must be less than or equal to {{max}}",
+      "maxDate": "The {{field}} field must be less than or equal to {{max}}",
+      "max": "The {{field}} field must be less than {{length}} characters",
+      "mimes": "The {{field}} field must be a valid file type",
+      "minValue": "The {{field}} field must be greater than or equal to {{min}}",
+      "minDate": "The {{field}} field must be greater than or equal to {{min}}",
+      "min": "The {{field}} field must be greater than {{length}} characters",
+      "numeric": "The {{field}} field can only contain numeric characters",
+      "oneOf": "The {{field}} field must have a valid value",
+      "regex": "The {{field}} field does not match the expected format",
+      "required": "The {{field}} field is required",
+      "requiredIf": "The {{field}} field is required",
+      "size": "The {{field}} field must be less than or equal to {{size}}KB",
+      "generic": "There was an error on the {{field}} field",
+      "dateIsBefore": "The {{field}} field must be before the {{comparisonField}} field",
+      "maxlength": "The {{field}} field must be less than or equal to {{num}} characters",
+      "minlength": "The {{field}} field must be greater than or equal to {{num}} characters",
+      "passwordsAreNotEquals": "The password fields must be equal",
+      "passwordInvalidCharacters": "The password field contains invalid characters",
+      "passwordWeak": "The password must contain at least 8 characters, at least one number and at least one letter"
+    },
+    "table": {
+      "search": "Search",
+      "results": "{count, plural, =0 {No results} one {1 element found} other {# elements found}}",
+      "new": "New",
+      "noResultTitle": "No results",
+      "noResultSubtitle": "Try changing the search criteria and try again",
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    }
+  },
+  "auth": {
+    "welcome": "Welcome to One Piece TCG Inventory management",
+    "accessToPortal": "Access to portal",
+    "login": "Login",
+    "missingAccount": "Not registered yet?",
+    "register": "Register",
+    "alreadyHaveAccount": "Already have an account?",
+    "confirmPassword": "Confirm password",
+    "registrationOk": "Registration successful, you will receive an email to confirm your email address",
+    "registrationKo": "An error has occurred during registration, please try again later",
+    "verifyEmailOk": "Email verification successful, you can now access your account",
+    "verifyEmailKo": "An error has occurred during email verification, please try again later",
+    "verificationEmailErrors": {
+      "accessDenied": "An error has occurred, the verification link is not valid or has expired"
+    },
+    "loginKo": "An error has occurred during login, please try again later",
+    "loginErrors": {
+      "invalidGrant": "Email and/or password are not valid"
+    }
+  },
+  "user": {
+    "email": "Email",
+    "password": "Password"
+  }
+}

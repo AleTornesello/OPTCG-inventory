@@ -1,0 +1,33 @@
+.p-button {
+  color: var(--primary-text-color);
+  background: var(--primary-500, #206db5);
+  border: 1px solid var(--primary-500, #206db5);
+  border-radius: var(--border-radius);
+
+  &:hover {
+    background: var(--primary-700);
+  }
+
+  &:active {
+    background: var(--primary-900);
+  }
+
+  &.p-button-text {
+    background: none;
+    border: none;
+    color: var(--primary-500, #206db5);
+
+    &:hover {
+      background: var(--gray-200);
+    }
+  }
+
+  &.p-button-danger {
+    background: var(--error, #f44336);
+    border: 1px solid var(--error, #f44336);
+  }
+
+  &.expand {
+    width: 100%;
+  }
+}

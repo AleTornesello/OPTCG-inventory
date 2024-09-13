@@ -1,0 +1,18 @@
+<div id="topbar" class="bg-glass">
+  <p-button
+    id="sidebar-toggle"
+    [text]="true"
+    (onClick)="onToggleSidebarButtonClick()"
+  >
+    <fa-icon [icon]="faBars"></fa-icon>
+  </p-button>
+  <div class="title-container">
+    <img src="./images/logo-full-h.svg"/>
+  </div>
+  <p-button
+    [text]="true"
+    (onClick)="onLogoutButtonClick()"
+  >
+    <fa-icon [icon]="faArrowRightFromBracket"></fa-icon>
+  </p-button>
+</div>

@@ -1,0 +1,31 @@
+<div class="align-items-center">
+  @if (!hideLabel && label) {
+    <div class="label-container">
+      <label
+        class="label"
+        [attr.aria-label]="label | camelToKebab"
+        [attr.for]="for | camelToKebab"
+      >
+        {{ label }}
+        @if (required) {
+          <span class="required-flag">&nbsp;*</span>
+        }
+      </label>
+    </div>
+  }
+
+  <ng-content></ng-content>
+  <div class="flex justify-content-between">
+    <div>
+      @if (label) {
+        <app-input-error-label
+          [label]="label"
+          [errors]="errors"
+        ></app-input-error-label>
+      }
+    </div>
+    <div>
+      <ng-content select="[helpText]"></ng-content>
+    </div>
+  </div>
+</div>

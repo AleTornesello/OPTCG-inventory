@@ -1,0 +1,56 @@
+<div id="login-card-container">
+  <p-card>
+    <div id="login-form-wrapper">
+      <div id="welcome-message-container">
+        <h1>{{ "auth.welcome" | transloco }}</h1>
+        <h2>{{ "auth.register" | transloco }}</h2>
+      </div>
+      <form
+        [formGroup]="form"
+        (submit)="onFormSubmit()"
+      >
+        <div id="login-form">
+          <app-input-text
+            formControlName="email"
+            [label]="'user.email' | transloco"
+            [control]="form.get('email')!"
+            [errors]="form.get('email')!.errors"
+            autocomplete="email"
+          ></app-input-text>
+          <app-input-password
+            formControlName="password"
+            [label]="'user.password' | transloco"
+            [control]="form.get('password')!"
+            [errors]="form.get('password')!.errors"
+            autocomplete="current-password"
+          ></app-input-password>
+          <app-input-password
+            formControlName="confirmPassword"
+            [label]="'auth.confirmPassword' | transloco"
+            [control]="form.get('confirmPassword')!"
+            [errors]="form.get('confirmPassword')!.errors"
+            autocomplete="current-password"
+          ></app-input-password>
+          <app-button
+            [label]="'auth.register' | transloco"
+            type="submit"
+          >
+          </app-button>
+          <div id="register-link">
+            {{ "auth.alreadyHaveAccount" | transloco }}&nbsp;<a
+            [routerLink]="registrationPageLink"
+          >{{ "auth.login" | transloco }}</a
+          >
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-card>
+</div>
+
+<app-result-message-dialog
+  #registrationResultDialog
+  size="sm"
+  (closed)="onRegistrationResultDialogClose()"
+>
+</app-result-message-dialog>

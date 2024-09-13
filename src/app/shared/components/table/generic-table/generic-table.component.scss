@@ -1,0 +1,48 @@
+.table-wrapper {
+  border-radius: var(--border-radius);
+  background: var(--white);
+
+  .table-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    &__title-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      &__title {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__search-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: flex-end;
+    }
+  }
+
+  .table-paginator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 1rem;
+  }
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .table-row {
+    &.clickable {
+      cursor: pointer;
+    }
+  }
+}
