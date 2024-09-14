@@ -5,6 +5,7 @@ import {RegisterPageComponent} from './auth/pages/register-page/register-page.co
 import {VerifyEmailPageComponent} from "./auth/pages/verify-email-page/verify-email-page.component";
 import {DefaultLayoutComponent} from "./skeleton/components/default-layout/default-layout.component";
 import {CardsGridPageComponent} from "./cards/pages/cards-grid-page/cards-grid-page.component";
+import {StatisticsPageComponent} from "./statistics/pages/statistics-page/statistics-page.component";
 
 export enum OptcgRoute {
   AUTH = 'auth',
@@ -12,6 +13,7 @@ export enum OptcgRoute {
   REGISTER = 'register',
   VERIFY_EMAIL = 'verify-email',
   CARDS = 'cards',
+  STATISTICS = 'statistics',
 }
 
 export const routes: Routes = [
@@ -30,6 +32,16 @@ export const routes: Routes = [
           {
             path: '',
             component: CardsGridPageComponent
+          }
+        ]
+      },
+      {
+        path: OptcgRoute.STATISTICS,
+        component: DefaultLayoutComponent,
+        children: [
+          {
+            path: '',
+            component: StatisticsPageComponent
           }
         ]
       },

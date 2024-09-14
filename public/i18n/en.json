@@ -95,5 +95,10 @@
       "black": "Black",
       "yellow": "Yellow"
     }
+  },
+  "statistics": {
+    "statistics": "Statistics",
+    "completedCards": "Completed cards",
+    "onGoingCards": "On going cards"
   }
 }

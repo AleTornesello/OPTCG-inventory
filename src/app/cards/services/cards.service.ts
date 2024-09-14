@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {from, map, Observable} from "rxjs";
 import {CardModel} from "../models/card.model";
-import {doc, Firestore, getDoc, setDoc} from "@angular/fire/firestore";
+import {collection, doc, Firestore, getDoc, getDocs, setDoc} from "@angular/fire/firestore";
 import {InventoryModel} from "../models/inventory.model";
 
 @Injectable({
@@ -43,5 +43,18 @@ export class CardsService {
   public updateCardQuantity(card: CardModel, quantity: number): Observable<void> {
     const docRef = doc(this._firestore, 'inventory', card.key);
     return from(setDoc(docRef, {quantity}, {merge: true}));
+  }
+
+  public getAllCardQuantities(): Observable<(InventoryModel | null)[]> {
+    const collectionRef = collection(this._firestore, 'inventory');
+    const docsSnap = getDocs(collectionRef);
+    return from(docsSnap)
+      .pipe(
+        map((cardsInventory) =>
+          cardsInventory.docs.map((cardInventory) => cardInventory.exists()
+            ? InventoryModel.fromFirestore(cardInventory.id, cardInventory.data())
+            : null)
+        )
+      );
   }
 }

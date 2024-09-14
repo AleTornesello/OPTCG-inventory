@@ -96,5 +96,10 @@
       "black": "Nero",
       "yellow": "Giallo"
     }
+  },
+  "statistics": {
+    "statistics": "Statistiche",
+    "completedCards": "Carte completate",
+    "onGoingCards": "Carte in corso"
   }
 }

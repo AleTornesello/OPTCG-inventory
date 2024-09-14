@@ -5,10 +5,11 @@ import {TopbarComponent} from '../topbar/topbar.component';
 import {BottomNavbarComponent} from '../bottom-navbar/bottom-navbar.component';
 import {TranslocoModule, TranslocoService} from '@jsverse/transloco';
 import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
-import {faLayerGroup} from '@fortawesome/free-solid-svg-icons';
+import {faChartSimple, faLayerGroup} from '@fortawesome/free-solid-svg-icons';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {ToastModule} from "primeng/toast";
 import {OverlayLoaderComponent} from "../../../shared/components/overlay-loader/overlay-loader.component";
+import {OptcgRoute} from "../../../app.routes";
 
 export interface NavigationItem {
   label: string;
@@ -44,6 +45,13 @@ export class DefaultLayoutComponent {
         label: this._translateService.translate('cards.cards'),
         route: `/`,
         icon: faLayerGroup,
+        sidebarVisible: true,
+        navbarVisible: true,
+      },
+      {
+        label: this._translateService.translate('statistics.statistics'),
+        route: `/${OptcgRoute.STATISTICS}`,
+        icon: faChartSimple,
         sidebarVisible: true,
         navbarVisible: true,
       },
