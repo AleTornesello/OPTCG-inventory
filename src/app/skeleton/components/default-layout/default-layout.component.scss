@@ -1,7 +1,7 @@
 .default-layout-container {
-  max-height: 100vh;
-  height: 100vh;
-  overflow-y: auto;
+  //max-height: 100vh;
+  //height: 100vh;
+  //overflow-y: auto;
   background-color: var(--bg-color);
 
   #topbar-container {
@@ -13,9 +13,9 @@
   }
 
   .container {
-    margin-top: 5rem;
+    padding-top: 5rem;
     min-height: calc(100% - 10rem);
-    margin-bottom: 5rem;
+    padding-bottom: 5rem;
   }
 
   #bottom-navbar-container {
@@ -30,7 +30,7 @@
   .default-layout-container {
     .container {
       min-height: calc(100vh - 5rem);
-      margin-bottom: 0;
+      padding-bottom: 0;
     }
 
     #bottom-navbar-container {

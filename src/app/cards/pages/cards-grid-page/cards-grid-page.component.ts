@@ -3,25 +3,32 @@ import {CardsListService} from "../../services/cards-list.service";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {CardModel} from "../../models/card.model";
 import {CardPreviewComponent} from "../../components/card-preview/card-preview.component";
+import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 
 @Component({
   selector: 'app-cards-grid-page',
   standalone: true,
   imports: [
-    CardPreviewComponent
+    CardPreviewComponent,
+    ScrollNearEndDirective
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
 })
 export class CardsGridPageComponent implements OnInit {
 
-  public cards: CardModel[];
+  public visibleCards: CardModel[];
+  public allCards: CardModel[];
+
+  private readonly _cardsLoadRange: number;
 
   constructor(
     private _cardsListService: CardsListService,
     private _destroyRef: DestroyRef
   ) {
-    this.cards = [];
+    this.visibleCards = [];
+    this.allCards = [];
+    this._cardsLoadRange = 20;
   }
 
   public ngOnInit() {
@@ -34,11 +41,16 @@ export class CardsGridPageComponent implements OnInit {
   }
 
   private _onCardsListLoadSuccess(cards: CardModel[]) {
-    // TODO: remove slice, only for test
-    this.cards = cards.slice(0,20);
+    this.allCards = cards;
+    this.visibleCards = cards.slice(0, this._cardsLoadRange);
   }
 
   private _onCardsListLoadError() {
     // TODO: handle error
+  }
+
+  public onNearEndScroll() {
+    debugger
+    this.visibleCards.push(...this.allCards.slice(this.visibleCards.length, this.visibleCards.length + this._cardsLoadRange));
   }
 }

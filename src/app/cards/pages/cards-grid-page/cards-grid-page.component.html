@@ -1,5 +1,5 @@
-<div class="cards-container">
-  @for (card of cards; track card.key) {
+<div class="cards-container" appScrollNearEnd (nearEnd)="onNearEndScroll()">
+  @for (card of visibleCards; track card.key) {
     <div class="card-container">
       <app-card-preview [card]="card"></app-card-preview>
     </div>
