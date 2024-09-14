@@ -5,14 +5,14 @@
   justify-content: center;
 
   .card-container {
-    max-width: 200px;
+    width: 200px;
   }
 }
 
 @media only screen and (max-width: 767px) {
   .cards-container {
     .card-container {
-      max-width: 150px;
+      width: 150px;
     }
   }
 }

@@ -19,10 +19,11 @@
   }
 
   #bottom-navbar-container {
-    position: absolute;
+    position: sticky;
     bottom: -1px;
     right: -1px;
     left: -1px;
+    z-index: 100;
   }
 }
 

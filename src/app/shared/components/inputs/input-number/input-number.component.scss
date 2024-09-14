@@ -1,0 +1,13 @@
+.withClear {
+  display: flex;
+  align-items: center;
+  p-button {
+    position: relative;
+    right: 32px;
+    background-color: none;
+  }
+  input {
+    padding-right: 32px;
+    text-overflow: ellipsis;
+  }
+}

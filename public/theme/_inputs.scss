@@ -1,4 +1,5 @@
 input[type="text"],
+input.p-inputnumber-input,
 input[type="password"] {
   width: 100%;
   border-radius: var(--border-radius);
@@ -6,4 +7,12 @@ input[type="password"] {
 
 .p-password {
   width: 100%;
+}
+
+p-inputnumber {
+  padding: 0;
+  border: none;
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--border-radius);
 }
