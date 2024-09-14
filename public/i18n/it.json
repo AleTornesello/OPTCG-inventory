@@ -7,6 +7,9 @@
     "warning": "Attenzione",
     "cancel": "Annulla",
     "info": "Info",
+    "filters": "Filtri",
+    "clear": "Cancella",
+    "apply": "Applica",
     "validationErrors": {
       "alpha": "Il campo {{field}} può contenere solo caratteri alfabetici",
       "alphaNum": "Il campo {{field}} può contenere solo caratteri alfanumerici",
@@ -82,6 +85,16 @@
     "password": "Password"
   },
   "cards": {
-    "cards": "Carte"
+    "cards": "Carte",
+    "color": "Colore",
+    "set": "Set",
+    "colors": {
+      "red": "Rosso",
+      "green": "Verde",
+      "blue": "Blu",
+      "purple": "Viola",
+      "black": "Nero",
+      "yellow": "Giallo"
+    }
   }
 }

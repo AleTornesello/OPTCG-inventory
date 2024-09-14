@@ -1,0 +1,110 @@
+<app-input-wrapper
+  [label]="label"
+  [for]="for"
+  [required]="required"
+  [errors]="errors"
+>
+  @if (textMode) {
+    {{ getLabelFromValue(value) | avoidEmptyValue }}
+  } @else {
+    @if (readonly) {
+      <input
+        pInputText
+        [id]="for | camelToKebab"
+        [value]="readonlyLabel"
+        [attr.aria-labelledby]="for | camelToKebab"
+        [placeholder]="placeholder ?? ''"
+        [attr.aria-placeholder]="placeholder"
+        [attr.aria-required]="required"
+        [readonly]="true"
+        [attr.aria-readonly]="true"
+        class="readonly-input"
+      />
+    } @else {
+      @if (multipleSelect) {
+        <p-multiSelect
+          [id]="for | camelToKebab"
+          [styleClass]="'w-full ' + (readonly ? 'readonly-input' : '') + styleClass"
+          [options]="options"
+          [(ngModel)]="value"
+          [optionLabel]="optionLabel"
+          [optionValue]="optionValue"
+          [filter]="filter"
+          [filterBy]="filterBy"
+          [showClear]="showClear"
+          [placeholder]="placeholder"
+          ariaLabelledBy="for | camelToKebab"
+          [appendTo]="'body'"
+          [readonly]="readonly"
+          [disabled]="isDisabled"
+          [ngClass]="{ 'ng-invalid ng-dirty': isOnError }"
+          (onChange)="onInputChange($event)"
+          (onBlur)="onTouched()"
+        >
+          <ng-template pTemplate="selectedItem" let-item>
+            <ng-container
+              *ngTemplateOutlet="
+            getDropdownItemTemplate() ?? defaultItemTemplate;
+            context: { $implicit: item }
+          "
+            >
+            </ng-container>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            <ng-container
+              *ngTemplateOutlet="
+            getDropdownItemTemplate() ?? defaultItemTemplate;
+            context: { $implicit: item }
+          "
+            >
+            </ng-container>
+          </ng-template>
+        </p-multiSelect>
+      } @else {
+        <p-dropdown
+          [id]="for | camelToKebab"
+          [styleClass]="'w-full ' + (readonly ? 'readonly-input' : '') + styleClass"
+          [options]="options"
+          [(ngModel)]="value"
+          [optionLabel]="optionLabel"
+          [optionValue]="optionValue"
+          [filter]="filter"
+          [filterBy]="filterBy"
+          [showClear]="showClear"
+          [placeholder]="placeholder"
+          [autoDisplayFirst]="false"
+          ariaLabelledBy="for | camelToKebab"
+          [appendTo]="'body'"
+          [readonly]="readonly"
+          [disabled]="isDisabled"
+          [ngClass]="{ 'ng-invalid ng-dirty': isOnError }"
+          (onChange)="onInputChange($event)"
+          (onBlur)="onTouched()"
+        >
+          <ng-template pTemplate="selectedItem" let-item>
+            <ng-container
+              *ngTemplateOutlet="
+            getDropdownItemTemplate() ?? defaultItemTemplate;
+            context: { $implicit: item }
+          "
+            >
+            </ng-container>
+          </ng-template>
+          <ng-template pTemplate="item" let-item>
+            <ng-container
+              *ngTemplateOutlet="
+            getDropdownItemTemplate() ?? defaultItemTemplate;
+            context: { $implicit: item }
+          "
+            >
+            </ng-container>
+          </ng-template>
+        </p-dropdown>
+      }
+    }
+  }
+</app-input-wrapper>
+
+<ng-template #defaultItemTemplate let-item>
+  {{ item[optionLabel] }}
+</ng-template>

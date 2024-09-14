@@ -7,6 +7,9 @@
     "warning": "Warning",
     "cancel": "Cancel",
     "info": "Info",
+    "filters": "Filters",
+    "clear": "Clear",
+    "apply": "Apply",
     "validationErrors": {
       "alpha": "The {{field}} field can only contain alphabetic characters",
       "alphaNum": "The {{field}} field can only contain alphanumeric characters",
@@ -81,6 +84,16 @@
     "password": "Password"
   },
   "cards": {
-    "cards": "Cards"
+    "cards": "Cards",
+    "color": "Color",
+    "set": "Set",
+    "colors": {
+      "red": "Red",
+      "green": "Green",
+      "blue": "Blue",
+      "purple": "Purple",
+      "black": "Black",
+      "yellow": "Yellow"
+    }
   }
 }

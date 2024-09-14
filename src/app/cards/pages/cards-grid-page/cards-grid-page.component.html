@@ -1,3 +1,39 @@
+<div class="filters-container border round">
+  <button #filtersButton class="accordion" (click)="onFiltersClick()">
+    <fa-icon [icon]="faFilter"></fa-icon>
+    <span class="label">{{ "common.filters" | transloco }}</span>
+  </button>
+  <div #filtersPanel class="panel">
+    <div class="filters-container">
+      <div class="filter">
+        <app-dropdown
+          [options]="cardColors"
+          label="{{ 'cards.color' | transloco }}"
+          [multipleSelect]="true"
+          [(ngModel)]="selectedColors"
+        ></app-dropdown>
+      </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardSets"
+          label="{{ 'cards.set' | transloco }}"
+          [multipleSelect]="true"
+          [(ngModel)]="selectedSets"
+        ></app-dropdown>
+      </div>
+    </div>
+    <div class="filters-actions">
+      <app-button
+        [label]="'common.clear' | transloco"
+        (onClick)="onFiltersClearClick()"
+      ></app-button>
+      <app-button
+        [label]="'common.apply' | transloco"
+        (onClick)="onFiltersApplyClick()"
+      ></app-button>
+    </div>
+  </div>
+</div>
 <div class="cards-container" appScrollNearEnd (nearEnd)="onNearEndScroll()">
   @for (visibleCard of visibleCards; track visibleCard.card.key) {
     <div class="card-container">

@@ -16,3 +16,8 @@ p-inputnumber {
   max-width: 100%;
   border-radius: var(--border-radius);
 }
+
+.p-multiselect,
+.p-dropdown {
+  width: 100%;
+}
