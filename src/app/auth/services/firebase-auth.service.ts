@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
-import {Auth, setPersistence, signInWithEmailAndPassword, user, User} from "@angular/fire/auth";
+import {Auth, signInWithEmailAndPassword, user, User} from "@angular/fire/auth";
 import {Observable} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {UserCredential, browserSessionPersistence} from "@firebase/auth";
+import {UserCredential, browserSessionPersistence, setPersistence} from "@firebase/auth";
 
 @Injectable({
   providedIn: 'root',
