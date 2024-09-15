@@ -1,13 +1,13 @@
 import {ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot} from "@angular/router";
 import {inject} from "@angular/core";
-import {SupabaseAuthService} from "../services/supabase-auth.service";
 import {OptcgRoute} from "../../app.routes";
+import {FirebaseAuthService} from "../services/firebase-auth.service";
 
 export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   try {
-    const authService: SupabaseAuthService = inject(SupabaseAuthService);
+    const authService: FirebaseAuthService = inject(FirebaseAuthService);
     const router: Router = inject(Router);
-    const existSession = await authService.isAuthenticated();
+    const existSession = authService.user !== undefined;
 
     return existSession
       ? true
