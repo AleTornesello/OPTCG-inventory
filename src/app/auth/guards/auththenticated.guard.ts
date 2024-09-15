@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
   try {
     const authService: FirebaseAuthService = inject(FirebaseAuthService);
     const router: Router = inject(Router);
-    const existSession = authService.user !== undefined;
+    const existSession = authService.user !== undefined && authService.user !== null;
 
     return existSession
       ? true
