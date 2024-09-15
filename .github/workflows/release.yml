@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: 'dist/foptcg-inventory/browser'
+          path: 'dist/optcg-inventory/browser'
 
       - name: Deploy to GitHub Pages
         id: deployment
