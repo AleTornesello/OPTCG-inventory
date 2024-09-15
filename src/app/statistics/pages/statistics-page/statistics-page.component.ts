@@ -67,12 +67,10 @@ export class StatisticsPageComponent implements OnInit {
         const onGoingCardsIncrement: number =
           cardInventory
             ? card.category === 'Leader' || card.category === 'Stage'
-              ? cardInventory.quantity >= 1
-                ? 0
-                : 1
-              : cardInventory.quantity >= 4
-                ? 0
-                : 4 - cardInventory.quantity
+              ? 0
+              : cardInventory.quantity > 0 && cardInventory.quantity < 4
+                ? 4 - cardInventory.quantity
+                : 0
             : 0;
 
         if (this.statistics.has(card.cardId[0])) {
