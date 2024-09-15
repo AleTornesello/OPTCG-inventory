@@ -1,8 +1,23 @@
+<div class="summaries-container">
+  <div class="stat-summary-wrapper">
+    <div class="stat-summary-container border round">
+      <span class="title">{{ "statistics.totalCards" | transloco }}</span>
+      <span class="value">{{ totalSingleCards }}/{{ cardsCount }}</span>
+    </div>
+  </div>
+  <div class="stat-summary-wrapper">
+    <div class="stat-summary-container border round">
+      <span class="title">{{ "statistics.totalExcessCards" | transloco }}</span>
+      <span class="value">{{ totalExcessCards }}</span>
+    </div>
+  </div>
+</div>
+
 <div class="statistics-container border round">
   @for (set of getSets(); track $index) {
     <div class="set-statistics-container">
       <h2>{{ set }}</h2>
-      <p-meterGroup [value]="getStatisticsForMeter(set)" [max]="getTotalCards(set)" />
+      <p-meterGroup [value]="getStatisticsForMeter(set)" [max]="getTotalCards(set)"/>
     </div>
   }
 </div>

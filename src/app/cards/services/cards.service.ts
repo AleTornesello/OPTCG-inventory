@@ -45,15 +45,15 @@ export class CardsService {
     return from(setDoc(docRef, {quantity}, {merge: true}));
   }
 
-  public getAllCardQuantities(): Observable<(InventoryModel | null)[]> {
+  public getAllCardQuantities(): Observable<InventoryModel[]> {
     const collectionRef = collection(this._firestore, 'inventory');
     const docsSnap = getDocs(collectionRef);
     return from(docsSnap)
       .pipe(
         map((cardsInventory) =>
-          cardsInventory.docs.map((cardInventory) => cardInventory.exists()
-            ? InventoryModel.fromFirestore(cardInventory.id, cardInventory.data())
-            : null)
+          cardsInventory.docs
+            .filter((cardInventory) => cardInventory.exists())
+            .map((cardInventory) => InventoryModel.fromFirestore(cardInventory.id, cardInventory.data()))
         )
       );
   }

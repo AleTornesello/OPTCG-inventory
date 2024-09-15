@@ -99,6 +99,9 @@
   "statistics": {
     "statistics": "Statistics",
     "completedCards": "Completed cards",
-    "onGoingCards": "On going cards"
+    "onGoingCards": "On going cards",
+    "totalCards": "Total cards",
+    "totalExcessCards": "Total excess cards",
+    "excessCards": "Excess cards"
   }
 }
