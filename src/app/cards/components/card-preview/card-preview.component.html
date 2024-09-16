@@ -1,4 +1,4 @@
-<div class="card border">
+<div class="card border" [ngClass]="{'not-owned': quantity === 0}">
   <img [src]="cardImageUrl" [alt]="card.cardName">
   <div class="card-overlay">
     <span class="card-key">{{ card.key }}</span>
@@ -9,5 +9,4 @@
       <app-button [icon]="faMinus" (onClick)="onMinusClick()"></app-button>
     </div>
   </div>
-
 </div>

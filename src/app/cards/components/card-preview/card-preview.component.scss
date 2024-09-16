@@ -5,6 +5,12 @@
   border-radius: var(--border-radius);
   position: relative;
 
+  &.not-owned {
+    img {
+      opacity: 0.5;
+    }
+  }
+
   img {
     width: 100%;
     height: 100%;
