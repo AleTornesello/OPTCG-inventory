@@ -59,7 +59,7 @@
     }
   },
   "auth": {
-    "welcome": "Welcome to One Piece TCG Inventory management",
+    "welcome": "Welcome to One Piece TCG Inventory",
     "accessToPortal": "Access to portal",
     "login": "Login",
     "missingAccount": "Not registered yet?",
