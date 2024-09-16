@@ -1,13 +1,12 @@
-<div class="card border">
+<div class="card border" [ngClass]="{'not-owned': quantity === 0}">
   <img [src]="cardImageUrl" [alt]="card.cardName">
   <div class="card-overlay">
     <span class="card-key">{{ card.key }}</span>
     <span class="card-name">{{ card.cardName }}</span>
     <div class="card-actions">
-      <app-button [icon]="faPlus" (onClick)="onPlusClick()"></app-button>
+      <app-button [icon]="faPlus" (onClick)="onPlusClick()" size="small"></app-button>
       <app-input-number [value]="quantity"></app-input-number>
-      <app-button [icon]="faMinus" (onClick)="onMinusClick()"></app-button>
+      <app-button [icon]="faMinus" (onClick)="onMinusClick()" size="small"></app-button>
     </div>
   </div>
-
 </div>

@@ -1,9 +1,15 @@
 .card {
-  background-color: #888888;
+  background-color: var(--white);
   width: 100%;
   height: 100%;
   border-radius: var(--border-radius);
   position: relative;
+
+  &.not-owned {
+    img {
+      opacity: 0.5;
+    }
+  }
 
   img {
     width: 100%;
@@ -42,7 +48,18 @@
 
     .card-actions {
       display: flex;
+      align-items: center;
       gap: 0.5rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .card {
+    .card-overlay {
+      .card-actions {
+        gap: 0.25rem;
+      }
     }
   }
 }

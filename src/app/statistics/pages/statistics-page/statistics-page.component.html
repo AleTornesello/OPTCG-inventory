@@ -13,9 +13,9 @@
   </div>
 </div>
 
-<div class="statistics-container border round">
+<div class="statistics-container">
   @for (set of getSets(); track $index) {
-    <div class="set-statistics-container">
+    <div class="set-statistics-container border round">
       <h2>{{ set }}</h2>
       <p-meterGroup [value]="getStatisticsForMeter(set)" [max]="getTotalCards(set)"/>
     </div>

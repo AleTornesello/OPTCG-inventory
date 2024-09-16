@@ -6,6 +6,7 @@ import {Button} from 'primeng/button';
 
 type ButtonStyle = 'text';
 type ButtonColor = 'success' | 'info' | 'warning' | 'danger' | 'primary' | 'secondary';
+type ButtonSize = 'small' | 'large';
 
 @Component({
   selector: 'app-button',
@@ -23,6 +24,7 @@ export class ButtonComponent {
   @Input() expand: boolean;
   @Input() buttonStyle?: ButtonStyle | ButtonStyle[];
   @Input() color?: ButtonColor;
+  @Input() size?: ButtonSize;
 
   @Output() onClick: EventEmitter<MouseEvent>;
 

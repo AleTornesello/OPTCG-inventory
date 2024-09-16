@@ -5,6 +5,7 @@ import {ButtonComponent} from "../../../shared/components/button/button.componen
 import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-card-preview',
@@ -12,7 +13,8 @@ import {InputNumberComponent} from "../../../shared/components/inputs/input-numb
   imports: [
     ButtonComponent,
     InputTextComponent,
-    InputNumberComponent
+    InputNumberComponent,
+    NgClass
   ],
   templateUrl: './card-preview.component.html',
   styleUrl: './card-preview.component.scss'

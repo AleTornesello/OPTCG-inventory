@@ -1,4 +1,4 @@
-# One Piece TCG Inventory management
+# One Piece TCG Inventory
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.0.
 
