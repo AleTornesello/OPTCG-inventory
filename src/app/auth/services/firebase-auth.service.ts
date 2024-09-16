@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Auth, signInWithEmailAndPassword, user, User} from "@angular/fire/auth";
 import {Observable} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {UserCredential, browserSessionPersistence, setPersistence} from "@firebase/auth";
+import {UserCredential} from "@firebase/auth";
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,6 @@ export class FirebaseAuthService {
 
   public async signIn(email: string, password: string): Promise<UserCredential> {
     try {
-      await setPersistence(this._firebaseAuth, browserSessionPersistence);
       return await signInWithEmailAndPassword(this._firebaseAuth, email, password);
     } catch (error) {
       throw error;
