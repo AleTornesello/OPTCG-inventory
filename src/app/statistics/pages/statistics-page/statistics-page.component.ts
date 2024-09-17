@@ -42,75 +42,75 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this._cardsService.getCardsList()
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        combineLatestWith(this._cardsService.getAllCardQuantities())
-      )
-      .subscribe({
-        next: this._onCardListLoadSuccess.bind(this),
-        error: this._onCardListLoadError.bind(this)
-      });
+    // this._cardsService.getCardsList()
+    //   .pipe(
+    //     takeUntilDestroyed(this._destroyRef),
+    //     combineLatestWith(this._cardsService.getAllCardQuantities())
+    //   )
+    //   .subscribe({
+    //     next: this._onCardListLoadSuccess.bind(this),
+    //     error: this._onCardListLoadError.bind(this)
+    //   });
   }
 
   private _onCardListLoadSuccess([cards, inventory]: [CardModel[], InventoryModel[]]) {
     this._cards = cards;
     this._inventory = inventory;
-    cards
-      .sort((a, b) => a.cardId[0].localeCompare(b.cardId[0]))
-      .forEach((card) => {
-        const cardInventory = inventory.find((inventoryCard) => inventoryCard?.key === card.key);
-        const totalQuantityIncrement: number = card.category === 'Leader' ? 1 : 4;
-        const completedCardsIncrement: number =
-          cardInventory
-            ? card.category === 'Leader'
-              ? cardInventory.quantity >= 1
-                ? 1
-                : 0
-              : cardInventory.quantity >= 4
-                ? 4
-                : 0
-            : 0;
-
-        const onGoingCardsIncrement: number =
-          cardInventory
-            ? card.category === 'Leader'
-              ? 0
-              : cardInventory.quantity > 0 && cardInventory.quantity < 4
-                ? 4 - cardInventory.quantity
-                : 0
-            : 0;
-
-        const excessCardsIncrement: number =
-          cardInventory
-            ? card.category === 'Leader'
-              ? cardInventory.quantity > 1
-                ? cardInventory.quantity - 1
-                : 0
-              : cardInventory.quantity > 4
-                ? cardInventory.quantity - 4
-                : 0
-            : 0;
-
-        if (this.statistics.has(card.cardId[0])) {
-          const stat = this.statistics.get(card.cardId[0])!;
-
-          this.statistics.set(card.cardId[0], {
-            completedCards: stat.completedCards + completedCardsIncrement,
-            onGoingCards: stat.onGoingCards + onGoingCardsIncrement,
-            totalCards: stat.totalCards + totalQuantityIncrement,
-            excessCards: stat.excessCards + excessCardsIncrement
-          });
-          return;
-        }
-
-        this.statistics.set(card.cardId[0], {
-          excessCards: excessCardsIncrement,
-          completedCards: completedCardsIncrement,
-          onGoingCards: onGoingCardsIncrement,
-          totalCards: totalQuantityIncrement
-        });
-      })
+    // cards
+    //   .sort((a, b) => a.cardId[0].localeCompare(b.cardId[0]))
+    //   .forEach((card) => {
+    //     const cardInventory = inventory.find((inventoryCard) => inventoryCard?.key === card.key);
+    //     const totalQuantityIncrement: number = card.category === 'Leader' ? 1 : 4;
+    //     const completedCardsIncrement: number =
+    //       cardInventory
+    //         ? card.category === 'Leader'
+    //           ? cardInventory.quantity >= 1
+    //             ? 1
+    //             : 0
+    //           : cardInventory.quantity >= 4
+    //             ? 4
+    //             : 0
+    //         : 0;
+    //
+    //     const onGoingCardsIncrement: number =
+    //       cardInventory
+    //         ? card.category === 'Leader'
+    //           ? 0
+    //           : cardInventory.quantity > 0 && cardInventory.quantity < 4
+    //             ? 4 - cardInventory.quantity
+    //             : 0
+    //         : 0;
+    //
+    //     const excessCardsIncrement: number =
+    //       cardInventory
+    //         ? card.category === 'Leader'
+    //           ? cardInventory.quantity > 1
+    //             ? cardInventory.quantity - 1
+    //             : 0
+    //           : cardInventory.quantity > 4
+    //             ? cardInventory.quantity - 4
+    //             : 0
+    //         : 0;
+    //
+    //     if (this.statistics.has(card.cardId[0])) {
+    //       const stat = this.statistics.get(card.cardId[0])!;
+    //
+    //       this.statistics.set(card.cardId[0], {
+    //         completedCards: stat.completedCards + completedCardsIncrement,
+    //         onGoingCards: stat.onGoingCards + onGoingCardsIncrement,
+    //         totalCards: stat.totalCards + totalQuantityIncrement,
+    //         excessCards: stat.excessCards + excessCardsIncrement
+    //       });
+    //       return;
+    //     }
+    //
+    //     this.statistics.set(card.cardId[0], {
+    //       excessCards: excessCardsIncrement,
+    //       completedCards: completedCardsIncrement,
+    //       onGoingCards: onGoingCardsIncrement,
+    //       totalCards: totalQuantityIncrement
+    //     });
+    //   })
   }
 
   private _onCardListLoadError() {
@@ -152,39 +152,41 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   public get totalSingleCards(): number {
-    return this._cards.filter((card) => {
-      const cardInventory = this._inventory.find((inventoryCard) => inventoryCard?.key === card.key);
-
-      if (!cardInventory) {
-        return false;
-      }
-
-      return cardInventory.quantity > 0;
-    }).length
+    // return this._cards.filter((card) => {
+    //   const cardInventory = this._inventory.find((inventoryCard) => inventoryCard?.key === card.key);
+    //
+    //   if (!cardInventory) {
+    //     return false;
+    //   }
+    //
+    //   return cardInventory.quantity > 0;
+    // }).length
+    return 0
   }
 
   public get totalExcessCards(): number {
-    return this._cards
-      .map((card) => {
-        const cardInventory = this._inventory.find((inventoryCard) => inventoryCard?.key === card.key);
-
-        // Exclude cards that are not in the inventory or the quantity is 0
-        if (!cardInventory || cardInventory.quantity === 0) {
-          return 0;
-        }
-
-        // If the card is a leader or stage, only decrement the quantity by 1 (the minimum quantity to be in a full set)
-        if (card.category === 'Leader') {
-          return cardInventory.quantity - 1;
-        }
-
-        // Excludes all cards that are not a leader or stage and the quantity is less than 4
-        if (cardInventory.quantity < 4) {
-          return 0;
-        }
-
-        // If the card is not a leader or stage, decrement the quantity by 4
-        return cardInventory.quantity - 4;
-      }).reduce((a, b) => a + b, 0);
+    // return this._cards
+    //   .map((card) => {
+    //     const cardInventory = this._inventory.find((inventoryCard) => inventoryCard?.key === card.key);
+    //
+    //     // Exclude cards that are not in the inventory or the quantity is 0
+    //     if (!cardInventory || cardInventory.quantity === 0) {
+    //       return 0;
+    //     }
+    //
+    //     // If the card is a leader or stage, only decrement the quantity by 1 (the minimum quantity to be in a full set)
+    //     if (card.category === 'Leader') {
+    //       return cardInventory.quantity - 1;
+    //     }
+    //
+    //     // Excludes all cards that are not a leader or stage and the quantity is less than 4
+    //     if (cardInventory.quantity < 4) {
+    //       return 0;
+    //     }
+    //
+    //     // If the card is not a leader or stage, decrement the quantity by 4
+    //     return cardInventory.quantity - 4;
+    //   }).reduce((a, b) => a + b, 0);
+    return 0;
   }
 }

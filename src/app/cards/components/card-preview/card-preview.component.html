@@ -1,8 +1,11 @@
 <div class="card border" [ngClass]="{'not-owned': quantity === 0}">
-  <img [src]="cardImageUrl" [alt]="card.cardName">
+  @if (card.imageUrl) {
+    <img [src]="'https://www.cardtrader.com' +card.imageUrl" [alt]="card.name">
+  }
   <div class="card-overlay">
-    <span class="card-key">{{ card.key }}</span>
-    <span class="card-name">{{ card.cardName }}</span>
+    <span class="card-key">{{ card.code }} ({{card.set.code}})</span>
+    <span class="card-name">{{ card.name }}</span>
+    <span class="card-rarity">{{ card.rarity }}</span>
     <div class="card-actions">
       <app-button [icon]="faPlus" (onClick)="onPlusClick()" size="small"></app-button>
       <app-input-number [value]="quantity"></app-input-number>

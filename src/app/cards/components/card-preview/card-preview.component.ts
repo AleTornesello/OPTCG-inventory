@@ -35,9 +35,9 @@ export class CardPreviewComponent {
     this.quantityChange = new EventEmitter<number>();
   }
 
-  public get cardImageUrl(): string {
-    return this._cardsListService.getCardImageUrl(this.card);
-  }
+  // public get cardImageUrl(): string {
+  //   return this._cardsListService.getCardImageUrl(this.card);
+  // }
 
   public onPlusClick() {
     this.quantity++;

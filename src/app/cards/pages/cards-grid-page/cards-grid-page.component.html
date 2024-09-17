@@ -35,12 +35,11 @@
   </div>
 </div>
 <div class="cards-container" appScrollNearEnd (nearEnd)="onNearEndScroll()">
-  @for (visibleCard of visibleCards; track visibleCard.card.key) {
+  @for (card of cards; track card.card.id) {
     <div class="card-container">
       <app-card-preview
-        [card]="visibleCard.card"
-        [quantity]="visibleCard.quantity"
-        (quantityChange)="onCardQuantityChange(visibleCard, $event)"
+        [card]="card.card"
+        [quantity]="card.quantity"
       ></app-card-preview>
     </div>
   }
