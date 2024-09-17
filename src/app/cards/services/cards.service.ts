@@ -29,7 +29,7 @@ export class CardsService {
     if (filters) {
       if (filters.colors && filters.colors.length > 0) {
         query = query
-          .contains('color', filters.colors);
+          .or(filters.colors.map((color) => `color.cs.{${color}}`).join(', '));
       }
 
       if (filters.sets && filters.sets.length > 0) {
