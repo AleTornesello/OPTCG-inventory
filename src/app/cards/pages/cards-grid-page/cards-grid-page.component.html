@@ -1,7 +1,12 @@
 <div class="filters-container border round">
   <button #filtersButton class="accordion" (click)="onFiltersClick()">
     <fa-icon [icon]="faFilter"></fa-icon>
-    <span class="label">{{ "common.filters" | transloco }}</span>
+    <div class="label">
+      <span>{{ "common.filters" | transloco }}</span>
+      @if (activeFiltersCount > 0) {
+        <span class="active-filters-badge">{{ activeFiltersCount }}</span>
+      }
+    </div>
     <fa-icon class="chevron" [icon]="faChevronUp"></fa-icon>
   </button>
   <div #filtersPanel class="panel">
@@ -53,7 +58,7 @@
   }
 </div>
 
-@if(isLoadingInProgress) {
+@if (isLoadingInProgress) {
   <div class="loader-container">
     <app-ring-spinner></app-ring-spinner>
   </div>
