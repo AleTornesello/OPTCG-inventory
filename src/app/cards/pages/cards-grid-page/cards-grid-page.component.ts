@@ -245,4 +245,18 @@ export class CardsGridPageComponent implements OnInit {
       console.log(error);
     }
   }
+
+  public get activeFiltersCount() {
+    let count = 0;
+    if (this.selectedColors.length > 0) {
+      count += this.selectedColors.length;
+    }
+    if (this.selectedSets.length > 0) {
+      count += this.selectedSets.length;
+    }
+    if (this.searchText) {
+      count++;
+    }
+    return count;
+  }
 }
