@@ -4,7 +4,8 @@ export const environment: Environment = {
   production: false,
   supabase: {
     url: '...',
-    key: '...'
+    key: '...',
+    emailRedirectTo: 'https://...'
   },
   // Base Href with heading slash, trailing slash and trailing hash
   baseHref: '/#/'

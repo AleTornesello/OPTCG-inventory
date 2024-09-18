@@ -38,7 +38,7 @@ export class LoginPageComponent {
 
   constructor(
     private _fb: FormBuilder,
-    private authService: SupabaseAuthService,
+    private _authService: SupabaseAuthService,
     private _translationService: TranslocoService,
     private _router: Router,
     private _stringManipulationService: StringManipulationService
@@ -62,7 +62,7 @@ export class LoginPageComponent {
     const {email, password} = this.form.value;
 
     try {
-      await this.authService.signIn(email, password);
+      await this._authService.signIn(email, password);
     } catch (error) {
       if (error instanceof AuthError) {
         const errorMessage = error.code !== undefined

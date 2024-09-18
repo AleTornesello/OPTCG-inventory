@@ -78,6 +78,9 @@
     "loginErrors": {
       "invalidCredentials": "L'email e/o la password non sono valide",
       "generic": "Si è verificato un errore durante il login, riprovare più tardi"
+    },
+    "registerErrors": {
+      "generic": "Si è verificato un errore durante la registrazione, riprovare più tardi"
     }
   },
   "user": {

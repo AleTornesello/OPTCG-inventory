@@ -3,6 +3,7 @@ export interface Environment {
   supabase: {
     url: string;
     key: string;
+    emailRedirectTo: string;
   };
   baseHref: string;
 }
