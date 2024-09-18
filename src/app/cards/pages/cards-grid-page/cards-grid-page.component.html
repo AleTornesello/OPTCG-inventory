@@ -6,6 +6,12 @@
   </button>
   <div #filtersPanel class="panel">
     <div class="filters-container">
+      <div class="filter full">
+        <app-input-text
+          label="{{ 'common.search' | transloco }}"
+          [(ngModel)]="searchText"
+        ></app-input-text>
+      </div>
       <div class="filter">
         <app-dropdown
           [options]="cardColors"

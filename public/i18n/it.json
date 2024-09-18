@@ -10,6 +10,7 @@
     "filters": "Filtri",
     "clear": "Cancella",
     "apply": "Applica",
+    "search": "Cerca",
     "validationErrors": {
       "alpha": "Il campo {{field}} può contenere solo caratteri alfabetici",
       "alphaNum": "Il campo {{field}} può contenere solo caratteri alfanumerici",
