@@ -1,6 +1,6 @@
 <div class="card border" [ngClass]="{'not-owned': quantity === 0}">
   @if (card.imageUrl) {
-    <img [src]="'https://www.cardtrader.com' +card.imageUrl" [alt]="card.name">
+    <img [src]="card.imageUrl" [alt]="card.name">
   }
   <div class="card-overlay">
     <span class="card-key">{{ card.code }} ({{card.set.code}})</span>
