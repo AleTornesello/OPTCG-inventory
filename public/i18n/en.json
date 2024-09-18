@@ -107,6 +107,11 @@
     "totalCards": "Total cards",
     "totalExcessCards": "Total excess cards",
     "excessCards": "Excess cards",
-    "noData": "No statistics available for this set"
+    "noData": "No statistics available for this set",
+    "filters": {
+      "includeSpecial": "Include special cards",
+      "includeAlternateArt": "Include alternate art cards",
+      "includeDon": "Include Don cards"
+    }
   }
 }

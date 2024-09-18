@@ -6,6 +6,8 @@ import {SetsService} from "../../../cards/services/sets.service";
 import {SetModel} from "../../../cards/models/set.model";
 import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
 import {CardModel} from "../../../cards/models/card.model";
+import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
+import {FormsModule} from "@angular/forms";
 
 interface Statistic {
   id: string;
@@ -25,7 +27,9 @@ interface Statistic {
   imports: [
     MeterGroupModule,
     TranslocoPipe,
-    RingSpinnerComponent
+    RingSpinnerComponent,
+    CheckboxComponent,
+    FormsModule
   ],
   templateUrl: './statistics-page.component.html',
   styleUrl: './statistics-page.component.scss'
@@ -35,6 +39,12 @@ export class StatisticsPageComponent implements OnInit {
   public statistics: Statistic[];
   public cardsCount: number;
 
+  public includeSpecial: boolean;
+  public includeAlternateArt: boolean;
+  public includeDon: boolean;
+
+  private _sets: SetModel[];
+
   constructor(
     private _cardsService: CardsService,
     private _translateService: TranslocoService,
@@ -42,6 +52,11 @@ export class StatisticsPageComponent implements OnInit {
   ) {
     this.statistics = [];
     this.cardsCount = 0;
+    this.includeSpecial = false;
+    this.includeAlternateArt = false;
+    this.includeDon = false;
+
+    this._sets = [];
   }
 
   public async ngOnInit() {
@@ -58,6 +73,7 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   private _onSetListLoadSuccess(sets: SetModel[]) {
+    this._sets = sets;
     this.statistics.push(...sets.map((set) => ({
       id: set.id,
       name: set.name,
@@ -69,10 +85,29 @@ export class StatisticsPageComponent implements OnInit {
       singleCardsCompletedCount: 0,
       isLoading: true
     }) as Statistic));
+    this._updateStatistics(sets);
+  }
 
+  private _updateStatistics(sets: SetModel[]) {
     sets.forEach((set) => {
       this._cardsService.getCardsList(undefined, {sets: [set.id]})
         .then(({data}) => {
+          const filteredCards = data.filter((card) => {
+            if(card.rarity === "ALTERNATE ART") {
+              return this.includeAlternateArt;
+            }
+
+            if(card.rarity === "SPECIAL") {
+              return this.includeSpecial;
+            }
+
+            if(card.rarity === "DON") {
+              return this.includeDon;
+            }
+
+            return true;
+          });
+
           const statisticIndex = this.statistics.findIndex((statistic) => statistic.id === set.id);
           if (statisticIndex < 0) {
             return;
@@ -83,11 +118,11 @@ export class StatisticsPageComponent implements OnInit {
             completedCards,
             onGoingCards,
             excessCards
-          } = this._getStatsFromCards(data);
+          } = this._getStatsFromCards(filteredCards);
 
           this.statistics[statisticIndex].totalCards = totalCards;
-          this.statistics[statisticIndex].singleCardsCount = data.length;
-          this.statistics[statisticIndex].singleCardsCompletedCount = data.filter((card) => card.inventory && card.inventory.quantity > 0).length;
+          this.statistics[statisticIndex].singleCardsCount = filteredCards.length;
+          this.statistics[statisticIndex].singleCardsCompletedCount = filteredCards.filter((card) => card.inventory && card.inventory.quantity > 0).length;
           this.statistics[statisticIndex].completedCards = completedCards;
           this.statistics[statisticIndex].onGoingCards = onGoingCards;
           this.statistics[statisticIndex].excessCards = excessCards;
@@ -190,5 +225,9 @@ export class StatisticsPageComponent implements OnInit {
   public get totalExcessCards(): number {
     return this.statistics
       .reduce((acc, stat) => acc + stat.excessCards, 0);
+  }
+
+  public onFiltersChange(): void {
+    this._updateStatistics(this._sets);
   }
 }
