@@ -2,10 +2,15 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CardModel} from "../../models/card.model";
 import {CardsService} from "../../services/cards.service";
 import {ButtonComponent} from "../../../shared/components/button/button.component";
-import {faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
 import {NgClass} from "@angular/common";
+
+export interface CardPreviewModel {
+  card: CardModel;
+  quantity: number;
+}
 
 @Component({
   selector: 'app-card-preview',
@@ -20,19 +25,18 @@ import {NgClass} from "@angular/common";
   styleUrl: './card-preview.component.scss'
 })
 export class CardPreviewComponent {
-  @Input({required: true}) card!: CardModel;
-  @Input() quantity: number;
+  @Input({required: true}) card!: CardPreviewModel;
 
-  @Output() quantityChange : EventEmitter<number>;
+  @Output() quantityIncrease: EventEmitter<number>;
+  @Output() quantityDecrease: EventEmitter<number>;
 
   public readonly faPlus = faPlus;
   public readonly faMinus = faMinus;
 
   constructor(
-    private _cardsListService: CardsService
   ) {
-    this.quantity = 0;
-    this.quantityChange = new EventEmitter<number>();
+    this.quantityIncrease = new EventEmitter();
+    this.quantityDecrease = new EventEmitter();
   }
 
   // public get cardImageUrl(): string {
@@ -40,20 +44,20 @@ export class CardPreviewComponent {
   // }
 
   public onPlusClick() {
-    this.quantity++;
-    this._onQuantityChange();
+    this.card.quantity++;
+    this.quantityIncrease.emit();
   }
 
   public onMinusClick() {
-    if (this.quantity <= 0) {
+    if (this.card.quantity <= 0) {
       return;
     }
 
-    this.quantity--;
-    this._onQuantityChange();
+    this.card.quantity--;
+    this.quantityDecrease.emit();
   }
 
-  private _onQuantityChange() {
-    this.quantityChange.emit(this.quantity);
+  public get canDecreaseQuantity(): boolean {
+    return this.card.quantity > 0;
   }
 }

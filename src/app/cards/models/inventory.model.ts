@@ -1,24 +1,16 @@
 export class InventoryModel {
 
-  public key: string;
+  public id: string;
   public quantity: number;
+  public cardId: string;
+  public createdAt: Date;
   public createdBy: string;
 
-  constructor(key: string, quantity: number, createdBy: string) {
-    this.key = key;
+  constructor(id: string, quantity: number, cardId: string, createdAt: Date | string, createdBy: string) {
+    this.id = id;
     this.quantity = quantity;
+    this.cardId = cardId;
+    this.createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);
     this.createdBy = createdBy;
-  }
-
-  public static fromFirestore(key: string, doc: any): InventoryModel {
-    return new InventoryModel(key, doc['quantity'], doc['created_by']);
-  }
-
-  toFirestore(): any {
-    return {
-      key: this.key,
-      quantity: this.quantity,
-      created_by: this.createdBy
-    }
   }
 }

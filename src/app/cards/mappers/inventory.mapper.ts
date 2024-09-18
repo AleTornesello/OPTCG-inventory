@@ -5,16 +5,20 @@ export class InventoryMapper {
 
   public static toInventoryModel(inventory: InventoryEntity): InventoryModel {
     return new InventoryModel(
-      inventory.key,
+      inventory.id,
       inventory.quantity,
+      inventory.card_id,
+      inventory.created_at,
       inventory.created_by
     );
   }
 
   public static toInventoryEntity(inventory: InventoryModel): InventoryEntity {
     return new InventoryEntity(
-      inventory.key,
+      inventory.id,
       inventory.quantity,
+      inventory.cardId,
+      inventory.createdAt.toISOString(),
       inventory.createdBy
     );
   }

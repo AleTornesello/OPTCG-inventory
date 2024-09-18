@@ -1,4 +1,5 @@
 import {SetModel} from "./set.model";
+import {InventoryModel} from "./inventory.model";
 
 export class CardModel {
   id: string;
@@ -18,6 +19,7 @@ export class CardModel {
   effect: string | null;
   type: string[];
   set: SetModel;
+  inventory: InventoryModel | null;
   createdAt: Date;
   createdBy: string;
 
@@ -39,6 +41,7 @@ export class CardModel {
     effect: string | null,
     type: string[],
     set: SetModel,
+    inventory: InventoryModel | null,
     createdAt: string | Date,
     createdBy: string,
   ) {
@@ -59,6 +62,7 @@ export class CardModel {
     this.effect = effect;
     this.type = type;
     this.set = set;
+    this.inventory = inventory;
     this.createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);
     this.createdBy = createdBy;
   }

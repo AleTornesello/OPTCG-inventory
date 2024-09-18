@@ -1,4 +1,5 @@
 import {SetEntity} from "./set.entity";
+import {InventoryEntity} from "./inventory.entity";
 
 export class CardEntity {
   id: string;
@@ -18,6 +19,7 @@ export class CardEntity {
   effect: string | null;
   type: string[];
   set: SetEntity;
+  inventory: InventoryEntity | null;
   created_at: string;
   created_by: string;
 
@@ -39,6 +41,7 @@ export class CardEntity {
     effect: string | null,
     type: string[],
     set: SetEntity,
+    inventory: InventoryEntity | null,
     created_at: string,
     created_by: string,
   ) {
@@ -59,6 +62,7 @@ export class CardEntity {
     this.effect = effect;
     this.type = type;
     this.set = set;
+    this.inventory = inventory;
     this.created_at = created_at;
     this.created_by = created_by;
   }

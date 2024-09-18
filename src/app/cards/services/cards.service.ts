@@ -18,7 +18,7 @@ export class CardsService {
   public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: { colors?: string[], sets?: string[] }) {
     let query = this._supabaseService.supabase
       .from('cards')
-      .select("*, set:set_id(*)")
+      .select("*, set:set_id(*), inventory(*)")
       .order("code", {ascending: true, referencedTable: "set"})
       .order("code", {ascending: true});
 
@@ -81,16 +81,16 @@ export class CardsService {
   //   return from(setDoc(docRef, {quantity}, {merge: true}));
   // }
 
-  public async getCardsQuantities(cardIds: string[]) {
-    const {data, error} = await this._supabaseService.supabase
-      .from('inventory')
-      .select()
-      .returns<InventoryEntity[]>();
-
-    if (error) {
-      throw error;
-    }
-
-    return data.map((inventory) => InventoryMapper.toInventoryModel(inventory));
-  }
+  // public async getCardsQuantities(cardIds: string[]) {
+  //   const {data, error} = await this._supabaseService.supabase
+  //     .from('inventory')
+  //     .select()
+  //     .returns<InventoryEntity[]>();
+  //
+  //   if (error) {
+  //     throw error;
+  //   }
+  //
+  //   return data.map((inventory) => InventoryMapper.toInventoryModel(inventory));
+  // }
 }

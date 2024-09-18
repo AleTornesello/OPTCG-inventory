@@ -1,7 +1,7 @@
-import {Component, DestroyRef, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CardsService} from "../../services/cards.service";
 import {CardModel} from "../../models/card.model";
-import {CardPreviewComponent} from "../../components/card-preview/card-preview.component";
+import {CardPreviewComponent, CardPreviewModel} from "../../components/card-preview/card-preview.component";
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
@@ -11,15 +11,10 @@ import {DropdownComponent} from "../../../shared/components/inputs/dropdown/drop
 import {SelectItem} from "primeng/api";
 import {ButtonComponent} from "../../../shared/components/button/button.component";
 import {FormsModule} from "@angular/forms";
-import {InventoryModel} from "../../models/inventory.model";
 import {SetsService} from "../../services/sets.service";
 import {SetModel} from "../../models/set.model";
 import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
-
-interface CardPreviewModel {
-  card: CardModel;
-  quantity: number;
-}
+import {InventoryService} from "../../services/inventory.service";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -58,9 +53,9 @@ export class CardsGridPageComponent implements OnInit {
 
   constructor(
     private _cardsListService: CardsService,
-    private _destroyRef: DestroyRef,
     private _translateService: TranslocoService,
-    private _setsService: SetsService
+    private _setsService: SetsService,
+    private _inventoryService: InventoryService
   ) {
     this.cards = [];
     this._page = 0;
@@ -95,11 +90,7 @@ export class CardsGridPageComponent implements OnInit {
         sets: this.selectedSets
       });
 
-
-      const cardIds = cards.map((card) => card.code);
-      const quantities = await this._cardsListService.getCardsQuantities(cardIds);
-
-      this._onCardsListLoadSuccess(cards, quantities);
+      this._onCardsListLoadSuccess(cards);
     } catch (error) {
       this._onCardsListLoadError(error);
     }
@@ -119,16 +110,13 @@ export class CardsGridPageComponent implements OnInit {
   }
 
   private _onCardsListLoadSuccess(
-    cards: CardModel[],
-    quantities: InventoryModel[]
+    cards: CardModel[]
   ) {
     this.cards.push(...cards
       .map((card) => {
-        const inventoryItem = quantities.find((item) => item.key === card.code);
-
         return {
           card,
-          quantity: inventoryItem?.quantity ?? 0
+          quantity: card.inventory?.quantity ?? 0
         };
       }));
     this.isLoadingInProgress = false;
@@ -268,5 +256,29 @@ export class CardsGridPageComponent implements OnInit {
     this.cards = [];
     this._page = 0;
     await this._loadCards();
+  }
+
+  public async onQuantityIncrease(card: CardPreviewModel) {
+    try {
+      const inventory = await this._inventoryService.upsertInventory(card.card, card.quantity);
+
+      card.card.inventory = inventory[0];
+    } catch (error) {
+      // TODO show error message
+      // card.quantity--;
+      console.log(error);
+    }
+  }
+
+  public async onQuantityDecrease(card: CardPreviewModel) {
+    try {
+      const inventory = await this._inventoryService.upsertInventory(card.card, card.quantity);
+
+      card.card.inventory = inventory[0];
+    } catch (error) {
+      // TODO show error message
+      // card.quantity++;
+      console.log(error);
+    }
   }
 }
