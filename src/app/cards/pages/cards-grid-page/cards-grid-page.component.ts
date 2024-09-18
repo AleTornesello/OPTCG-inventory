@@ -16,6 +16,7 @@ import {SetModel} from "../../models/set.model";
 import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
 import {InventoryService} from "../../services/inventory.service";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -30,7 +31,7 @@ import {InputTextComponent} from "../../../shared/components/inputs/input-text/i
     ButtonComponent,
     FormsModule,
     RingSpinnerComponent,
-    InputTextComponent
+    InputTextComponent,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -60,7 +61,9 @@ export class CardsGridPageComponent implements OnInit {
     private _cardsListService: CardsService,
     private _translateService: TranslocoService,
     private _setsService: SetsService,
-    private _inventoryService: InventoryService
+    private _inventoryService: InventoryService,
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {
     this.cards = [];
     this._page = 0;
@@ -74,11 +77,25 @@ export class CardsGridPageComponent implements OnInit {
     this.searchText = '';
   }
 
-  public async ngOnInit() {
-    await Promise.all([
-      this._loadCards(),
-      this._loadFilters()
-    ]);
+  public ngOnInit() {
+    this._route.queryParams.subscribe(async (params) => {
+      this.searchText = params['searchText'] ?? ''
+      this.selectedColors = params['colors']
+        ? Array.isArray(params['colors'])
+          ? params['colors']
+          : [params['colors']]
+        : [];
+      this.selectedSets = params['sets']
+        ? Array.isArray(params['sets'])
+          ? params['sets']
+          : [params['sets']]
+        : [];
+
+      await Promise.all([
+        this._loadCards(),
+        this._loadFilters()
+      ]);
+    });
   }
 
   private async _loadCards() {
@@ -181,6 +198,14 @@ export class CardsGridPageComponent implements OnInit {
     this.cards = [];
     this._page = 0;
     this._cardsTotalCount = null;
+    await this._router.navigate([], {
+      relativeTo: this._route,
+      queryParams: {
+        sets: this.selectedSets.length > 0 ? this.selectedSets : undefined,
+        colors: this.selectedColors.length > 0 ? this.selectedColors : undefined,
+        searchText: this.searchText
+      }
+    });
     await this._loadCards();
   }
 
@@ -191,6 +216,9 @@ export class CardsGridPageComponent implements OnInit {
     this._page = 0;
     this._cardsTotalCount = null;
     this.searchText = '';
+    await this._router.navigate([], {
+      relativeTo: this._route
+    })
     await this._loadCards();
   }
 
@@ -216,5 +244,19 @@ export class CardsGridPageComponent implements OnInit {
       // card.quantity++;
       console.log(error);
     }
+  }
+
+  public get activeFiltersCount() {
+    let count = 0;
+    if (this.selectedColors.length > 0) {
+      count += this.selectedColors.length;
+    }
+    if (this.selectedSets.length > 0) {
+      count += this.selectedSets.length;
+    }
+    if (this.searchText) {
+      count++;
+    }
+    return count;
   }
 }
