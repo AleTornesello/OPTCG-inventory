@@ -1,0 +1,19 @@
+<div class="checkbox-wrapper" [ngClass]="{'center': center}">
+  <p-checkbox
+    [(ngModel)]="value"
+    [binary]="true"
+    [inputId]="inputId"
+    [ariaLabelledBy]="for | camelToKebab"
+    (onChange)="onInputChange($event)"
+    [readonly]="readonly"
+  ></p-checkbox>
+  @if (label) {
+    <div class="label-wrapper">
+      <app-input-wrapper
+        [label]="label"
+        [for]="for"
+        [required]="required"
+      ></app-input-wrapper>
+    </div>
+  }
+</div>
