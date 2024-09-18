@@ -14,6 +14,7 @@ import {FormsModule} from "@angular/forms";
 import {InventoryModel} from "../../models/inventory.model";
 import {SetsService} from "../../services/sets.service";
 import {SetModel} from "../../models/set.model";
+import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
 
 interface CardPreviewModel {
   card: CardModel;
@@ -31,7 +32,8 @@ interface CardPreviewModel {
     FaIconComponent,
     DropdownComponent,
     ButtonComponent,
-    FormsModule
+    FormsModule,
+    RingSpinnerComponent
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -47,12 +49,12 @@ export class CardsGridPageComponent implements OnInit {
 
   public selectedColors: string[];
   public selectedSets: string[];
+  public isLoadingInProgress: boolean;
 
   protected readonly faFilter = faFilter;
 
   private _page: number;
   private readonly _cardsPerPage: number;
-  private _isLoadingInProgress: boolean;
 
   constructor(
     private _cardsListService: CardsService,
@@ -67,7 +69,7 @@ export class CardsGridPageComponent implements OnInit {
     this.cardSets = [];
     this.selectedColors = [];
     this.selectedSets = [];
-    this._isLoadingInProgress = false;
+    this.isLoadingInProgress = false;
   }
 
   public async ngOnInit() {
@@ -78,11 +80,11 @@ export class CardsGridPageComponent implements OnInit {
   }
 
   private async _loadCards() {
-    if (this._isLoadingInProgress) {
+    if (this.isLoadingInProgress) {
       return;
     }
 
-    this._isLoadingInProgress = true;
+    this.isLoadingInProgress = true;
 
     try {
       const cards = await this._cardsListService.getCardsList({
@@ -129,7 +131,7 @@ export class CardsGridPageComponent implements OnInit {
           quantity: inventoryItem?.quantity ?? 0
         };
       }));
-    this._isLoadingInProgress = false;
+    this.isLoadingInProgress = false;
   }
 
   private _initFilterOptions(colors: string[], sets: SetModel[]) {
@@ -157,7 +159,7 @@ export class CardsGridPageComponent implements OnInit {
   }
 
   private _onCardsListLoadError(error: any) {
-    this._isLoadingInProgress = false;
+    this.isLoadingInProgress = false;
     console.log(error);
     // TODO: handle error
   }

@@ -44,3 +44,9 @@
     </div>
   }
 </div>
+
+@if(isLoadingInProgress) {
+  <div class="loader-container">
+    <app-ring-spinner></app-ring-spinner>
+  </div>
+}
