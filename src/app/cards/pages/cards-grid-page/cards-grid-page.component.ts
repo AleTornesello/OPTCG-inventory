@@ -5,7 +5,7 @@ import {CardPreviewComponent, CardPreviewModel} from "../../components/card-prev
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
-import {faFilter} from "@fortawesome/free-solid-svg-icons";
+import {faChevronUp, faFilter} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {DropdownComponent} from "../../../shared/components/inputs/dropdown/dropdown.component";
 import {SelectItem} from "primeng/api";
@@ -47,6 +47,7 @@ export class CardsGridPageComponent implements OnInit {
   public isLoadingInProgress: boolean;
 
   protected readonly faFilter = faFilter;
+  protected readonly faChevronUp = faChevronUp;
 
   private _page: number;
   private readonly _cardsPerPage: number;

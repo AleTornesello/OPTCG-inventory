@@ -19,6 +19,18 @@
     &.active {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+
+      .chevron {
+        transform: rotate(180deg);
+      }
+    }
+
+    .label {
+      flex-grow: 1;
+    }
+
+    .chevron {
+      transition: transform 0.3s ease;
     }
   }
 

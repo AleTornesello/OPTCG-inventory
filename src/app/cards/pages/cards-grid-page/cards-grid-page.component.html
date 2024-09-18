@@ -2,6 +2,7 @@
   <button #filtersButton class="accordion" (click)="onFiltersClick()">
     <fa-icon [icon]="faFilter"></fa-icon>
     <span class="label">{{ "common.filters" | transloco }}</span>
+    <fa-icon class="chevron" [icon]="faChevronUp"></fa-icon>
   </button>
   <div #filtersPanel class="panel">
     <div class="filters-container">
