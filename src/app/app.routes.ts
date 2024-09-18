@@ -6,7 +6,7 @@ import {VerifyEmailPageComponent} from "./auth/pages/verify-email-page/verify-em
 import {DefaultLayoutComponent} from "./skeleton/components/default-layout/default-layout.component";
 import {CardsGridPageComponent} from "./cards/pages/cards-grid-page/cards-grid-page.component";
 import {StatisticsPageComponent} from "./statistics/pages/statistics-page/statistics-page.component";
-import {AuthGuard} from "@angular/fire/auth-guard";
+import {authGuard} from "./auth/guards/auththenticated.guard";
 
 export enum OptcgRoute {
   AUTH = 'auth',
@@ -29,7 +29,7 @@ export const routes: Routes = [
       {
         path: OptcgRoute.CARDS,
         component: DefaultLayoutComponent,
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         children: [
           {
             path: '',
@@ -40,7 +40,7 @@ export const routes: Routes = [
       {
         path: OptcgRoute.STATISTICS,
         component: DefaultLayoutComponent,
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         children: [
           {
             path: '',

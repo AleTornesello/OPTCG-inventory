@@ -1,54 +1,81 @@
-#login-card-container {
+#login-page-container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 1rem;
+  background: var(--primary-500);
+  color: var(--primary-text-color);
 
-  #login-form-wrapper {
+  #welcome-message-container {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    width: 70%;
 
-    #welcome-message-container {
-      background-color: var(--primary-500, #206db5);
-      border-radius: var(--border-radius) var(--border-radius) 0 0;
-      color: var(--primary-text-color);
-      text-align: center;
-      padding: 1rem;
-
-      h1 {
-        font-size: 1.75rem;
-      }
-
-      h2 {
-        font-size: 1.25rem;
-        margin-top: 0.75rem;
-      }
+    img {
+      width: 300px;
     }
+  }
 
-    #login-form {
-      padding: 1rem;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+  #login-card {
+    background: var(--white);
+    height: 100%;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    color: var(--text-color);
+    width: 30%;
 
-      #register-link {
-        text-align: center;
+    #login-form-wrapper {
+      height: 100%;
+
+      form {
+        height: 100%;
+
+
+        #login-form {
+          padding: 1rem;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          justify-content: center;
+          height: 100%;
+        }
       }
     }
   }
 }
 
-@media only screen and (min-width: 992px) {
-  #login-card-container {
-    #login-form-wrapper {
-      flex-direction: row;
+@media only screen and (max-width: 1201px) {
+  #login-page-container {
+    #welcome-message-container {
+      width: 50%;
+    }
 
-      #welcome-message-container {
-        border-radius: var(--border-radius) 0 0 var(--border-radius);
-        text-align: left;
+    #login-card {
+      width: 50%;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #login-page-container {
+    flex-direction: column;
+
+    #welcome-message-container {
+      width: 100%;
+      padding: 2rem;
+      align-items: center;
+      text-align: center;
+
+      img {
+        width: 200px;
       }
+    }
+
+    #login-card {
+      width: 100%;
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
     }
   }
 }

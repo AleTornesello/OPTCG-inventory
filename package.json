@@ -1,6 +1,6 @@
 {
   "name": "optcg-inventory",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4300",
@@ -14,7 +14,6 @@
     "@angular/common": "^18.2.4",
     "@angular/compiler": "^18.2.4",
     "@angular/core": "^18.2.4",
-    "@angular/fire": "^18.0.1",
     "@angular/forms": "^18.2.4",
     "@angular/platform-browser": "^18.2.4",
     "@angular/platform-browser-dynamic": "^18.2.4",
@@ -25,6 +24,7 @@
     "@glidejs/glide": "^3.6.2",
     "@jsverse/transloco": "^7.4.2",
     "@jsverse/transloco-messageformat": "^7.0.1",
+    "@supabase/supabase-js": "^2.45.4",
     "dayjs": "^1.11.12",
     "primeng": "^17.18.10",
     "rxjs": "~7.8.0",

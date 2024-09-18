@@ -1,15 +1,18 @@
-<div id="login-card-container">
-  <p-card>
+<div id="login-page-container">
+  <div id="welcome-message-container">
+    <img src="./images/logo-full-white.png" alt="logo"/>
+    <h1>{{ "auth.welcome" | transloco }}</h1>
+  </div>
+  <div id="login-card" class="round">
     <div id="login-form-wrapper">
-      <div id="welcome-message-container">
-        <h1>{{ "auth.welcome" | transloco }}</h1>
-        <h2>{{ "auth.register" | transloco }}</h2>
-      </div>
       <form
         [formGroup]="form"
         (submit)="onFormSubmit()"
       >
         <div id="login-form">
+          <div class="text-center">
+            <h2>{{ "auth.register" | transloco }}</h2>
+          </div>
           <app-input-text
             formControlName="email"
             [label]="'user.email' | transloco"
@@ -36,16 +39,17 @@
             type="submit"
           >
           </app-button>
-          <div id="register-link">
+          <div class="text-center">
             {{ "auth.alreadyHaveAccount" | transloco }}&nbsp;<a
             [routerLink]="registrationPageLink"
-          >{{ "auth.login" | transloco }}</a
           >
+            {{ "auth.login" | transloco }}
+          </a>
           </div>
         </div>
       </form>
     </div>
-  </p-card>
+  </div>
 </div>
 
 <app-result-message-dialog

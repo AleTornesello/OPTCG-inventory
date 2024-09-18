@@ -1,14 +1,14 @@
-import {SetModel} from "./set.model";
-import {InventoryModel} from "./inventory.model";
+import {SetEntity} from "./set.entity";
+import {InventoryEntity} from "./inventory.entity";
 
-export class CardModel {
+export class CardEntity {
   id: string;
   code: string;
   name: string;
-  imageUrl: string;
-  setId: string;
-  ctId: number;
-  ctGameId: number;
+  image_url: string;
+  set_id: string;
+  ct_id: number;
+  ct_game_id: number;
   rarity: string;
   color: string[];
   power: number;
@@ -18,19 +18,19 @@ export class CardModel {
   art: number;
   effect: string | null;
   type: string[];
-  set: SetModel;
-  inventory: InventoryModel | null;
-  createdAt: Date;
-  createdBy: string;
+  set: SetEntity;
+  inventory: InventoryEntity | null;
+  created_at: string;
+  created_by: string;
 
   constructor(
     id: string,
     code: string,
     name: string,
-    imageUrl: string,
-    setId: string,
-    ctId: number,
-    ctGameId: number,
+    image_url: string,
+    set_id: string,
+    ct_id: number,
+    ct_game_id: number,
     rarity: string,
     color: string[],
     power: number,
@@ -40,18 +40,18 @@ export class CardModel {
     art: number,
     effect: string | null,
     type: string[],
-    set: SetModel,
-    inventory: InventoryModel | null,
-    createdAt: string | Date,
-    createdBy: string,
+    set: SetEntity,
+    inventory: InventoryEntity | null,
+    created_at: string,
+    created_by: string,
   ) {
     this.id = id;
     this.code = code;
     this.name = name;
-    this.imageUrl = imageUrl;
-    this.setId = setId;
-    this.ctId = ctId;
-    this.ctGameId = ctGameId;
+    this.image_url = image_url;
+    this.set_id = set_id;
+    this.ct_id = ct_id;
+    this.ct_game_id = ct_game_id;
     this.rarity = rarity;
     this.color = color;
     this.power = power;
@@ -63,7 +63,7 @@ export class CardModel {
     this.type = type;
     this.set = set;
     this.inventory = inventory;
-    this.createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);
-    this.createdBy = createdBy;
+    this.created_at = created_at;
+    this.created_by = created_by;
   }
 }

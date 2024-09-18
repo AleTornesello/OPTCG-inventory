@@ -1,12 +1,15 @@
-<div class="card border" [ngClass]="{'not-owned': quantity === 0}">
-  <img [src]="cardImageUrl" [alt]="card.cardName">
+<div class="card border" [ngClass]="{'not-owned': card.quantity === 0}">
+  @if (card.card.imageUrl) {
+    <img [src]="card.card.imageUrl" [alt]="card.card.name">
+  }
   <div class="card-overlay">
-    <span class="card-key">{{ card.key }}</span>
-    <span class="card-name">{{ card.cardName }}</span>
+    <span class="card-key">{{ card.card.code }} ({{card.card.set.code}})</span>
+    <span class="card-name">{{ card.card.name }}</span>
+    <span class="card-rarity">{{ card.card.rarity }}</span>
     <div class="card-actions">
       <app-button [icon]="faPlus" (onClick)="onPlusClick()" size="small"></app-button>
-      <app-input-number [value]="quantity"></app-input-number>
-      <app-button [icon]="faMinus" (onClick)="onMinusClick()" size="small"></app-button>
+      <app-input-number [value]="card.quantity"></app-input-number>
+      <app-button [icon]="faMinus" (onClick)="onMinusClick()" size="small" [disabled]="!canDecreaseQuantity"></app-button>
     </div>
   </div>
 </div>

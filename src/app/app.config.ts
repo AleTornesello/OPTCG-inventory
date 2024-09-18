@@ -9,10 +9,6 @@ import {provideTransloco, Translation, TranslocoService,} from '@jsverse/translo
 import {lastValueFrom} from 'rxjs';
 import {provideTranslocoMessageformat} from "@jsverse/transloco-messageformat";
 import {MessageService} from "primeng/api";
-import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
-import {environment} from "../environments/environment";
-import {getAuth, provideAuth} from "@angular/fire/auth";
-import {getFirestore, provideFirestore} from "@angular/fire/firestore";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,9 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({eventCoalescing: true}),
     provideRouter(routes, withHashLocation()),
     provideAnimations(),
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
     {
       provide: LOCALE_ID,
       useValue: navigator.language,

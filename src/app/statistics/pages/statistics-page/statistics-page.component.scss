@@ -1,9 +1,10 @@
 .summaries-container {
   display: flex;
   flex-wrap: wrap;
+  padding-bottom: 1rem;
 
   .stat-summary-wrapper {
-    padding: 1rem;
+    padding: 0 1rem;
     width: 50%;
 
     .stat-summary-container {
@@ -34,5 +35,18 @@
   .set-statistics-container {
     background-color: var(--white);
     padding: 1rem;
+    width: 100%;
+
+    .loader-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .no-data {
+      text-align: center;
+      font-style: italic;
+      color: var(--gray-500);
+    }
   }
 }

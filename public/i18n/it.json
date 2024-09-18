@@ -76,8 +76,11 @@
     },
     "loginKo": "Si è verificato un errore durante il login, riprovare più tardi",
     "loginErrors": {
-      "invalidCredential": "L'email e/o la password non sono valide",
+      "invalidCredentials": "L'email e/o la password non sono valide",
       "generic": "Si è verificato un errore durante il login, riprovare più tardi"
+    },
+    "registerErrors": {
+      "generic": "Si è verificato un errore durante la registrazione, riprovare più tardi"
     }
   },
   "user": {
@@ -103,6 +106,7 @@
     "onGoingCards": "Carte in corso",
     "totalCards": "Carte totali",
     "totalExcessCards": "Carte totali in eccesso",
-    "excessCards": "Carte in eccesso"
+    "excessCards": "Carte in eccesso",
+    "noData": "Nessuna statistica disponibile per questo set"
   }
 }

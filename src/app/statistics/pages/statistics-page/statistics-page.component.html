@@ -14,10 +14,17 @@
 </div>
 
 <div class="statistics-container">
-  @for (set of getSets(); track $index) {
+  @for (statistic of statistics; track statistic.id) {
     <div class="set-statistics-container border round">
-      <h2>{{ set }}</h2>
-      <p-meterGroup [value]="getStatisticsForMeter(set)" [max]="getTotalCards(set)"/>
+      <h2>{{ statistic.name }}</h2>
+      @if (statistic.isLoading) {
+        <div class="loader-container">
+          <app-ring-spinner></app-ring-spinner>
+        </div>
+      } @else if(statistic.totalCards > 0) {
+        <p-meterGroup [value]="getStatisticsForMeter(statistic)" [max]="getTotalCards(statistic)"/>
+      } @else {
+        <p class="no-data">{{ "statistics.noData" | transloco }}</p>}
     </div>
   }
 </div>
