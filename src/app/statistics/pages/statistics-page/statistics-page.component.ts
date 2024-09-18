@@ -1,17 +1,20 @@
-import {Component, DestroyRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CardsService} from "../../../cards/services/cards.service";
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {CardModel} from "../../../cards/models/card.model";
 import {MeterGroupModule, MeterItem} from "primeng/metergroup";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
-import {combineLatestWith} from "rxjs";
-import {InventoryModel} from "../../../cards/models/inventory.model";
+import {SetsService} from "../../../cards/services/sets.service";
+import {SetModel} from "../../../cards/models/set.model";
+import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
+import {CardModel} from "../../../cards/models/card.model";
 
 interface Statistic {
+  id: string;
+  name: string;
   totalCards: number;
   completedCards: number;
   onGoingCards: number;
   excessCards: number;
+  isLoading: boolean;
 }
 
 @Component({
@@ -19,136 +22,149 @@ interface Statistic {
   standalone: true,
   imports: [
     MeterGroupModule,
-    TranslocoPipe
+    TranslocoPipe,
+    RingSpinnerComponent
   ],
   templateUrl: './statistics-page.component.html',
   styleUrl: './statistics-page.component.scss'
 })
 export class StatisticsPageComponent implements OnInit {
 
-  public statistics: Map<string, Statistic>;
-
-  private _cards: CardModel[];
-  private _inventory: InventoryModel[];
+  public statistics: Statistic[];
+  public cardsCount: number;
 
   constructor(
     private _cardsService: CardsService,
-    private _destroyRef: DestroyRef,
-    private _translateService: TranslocoService
+    private _translateService: TranslocoService,
+    private _setsService: SetsService
   ) {
-    this.statistics = new Map<string, Statistic>();
-    this._cards = [];
-    this._inventory = [];
+    this.statistics = [];
+    this.cardsCount = 0;
   }
 
-  public ngOnInit() {
-    // this._cardsService.getCardsList()
-    //   .pipe(
-    //     takeUntilDestroyed(this._destroyRef),
-    //     combineLatestWith(this._cardsService.getAllCardQuantities())
-    //   )
-    //   .subscribe({
-    //     next: this._onCardListLoadSuccess.bind(this),
-    //     error: this._onCardListLoadError.bind(this)
-    //   });
+  public async ngOnInit() {
+    await this._loadSets();
   }
 
-  private _onCardListLoadSuccess([cards, inventory]: [CardModel[], InventoryModel[]]) {
-    this._cards = cards;
-    this._inventory = inventory;
-    // cards
-    //   .sort((a, b) => a.cardId[0].localeCompare(b.cardId[0]))
-    //   .forEach((card) => {
-    //     const cardInventory = inventory.find((inventoryCard) => inventoryCard?.key === card.key);
-    //     const totalQuantityIncrement: number = card.category === 'Leader' ? 1 : 4;
-    //     const completedCardsIncrement: number =
-    //       cardInventory
-    //         ? card.category === 'Leader'
-    //           ? cardInventory.quantity >= 1
-    //             ? 1
-    //             : 0
-    //           : cardInventory.quantity >= 4
-    //             ? 4
-    //             : 0
-    //         : 0;
-    //
-    //     const onGoingCardsIncrement: number =
-    //       cardInventory
-    //         ? card.category === 'Leader'
-    //           ? 0
-    //           : cardInventory.quantity > 0 && cardInventory.quantity < 4
-    //             ? 4 - cardInventory.quantity
-    //             : 0
-    //         : 0;
-    //
-    //     const excessCardsIncrement: number =
-    //       cardInventory
-    //         ? card.category === 'Leader'
-    //           ? cardInventory.quantity > 1
-    //             ? cardInventory.quantity - 1
-    //             : 0
-    //           : cardInventory.quantity > 4
-    //             ? cardInventory.quantity - 4
-    //             : 0
-    //         : 0;
-    //
-    //     if (this.statistics.has(card.cardId[0])) {
-    //       const stat = this.statistics.get(card.cardId[0])!;
-    //
-    //       this.statistics.set(card.cardId[0], {
-    //         completedCards: stat.completedCards + completedCardsIncrement,
-    //         onGoingCards: stat.onGoingCards + onGoingCardsIncrement,
-    //         totalCards: stat.totalCards + totalQuantityIncrement,
-    //         excessCards: stat.excessCards + excessCardsIncrement
-    //       });
-    //       return;
-    //     }
-    //
-    //     this.statistics.set(card.cardId[0], {
-    //       excessCards: excessCardsIncrement,
-    //       completedCards: completedCardsIncrement,
-    //       onGoingCards: onGoingCardsIncrement,
-    //       totalCards: totalQuantityIncrement
-    //     });
-    //   })
+  private async _loadSets() {
+    try {
+      const sets = await this._setsService.getSetsList();
+      this._onSetListLoadSuccess(sets);
+    } catch (error) {
+      this._onSetListLoadError(error);
+    }
   }
 
-  private _onCardListLoadError() {
+  private _onSetListLoadSuccess(sets: SetModel[]) {
+    this.statistics.push(...sets.map((set) => ({
+      id: set.id,
+      name: set.name,
+      excessCards: 0,
+      completedCards: 0,
+      onGoingCards: 0,
+      totalCards: 0,
+      isLoading: true
+    }) as Statistic));
+
+    sets.forEach((set) => {
+      this._cardsService.getCardsList(undefined, {sets: [set.id]})
+        .then(({data}) => {
+          const statisticIndex = this.statistics.findIndex((statistic) => statistic.id === set.id);
+          if (statisticIndex < 0) {
+            return;
+          }
+
+          const {
+            totalCards,
+            completedCards,
+            onGoingCards,
+            excessCards
+          } = this._getStatsFromCards(data);
+
+          this.statistics[statisticIndex].totalCards = totalCards;
+          this.statistics[statisticIndex].completedCards = completedCards;
+          this.statistics[statisticIndex].onGoingCards = onGoingCards;
+          this.statistics[statisticIndex].excessCards = excessCards;
+          this.statistics[statisticIndex].isLoading = false;
+        });
+    })
+  }
+
+  private _getStatsFromCards(cards: CardModel[]) {
+    let totalCards: number = 0;
+    let completedCards: number = 0;
+    let onGoingCards: number = 0;
+    let excessCards: number = 0;
+
+    cards.forEach((card) => {
+      totalCards += card.category === 'LEADER' ? 1 : 4;
+      completedCards +=
+        card.inventory
+          ? card.category === 'LEADER'
+            ? card.inventory.quantity >= 1
+              ? 1
+              : 0
+            : card.inventory.quantity >= 4
+              ? 4
+              : 0
+          : 0;
+
+      onGoingCards +=
+        card.inventory
+          ? card.category === 'LEADER'
+            ? 0
+            : card.inventory.quantity > 0 && card.inventory.quantity < 4
+              ? 4 - card.inventory.quantity
+              : 0
+          : 0;
+
+      excessCards +=
+        card.inventory
+          ? card.category === 'LEADER'
+            ? card.inventory.quantity > 1
+              ? card.inventory.quantity - 1
+              : 0
+            : card.inventory.quantity > 4
+              ? card.inventory.quantity - 4
+              : 0
+          : 0;
+    });
+
+    return {
+      excessCards,
+      completedCards,
+      onGoingCards,
+      totalCards
+    };
+  }
+
+  private _onSetListLoadError(error: any) {
+    console.log(error);
     // TODO add error
   }
 
-  public getSets(): string[] {
-    return Array.from(this.statistics.keys());
-  }
-
-  public getStatisticsForMeter(key: string): MeterItem[] {
-    const card = this.statistics.get(key);
-
-    if (!card) {
-      return [];
-    }
-
+  public getStatisticsForMeter(statistic: Statistic): MeterItem[] {
     return [
       {
         label: this._translateService.translate("statistics.completedCards"),
         color: '#34d399',
-        value: card.completedCards
+        value: statistic.completedCards
       },
-      {label: this._translateService.translate("statistics.onGoingCards"), color: '#fbbf24', value: card.onGoingCards},
-      {label: this._translateService.translate("statistics.excessCards"), color: '#ff3d32', value: card.excessCards},
+      {
+        label: this._translateService.translate("statistics.onGoingCards"),
+        color: '#fbbf24',
+        value: statistic.onGoingCards
+      },
+      {
+        label: this._translateService.translate("statistics.excessCards"),
+        color: '#ff3d32',
+        value: statistic.excessCards
+      },
     ]
   }
 
-  public getTotalCards(key: string): number {
-    const card = this.statistics.get(key);
-    if (!card) {
-      return 0;
-    }
-    return card.totalCards + card.excessCards;
-  }
-
-  public get cardsCount(): number {
-    return this._cards.length;
+  public getTotalCards(statistic: Statistic): number {
+    return statistic.totalCards + statistic.excessCards;
   }
 
   public get totalSingleCards(): number {

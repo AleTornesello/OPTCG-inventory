@@ -103,6 +103,7 @@
     "onGoingCards": "Carte in corso",
     "totalCards": "Carte totali",
     "totalExcessCards": "Carte totali in eccesso",
-    "excessCards": "Carte in eccesso"
+    "excessCards": "Carte in eccesso",
+    "noData": "Nessuna statistica disponibile per questo set"
   }
 }

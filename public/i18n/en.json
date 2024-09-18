@@ -102,6 +102,7 @@
     "onGoingCards": "On going cards",
     "totalCards": "Total cards",
     "totalExcessCards": "Total excess cards",
-    "excessCards": "Excess cards"
+    "excessCards": "Excess cards",
+    "noData": "No statistics available for this set"
   }
 }

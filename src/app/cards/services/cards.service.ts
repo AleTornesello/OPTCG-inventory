@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 import {SupabaseService} from "../../shared/services/supabase.service";
 import {CardEntity} from "../entities/card.entity";
 import {CardMapper} from "../mappers/card.mapper";
-import {InventoryEntity} from "../entities/inventory.entity";
-import {InventoryMapper} from "../mappers/inventory.mapper";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +13,13 @@ export class CardsService {
   ) {
   }
 
-  public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: { colors?: string[], sets?: string[] }) {
+  public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: {
+    colors?: string[],
+    sets?: string[]
+  }) {
     let query = this._supabaseService.supabase
       .from('cards')
-      .select("*, set:set_id(*), inventory(*)", { count: "exact" })
+      .select("*, set:set_id(*), inventory(*)", {count: "exact"})
       .order("code", {ascending: true, referencedTable: "set"})
       .order("code", {ascending: true});
 
@@ -44,7 +45,7 @@ export class CardsService {
       throw error;
     }
 
-    return { data: data.map((card) => CardMapper.toCardModel(card)), count};
+    return {data: data.map((card) => CardMapper.toCardModel(card)), count};
   }
 
   public async getCardColors() {
