@@ -18,7 +18,7 @@ export class CardsService {
   public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: { colors?: string[], sets?: string[] }) {
     let query = this._supabaseService.supabase
       .from('cards')
-      .select("*, set:set_id(*), inventory(*)")
+      .select("*, set:set_id(*), inventory(*)", { count: "exact" })
       .order("code", {ascending: true, referencedTable: "set"})
       .order("code", {ascending: true});
 
@@ -38,13 +38,13 @@ export class CardsService {
       }
     }
 
-    const {data, error} = await query.returns<CardEntity[]>();
+    const {data, error, count} = await query.returns<CardEntity[]>();
 
     if (error) {
       throw error;
     }
 
-    return data.map((card) => CardMapper.toCardModel(card));
+    return { data: data.map((card) => CardMapper.toCardModel(card)), count};
   }
 
   public async getCardColors() {

@@ -50,6 +50,7 @@ export class CardsGridPageComponent implements OnInit {
 
   private _page: number;
   private readonly _cardsPerPage: number;
+  private _cardsTotalCount: number | null;
 
   constructor(
     private _cardsListService: CardsService,
@@ -65,6 +66,7 @@ export class CardsGridPageComponent implements OnInit {
     this.selectedColors = [];
     this.selectedSets = [];
     this.isLoadingInProgress = false;
+    this._cardsTotalCount = null;
   }
 
   public async ngOnInit() {
@@ -75,14 +77,14 @@ export class CardsGridPageComponent implements OnInit {
   }
 
   private async _loadCards() {
-    if (this.isLoadingInProgress) {
+    if (this.isLoadingInProgress || (this._cardsTotalCount !== null && this._cardsTotalCount === this.cards.length)) {
       return;
     }
 
     this.isLoadingInProgress = true;
 
     try {
-      const cards = await this._cardsListService.getCardsList({
+      const {data, count} = await this._cardsListService.getCardsList({
         pageSize: this._cardsPerPage,
         page: this._page
       }, {
@@ -90,7 +92,10 @@ export class CardsGridPageComponent implements OnInit {
         sets: this.selectedSets
       });
 
-      this._onCardsListLoadSuccess(cards);
+      this._page++;
+      this._cardsTotalCount = count;
+
+      this._onCardsListLoadSuccess(data);
     } catch (error) {
       this._onCardsListLoadError(error);
     }
@@ -158,7 +163,6 @@ export class CardsGridPageComponent implements OnInit {
   }
 
   public async onNearEndScroll() {
-    this._page++;
     await this._loadCards();
   }
 
@@ -247,6 +251,7 @@ export class CardsGridPageComponent implements OnInit {
   public async onFiltersApplyClick() {
     this.cards = [];
     this._page = 0;
+    this._cardsTotalCount = null;
     await this._loadCards();
   }
 
@@ -255,6 +260,7 @@ export class CardsGridPageComponent implements OnInit {
     this.selectedSets = [];
     this.cards = [];
     this._page = 0;
+    this._cardsTotalCount = null;
     await this._loadCards();
   }
 
