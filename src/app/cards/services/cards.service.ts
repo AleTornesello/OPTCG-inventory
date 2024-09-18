@@ -69,39 +69,4 @@ export class CardsService {
 
     return data;
   }
-
-  // public getCardImageUrl(card: CardModel): string {
-  //   return `https://deckbuilder.egmanevents.com/card_images/optcg/${card.key}.webp`;
-  // }
-
-  // public getCardQuantity(card: CardModel): Observable<InventoryModel | null> {
-  //   const docRef = doc(this._firestore, 'inventory', card.key);
-  //   const docSnap = getDoc(docRef);
-  //   return from(docSnap)
-  //     .pipe(
-  //       map((doc) =>
-  //         doc.exists()
-  //           ? InventoryModel.fromFirestore(card.key, doc.data())
-  //           : null
-  //       )
-  //     );
-  // }
-
-  // public updateCardQuantity(card: CardModel, quantity: number): Observable<void> {
-  //   const docRef = doc(this._firestore, 'inventory', card.key);
-  //   return from(setDoc(docRef, {quantity}, {merge: true}));
-  // }
-
-  // public async getCardsQuantities(cardIds: string[]) {
-  //   const {data, error} = await this._supabaseService.supabase
-  //     .from('inventory')
-  //     .select()
-  //     .returns<InventoryEntity[]>();
-  //
-  //   if (error) {
-  //     throw error;
-  //   }
-  //
-  //   return data.map((inventory) => InventoryMapper.toInventoryModel(inventory));
-  // }
 }
