@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {SupabaseService} from "../../shared/services/supabase.service";
 import {CardEntity} from "../entities/card.entity";
 import {CardMapper} from "../mappers/card.mapper";
+import {QueryParserService} from "../../shared/services/query-parser.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,12 @@ export class CardsService {
 
   constructor(
     private _supabaseService: SupabaseService,
+    private _queryParserService: QueryParserService
   ) {
   }
 
   public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: {
+    searchText?: string,
     colors?: string[],
     sets?: string[]
   }) {
@@ -36,6 +39,13 @@ export class CardsService {
       if (filters.sets && filters.sets.length > 0) {
         query = query
           .in('set_id', filters.sets);
+      }
+
+      if (filters.searchText && filters.searchText !== '') {
+        query = query.textSearch(
+          'name',
+          this._queryParserService.parse(filters.searchText)
+        );
       }
     }
 

@@ -10,6 +10,8 @@ import {CardModel} from "../../../cards/models/card.model";
 interface Statistic {
   id: string;
   name: string;
+  singleCardsCount: number;
+  singleCardsCompletedCount: number;
   totalCards: number;
   completedCards: number;
   onGoingCards: number;
@@ -63,6 +65,8 @@ export class StatisticsPageComponent implements OnInit {
       completedCards: 0,
       onGoingCards: 0,
       totalCards: 0,
+      singleCardsCount: 0,
+      singleCardsCompletedCount: 0,
       isLoading: true
     }) as Statistic));
 
@@ -82,6 +86,8 @@ export class StatisticsPageComponent implements OnInit {
           } = this._getStatsFromCards(data);
 
           this.statistics[statisticIndex].totalCards = totalCards;
+          this.statistics[statisticIndex].singleCardsCount = data.length;
+          this.statistics[statisticIndex].singleCardsCompletedCount = data.filter((card) => card.inventory && card.inventory.quantity > 0).length;
           this.statistics[statisticIndex].completedCards = completedCards;
           this.statistics[statisticIndex].onGoingCards = onGoingCards;
           this.statistics[statisticIndex].excessCards = excessCards;
@@ -168,41 +174,21 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   public get totalSingleCards(): number {
-    // return this._cards.filter((card) => {
-    //   const cardInventory = this._inventory.find((inventoryCard) => inventoryCard?.key === card.key);
-    //
-    //   if (!cardInventory) {
-    //     return false;
-    //   }
-    //
-    //   return cardInventory.quantity > 0;
-    // }).length
-    return 0
+    return this.statistics.reduce(
+      (acc, stat) => acc + stat.singleCardsCount,
+      0
+    );
+  }
+
+  public get totalSingleCardsCompleted(): number {
+    return this.statistics.reduce(
+      (acc, stat) => acc + stat.singleCardsCompletedCount,
+      0
+    );
   }
 
   public get totalExcessCards(): number {
-    // return this._cards
-    //   .map((card) => {
-    //     const cardInventory = this._inventory.find((inventoryCard) => inventoryCard?.key === card.key);
-    //
-    //     // Exclude cards that are not in the inventory or the quantity is 0
-    //     if (!cardInventory || cardInventory.quantity === 0) {
-    //       return 0;
-    //     }
-    //
-    //     // If the card is a leader or stage, only decrement the quantity by 1 (the minimum quantity to be in a full set)
-    //     if (card.category === 'Leader') {
-    //       return cardInventory.quantity - 1;
-    //     }
-    //
-    //     // Excludes all cards that are not a leader or stage and the quantity is less than 4
-    //     if (cardInventory.quantity < 4) {
-    //       return 0;
-    //     }
-    //
-    //     // If the card is not a leader or stage, decrement the quantity by 4
-    //     return cardInventory.quantity - 4;
-    //   }).reduce((a, b) => a + b, 0);
-    return 0;
+    return this.statistics
+      .reduce((acc, stat) => acc + stat.excessCards, 0);
   }
 }

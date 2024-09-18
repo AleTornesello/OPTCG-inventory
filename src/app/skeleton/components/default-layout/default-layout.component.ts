@@ -43,7 +43,7 @@ export class DefaultLayoutComponent {
     this.navigationItems = [
       {
         label: this._translateService.translate('cards.cards'),
-        route: `/`,
+        route: `/${OptcgRoute.CARDS}`,
         icon: faLayerGroup,
         sidebarVisible: true,
         navbarVisible: true,

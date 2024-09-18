@@ -5,7 +5,7 @@ import {CardPreviewComponent, CardPreviewModel} from "../../components/card-prev
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
-import {faFilter} from "@fortawesome/free-solid-svg-icons";
+import {faChevronUp, faFilter} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {DropdownComponent} from "../../../shared/components/inputs/dropdown/dropdown.component";
 import {SelectItem} from "primeng/api";
@@ -15,6 +15,7 @@ import {SetsService} from "../../services/sets.service";
 import {SetModel} from "../../models/set.model";
 import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
 import {InventoryService} from "../../services/inventory.service";
+import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -28,7 +29,8 @@ import {InventoryService} from "../../services/inventory.service";
     DropdownComponent,
     ButtonComponent,
     FormsModule,
-    RingSpinnerComponent
+    RingSpinnerComponent,
+    InputTextComponent
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -44,9 +46,11 @@ export class CardsGridPageComponent implements OnInit {
 
   public selectedColors: string[];
   public selectedSets: string[];
+  public searchText: string;
   public isLoadingInProgress: boolean;
 
   protected readonly faFilter = faFilter;
+  protected readonly faChevronUp = faChevronUp;
 
   private _page: number;
   private readonly _cardsPerPage: number;
@@ -67,6 +71,7 @@ export class CardsGridPageComponent implements OnInit {
     this.selectedSets = [];
     this.isLoadingInProgress = false;
     this._cardsTotalCount = null;
+    this.searchText = '';
   }
 
   public async ngOnInit() {
@@ -88,6 +93,7 @@ export class CardsGridPageComponent implements OnInit {
         pageSize: this._cardsPerPage,
         page: this._page
       }, {
+        searchText: this.searchText,
         colors: this.selectedColors,
         sets: this.selectedSets
       });
@@ -166,83 +172,6 @@ export class CardsGridPageComponent implements OnInit {
     await this._loadCards();
   }
 
-  // private _loadNextCards() {
-  // const filteredCards = this.allCards
-  //   .filter((card) => {
-  //     if (this.selectedColors.length > 0) {
-  //       return card.color.some((color) => this.selectedColors.includes(color));
-  //     }
-  //
-  //     return true;
-  //   })
-  //   .filter((card) => {
-  //     if (this.selectedSets.length > 0) {
-  //       return this.selectedSets.includes(card.cardId[0]);
-  //     }
-  //
-  //     return true;
-  //   });
-  //
-  // if (this.visibleCards.length >= filteredCards.length) {
-  //   return;
-  // }
-  // const newCards = filteredCards
-  //   .slice(this.visibleCards.length, this.visibleCards.length + this._cardsLoadRange)
-  //   .map((card) => ({
-  //     card,
-  //     quantity: 0
-  //   }));
-  // this.visibleCards.push(...newCards);
-  //
-  // forkJoin(newCards.map((card) => this._cardsListService.getCardQuantity(card.card)))
-  //   .pipe(takeUntilDestroyed(this._destroyRef))
-  //   .subscribe({
-  //     next: this._onCardsQuantityLoadSuccess.bind(this),
-  //     error: this._onCardsQuantityLoadError.bind(this)
-  //   });
-  // }
-
-  // private _onCardsQuantityLoadSuccess(quantities: (InventoryModel | null)[]) {
-  //   quantities.forEach((inventory) => {
-  //     if (inventory === null) {
-  //       return;
-  //     }
-  //
-  //     const card = this.visibleCards.find((card) => card.card.key === inventory?.key)!;
-  //
-  //     if (card === null || card === undefined) {
-  //       return;
-  //     }
-  //
-  //     card.quantity = inventory.quantity;
-  //   });
-  // }
-  //
-  // private _onCardsQuantityLoadError(error: any) {
-  //   console.log(error)
-  //   // TODO: handle error
-  // }
-
-  // public onCardQuantityChange(card: CardPreviewModel, newQuantity: number) {
-  //   card.quantity = newQuantity;
-  //
-  //   this._cardsListService.updateCardQuantity(card.card, newQuantity)
-  //     .pipe(takeUntilDestroyed(this._destroyRef))
-  //     .subscribe({
-  //       next: this._onCardQuantityUpdateSuccess.bind(this),
-  //       error: this._onCardQuantityUpdateError.bind(this)
-  //     });
-  // }
-  //
-  // private _onCardQuantityUpdateSuccess() {
-  //   // TODO: handle success
-  // }
-  //
-  // private _onCardQuantityUpdateError(error: any) {
-  //   console.log(error)
-  //   // TODO: handle error
-  // }
-
   public onFiltersClick() {
     this.filtersButton?.nativeElement.classList.toggle('active');
     this.filtersPanel?.nativeElement.classList.toggle('active');
@@ -261,6 +190,7 @@ export class CardsGridPageComponent implements OnInit {
     this.cards = [];
     this._page = 0;
     this._cardsTotalCount = null;
+    this.searchText = '';
     await this._loadCards();
   }
 
