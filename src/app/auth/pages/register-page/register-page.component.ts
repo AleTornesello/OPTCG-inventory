@@ -12,9 +12,9 @@ import {
   ResultMessageDialogComponent
 } from "../../../shared/components/dialog/result-message-dialog/result-message-dialog.component";
 import {NgOptimizedImage} from "@angular/common";
-import {SupabaseAuthService} from "../../services/supabase-auth.service";
 import {AuthError} from "@supabase/supabase-js";
 import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
+import {SupabaseAuthService} from "../../services/supabase-auth.service";
 
 @Component({
   selector: 'app-register-page',
@@ -63,7 +63,7 @@ export class RegisterPageComponent {
 
     try {
       await this._authService.signUp(email, password);
-      this.registrationResultDialog.show("success", "auth.registrationOk");
+      this.registrationResultDialog.show("success", this._translationService.translate("auth.registrationOk"));
     } catch (error) {
       if (error instanceof AuthError) {
         const errorMessage = error.code !== undefined
@@ -72,7 +72,7 @@ export class RegisterPageComponent {
         this.registrationResultDialog.show("error", errorMessage);
         return;
       }
-      this.registrationResultDialog.show("error", "auth.registerErrors.generic");
+      this.registrationResultDialog.show("error", this._translationService.translate("auth.registerErrors.generic"));
     }
   }
 
@@ -86,6 +86,6 @@ export class RegisterPageComponent {
   }
 
   public onRegistrationResultDialogClose() {
-    this._router.navigate([OptcgRoute.AUTH,OptcgRoute.LOGIN]);
+    this._router.navigate([OptcgRoute.AUTH, OptcgRoute.LOGIN]);
   }
 }

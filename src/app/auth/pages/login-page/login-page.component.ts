@@ -11,9 +11,9 @@ import {
   ResultMessageDialogComponent
 } from "../../../shared/components/dialog/result-message-dialog/result-message-dialog.component";
 import {NgOptimizedImage} from "@angular/common";
-import {SupabaseAuthService} from "../../services/supabase-auth.service";
 import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
 import {AuthError} from "@supabase/supabase-js";
+import {SupabaseAuthService} from "../../services/supabase-auth.service";
 
 @Component({
   selector: 'app-login-page',
@@ -71,7 +71,8 @@ export class LoginPageComponent {
         this.loginResultDialog.show("error", errorMessage);
         return;
       }
-      this.loginResultDialog.show("error", "auth.loginErrors.generic");
+      this.loginResultDialog.show("error", this._translationService.translate("auth.loginErrors.generic"));
+      return;
     }
 
     await this._router.navigate([OptcgRoute.CARDS]);
