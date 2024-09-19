@@ -5,7 +5,7 @@
   <div class="card-overlay">
     <span class="card-key">{{ card.card.code }} ({{card.card.set.code}})</span>
     <span class="card-name">{{ card.card.name }}</span>
-    <span class="card-rarity">{{ card.card.rarity }}</span>
+    <span class="card-rarity">{{ 'cards.rarities.' + (card.card.rarity | lowercase | snakeCase) | transloco }}</span>
     <div class="card-actions">
       <app-button [icon]="faPlus" (onClick)="onPlusClick()" size="small"></app-button>
       <app-input-number [value]="card.quantity"></app-input-number>
