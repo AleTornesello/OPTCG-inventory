@@ -220,7 +220,8 @@ export class CardsGridPageComponent implements OnInit {
       queryParams: {
         sets: this.selectedSets.length > 0 ? this.selectedSets : undefined,
         colors: this.selectedColors.length > 0 ? this.selectedColors : undefined,
-        searchText: this.searchText
+        rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
+        searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined
       }
     });
     await this._loadCards();
@@ -229,6 +230,7 @@ export class CardsGridPageComponent implements OnInit {
   public async onFiltersClearClick() {
     this.selectedColors = [];
     this.selectedSets = [];
+    this.selectedRarities = [];
     this.cards = [];
     this._page = 0;
     this._cardsTotalCount = null;
