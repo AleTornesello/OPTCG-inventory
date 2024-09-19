@@ -112,7 +112,8 @@
       "rare": "Rare",
       "common": "Common",
       "super_rare": "Super Rare"
-    }
+    },
+    "showOnlyOwned": "Mostra solo le carte possedute"
   },
   "statistics": {
     "statistics": "Statistiche",

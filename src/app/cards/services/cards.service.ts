@@ -19,11 +19,16 @@ export class CardsService {
     searchText?: string,
     colors?: string[],
     sets?: string[],
-    rarities?: string[]
+    rarities?: string[],
+    showOnlyOwned?: boolean
   }) {
+    const selectColumns = filters?.showOnlyOwned
+      ? "*, set:set_id(*), inventory!inner(*)"
+      : "*, set:set_id(*), inventory(*)"
+
     let query = this._supabaseService.supabase
       .from('cards')
-      .select("*, set:set_id(*), inventory(*)", {count: "exact"})
+      .select(selectColumns, {count: "exact"})
       .order("code", {ascending: true, referencedTable: "set"})
       .order("code", {ascending: true});
 
@@ -52,6 +57,11 @@ export class CardsService {
       if (filters.rarities && filters.rarities.length > 0) {
         query = query
           .in('rarity', filters.rarities);
+      }
+
+      if (filters.showOnlyOwned) {
+        query = query
+          .gt('inventory.quantity', 0);
       }
     }
 

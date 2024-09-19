@@ -111,7 +111,8 @@
      "rare": "Rare",
      "common": "Common",
      "super_rare": "Super Rare"
-    }
+    },
+    "showOnlyOwned": "Show only owned cards"
   },
   "statistics": {
     "statistics": "Statistics",

@@ -18,6 +18,7 @@ import {InventoryService} from "../../services/inventory.service";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
+import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -33,6 +34,7 @@ import {StringManipulationService} from "../../../shared/services/string-manipul
     FormsModule,
     RingSpinnerComponent,
     InputTextComponent,
+    CheckboxComponent,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -52,6 +54,7 @@ export class CardsGridPageComponent implements OnInit {
   public selectedRarities: string[];
   public searchText: string;
   public isLoadingInProgress: boolean;
+  public showOnlyOwnedFilter: boolean;
 
   protected readonly faFilter = faFilter;
   protected readonly faChevronUp = faChevronUp;
@@ -81,6 +84,7 @@ export class CardsGridPageComponent implements OnInit {
     this.searchText = '';
     this.cardRarities = [];
     this.selectedRarities = [];
+    this.showOnlyOwnedFilter = false;
   }
 
   public ngOnInit() {
@@ -119,7 +123,8 @@ export class CardsGridPageComponent implements OnInit {
         searchText: this.searchText,
         colors: this.selectedColors,
         sets: this.selectedSets,
-        rarities: this.selectedRarities
+        rarities: this.selectedRarities,
+        showOnlyOwned: this.showOnlyOwnedFilter
       });
 
       this._page++;
@@ -221,7 +226,8 @@ export class CardsGridPageComponent implements OnInit {
         sets: this.selectedSets.length > 0 ? this.selectedSets : undefined,
         colors: this.selectedColors.length > 0 ? this.selectedColors : undefined,
         rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
-        searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined
+        searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined,
+        showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined
       }
     });
     await this._loadCards();
@@ -235,6 +241,7 @@ export class CardsGridPageComponent implements OnInit {
     this._page = 0;
     this._cardsTotalCount = null;
     this.searchText = '';
+    this.showOnlyOwnedFilter = false;
     await this._router.navigate([], {
       relativeTo: this._route
     })
