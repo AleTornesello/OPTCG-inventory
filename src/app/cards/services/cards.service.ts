@@ -18,7 +18,8 @@ export class CardsService {
   public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: {
     searchText?: string,
     colors?: string[],
-    sets?: string[]
+    sets?: string[],
+    rarities?: string[]
   }) {
     let query = this._supabaseService.supabase
       .from('cards')
@@ -47,6 +48,11 @@ export class CardsService {
           this._queryParserService.parse(filters.searchText)
         );
       }
+
+      if (filters.rarities && filters.rarities.length > 0) {
+        query = query
+          .in('rarity', filters.rarities);
+      }
     }
 
     const {data, error, count} = await query.returns<CardEntity[]>();
@@ -61,6 +67,18 @@ export class CardsService {
   public async getCardColors() {
     const {data, error} = await this._supabaseService.supabase
       .rpc('get_card_colors')
+      .returns<string[]>();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+  public async getCardRarities() {
+    const {data, error} = await this._supabaseService.supabase
+      .rpc('get_card_rarities')
       .returns<string[]>();
 
     if (error) {

@@ -17,6 +17,7 @@ import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring
 import {InventoryService} from "../../services/inventory.service";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {ActivatedRoute, Router} from "@angular/router";
+import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -44,9 +45,11 @@ export class CardsGridPageComponent implements OnInit {
   public cards: CardPreviewModel[];
   public cardColors: SelectItem[];
   public cardSets: SelectItem[];
+  public cardRarities: SelectItem[];
 
   public selectedColors: string[];
   public selectedSets: string[];
+  public selectedRarities: string[];
   public searchText: string;
   public isLoadingInProgress: boolean;
 
@@ -63,7 +66,8 @@ export class CardsGridPageComponent implements OnInit {
     private _setsService: SetsService,
     private _inventoryService: InventoryService,
     private _router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _stringManipulationService: StringManipulationService
   ) {
     this.cards = [];
     this._page = 0;
@@ -75,6 +79,8 @@ export class CardsGridPageComponent implements OnInit {
     this.isLoadingInProgress = false;
     this._cardsTotalCount = null;
     this.searchText = '';
+    this.cardRarities = [];
+    this.selectedRarities = [];
   }
 
   public ngOnInit() {
@@ -112,7 +118,8 @@ export class CardsGridPageComponent implements OnInit {
       }, {
         searchText: this.searchText,
         colors: this.selectedColors,
-        sets: this.selectedSets
+        sets: this.selectedSets,
+        rarities: this.selectedRarities
       });
 
       this._page++;
@@ -126,12 +133,13 @@ export class CardsGridPageComponent implements OnInit {
 
   private async _loadFilters() {
     try {
-      const [colors, sets] = await Promise.all([
+      const [colors, sets, rarities] = await Promise.all([
         this._cardsListService.getCardColors(),
-        this._setsService.getSetsList()
-      ])
+        this._setsService.getSetsList(),
+        this._cardsListService.getCardRarities()
+      ]);
 
-      this._initFilterOptions(colors, sets);
+      this._initFilterOptions(colors, sets, rarities);
     } catch (error) {
       this._onFiltersLoadError(error);
     }
@@ -150,10 +158,10 @@ export class CardsGridPageComponent implements OnInit {
     this.isLoadingInProgress = false;
   }
 
-  private _initFilterOptions(colors: string[], sets: SetModel[]) {
+  private _initFilterOptions(colors: string[], sets: SetModel[], rarities: string[]) {
     this._initCardColorsFilter(colors);
     this._initCardSetsFilter(sets);
-
+    this._initCardRaritiesFilter(rarities);
   }
 
   private _initCardColorsFilter(colors: string[]) {
@@ -172,6 +180,15 @@ export class CardsGridPageComponent implements OnInit {
         label: set.name,
         value: set.id
       }));
+  }
+
+  private _initCardRaritiesFilter(rarities: string[]) {
+    this.cardRarities = rarities
+      .map((rarity) => ({
+        label: this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`),
+        value: rarity
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }
 
   private _onCardsListLoadError(error: any) {

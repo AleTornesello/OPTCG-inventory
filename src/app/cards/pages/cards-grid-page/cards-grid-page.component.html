@@ -33,6 +33,14 @@
           [(ngModel)]="selectedSets"
         ></app-dropdown>
       </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardRarities"
+          label="{{ 'cards.rarity' | transloco }}"
+          [multipleSelect]="true"
+          [(ngModel)]="selectedRarities"
+        ></app-dropdown>
+      </div>
     </div>
     <div class="filters-actions">
       <app-button
