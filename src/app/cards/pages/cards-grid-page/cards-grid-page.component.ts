@@ -58,6 +58,7 @@ export class CardsGridPageComponent implements OnInit {
   public isLoadingInProgress: boolean;
   public showOnlyOwnedFilter: boolean;
   public selectedPower: number[];
+  public selectedCosts: number[];
 
   protected readonly faFilter = faFilter;
   protected readonly faChevronUp = faChevronUp;
@@ -89,6 +90,7 @@ export class CardsGridPageComponent implements OnInit {
     this.selectedRarities = [];
     this.showOnlyOwnedFilter = false;
     this.selectedPower = [0, 12000];
+    this.selectedCosts = [0, 10];
   }
 
   public ngOnInit() {
@@ -117,6 +119,11 @@ export class CardsGridPageComponent implements OnInit {
           ? params['power']
           : [params['power']]
         : [0, 12000];
+      this.selectedCosts = params['costs']
+        ? Array.isArray(params['costs'])
+          ? params['costs']
+          : [params['costs']]
+        : [0, 10];
 
       await Promise.all([
         this._loadCards(),
@@ -142,7 +149,8 @@ export class CardsGridPageComponent implements OnInit {
         sets: this.selectedSets,
         rarities: this.selectedRarities,
         showOnlyOwned: this.showOnlyOwnedFilter,
-        power: this.selectedPower
+        power: this.selectedPower,
+        costs: this.selectedCosts
       });
 
       this._page++;
@@ -156,14 +164,13 @@ export class CardsGridPageComponent implements OnInit {
 
   private async _loadFilters() {
     try {
-      const [colors, sets, rarities, costs] = await Promise.all([
+      const [colors, sets, rarities] = await Promise.all([
         this._cardsListService.getCardColors(),
         this._setsService.getSetsList(),
         this._cardsListService.getCardRarities(),
-        this._cardsListService.getCardCosts()
       ]);
 
-      this._initFilterOptions(colors, sets, rarities, costs);
+      this._initFilterOptions(colors, sets, rarities);
     } catch (error) {
       this._onFiltersLoadError(error);
     }
@@ -182,11 +189,10 @@ export class CardsGridPageComponent implements OnInit {
     this.isLoadingInProgress = false;
   }
 
-  private _initFilterOptions(colors: string[], sets: SetModel[], rarities: string[], costs: number[]) {
+  private _initFilterOptions(colors: string[], sets: SetModel[], rarities: string[]) {
     this._initCardColorsFilter(colors);
     this._initCardSetsFilter(sets);
     this._initCardRaritiesFilter(rarities);
-    this._initCardCostsFilter(costs);
   }
 
   private _initCardColorsFilter(colors: string[]) {
@@ -212,15 +218,6 @@ export class CardsGridPageComponent implements OnInit {
       .map((rarity) => ({
         label: this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`),
         value: rarity
-      }))
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }
-
-  private _initCardCostsFilter(costs: number[]) {
-    this.cardRarities = costs
-      .map((cost) => ({
-        label: cost.toString(10),
-        value: cost
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
   }
@@ -257,7 +254,8 @@ export class CardsGridPageComponent implements OnInit {
         rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
         searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined,
         showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined,
-        power: this.selectedPower.length === 2 ? this.selectedPower : undefined
+        power: this.selectedPower.length === 2 ? this.selectedPower : undefined,
+        costs: this.selectedCosts.length === 2 ? this.selectedCosts : undefined
       }
     });
     await this._loadCards();
@@ -273,6 +271,7 @@ export class CardsGridPageComponent implements OnInit {
     this.searchText = '';
     this.showOnlyOwnedFilter = false;
     this.selectedPower = [0, 12000];
+    this.selectedCosts = [0, 10];
     await this._router.navigate([], {
       relativeTo: this._route
     })

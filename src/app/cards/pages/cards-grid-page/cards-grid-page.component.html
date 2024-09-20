@@ -57,6 +57,17 @@
         ></app-input-slider>
       </div>
       <div class="filter">
+        <app-input-slider
+          label="{{ 'cards.cost' | transloco }}"
+          [range]="true"
+          [min]="0"
+          [max]="10"
+          [step]="1"
+          [showRange]="true"
+          [(ngModel)]="selectedCosts"
+        ></app-input-slider>
+      </div>
+      <div class="filter">
         <app-checkbox
           label="{{ 'cards.showOnlyOwned' | transloco }}"
           [(ngModel)]="showOnlyOwnedFilter"

@@ -22,6 +22,7 @@ export class CardsService {
     rarities?: string[],
     showOnlyOwned?: boolean,
     power?: number[]
+    costs?: number[]
   }) {
     const selectColumns = filters?.showOnlyOwned
       ? "*, set:set_id(*), inventory!inner(*)"
@@ -69,6 +70,12 @@ export class CardsService {
         query = query
           .gte('power', filters.power[0])
           .lte('power', filters.power[1]);
+      }
+
+      if(filters.costs && filters.costs.length === 2) {
+        query = query
+          .gte('cost', filters.costs[0])
+          .lte('cost', filters.costs[1]);
       }
     }
 
