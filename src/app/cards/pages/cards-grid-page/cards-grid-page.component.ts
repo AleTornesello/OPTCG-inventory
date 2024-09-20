@@ -17,6 +17,9 @@ import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring
 import {InventoryService} from "../../services/inventory.service";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {ActivatedRoute, Router} from "@angular/router";
+import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
+import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
+import {InputSliderComponent} from "../../../shared/components/inputs/input-slider/input-slider.component";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -32,6 +35,8 @@ import {ActivatedRoute, Router} from "@angular/router";
     FormsModule,
     RingSpinnerComponent,
     InputTextComponent,
+    CheckboxComponent,
+    InputSliderComponent,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -44,11 +49,16 @@ export class CardsGridPageComponent implements OnInit {
   public cards: CardPreviewModel[];
   public cardColors: SelectItem[];
   public cardSets: SelectItem[];
+  public cardRarities: SelectItem[];
 
   public selectedColors: string[];
   public selectedSets: string[];
+  public selectedRarities: string[];
   public searchText: string;
   public isLoadingInProgress: boolean;
+  public showOnlyOwnedFilter: boolean;
+  public selectedPower: number[];
+  public selectedCosts: number[];
 
   protected readonly faFilter = faFilter;
   protected readonly faChevronUp = faChevronUp;
@@ -63,7 +73,8 @@ export class CardsGridPageComponent implements OnInit {
     private _setsService: SetsService,
     private _inventoryService: InventoryService,
     private _router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private _stringManipulationService: StringManipulationService
   ) {
     this.cards = [];
     this._page = 0;
@@ -75,6 +86,11 @@ export class CardsGridPageComponent implements OnInit {
     this.isLoadingInProgress = false;
     this._cardsTotalCount = null;
     this.searchText = '';
+    this.cardRarities = [];
+    this.selectedRarities = [];
+    this.showOnlyOwnedFilter = false;
+    this.selectedPower = [0, 12000];
+    this.selectedCosts = [0, 10];
   }
 
   public ngOnInit() {
@@ -90,6 +106,24 @@ export class CardsGridPageComponent implements OnInit {
           ? params['sets']
           : [params['sets']]
         : [];
+      this.selectedRarities = params['rarities']
+        ? Array.isArray(params['rarities'])
+          ? params['rarities']
+          : [params['rarities']]
+        : [];
+      this.showOnlyOwnedFilter = params['showOnlyOwned'] !== null && params['showOnlyOwned'] !== undefined
+        ? params['showOnlyOwned'] === 'true'
+        : false;
+      this.selectedPower = params['power']
+        ? Array.isArray(params['power'])
+          ? params['power']
+          : [params['power']]
+        : [0, 12000];
+      this.selectedCosts = params['costs']
+        ? Array.isArray(params['costs'])
+          ? params['costs']
+          : [params['costs']]
+        : [0, 10];
 
       await Promise.all([
         this._loadCards(),
@@ -112,7 +146,11 @@ export class CardsGridPageComponent implements OnInit {
       }, {
         searchText: this.searchText,
         colors: this.selectedColors,
-        sets: this.selectedSets
+        sets: this.selectedSets,
+        rarities: this.selectedRarities,
+        showOnlyOwned: this.showOnlyOwnedFilter,
+        power: this.selectedPower,
+        costs: this.selectedCosts
       });
 
       this._page++;
@@ -126,12 +164,13 @@ export class CardsGridPageComponent implements OnInit {
 
   private async _loadFilters() {
     try {
-      const [colors, sets] = await Promise.all([
+      const [colors, sets, rarities] = await Promise.all([
         this._cardsListService.getCardColors(),
-        this._setsService.getSetsList()
-      ])
+        this._setsService.getSetsList(),
+        this._cardsListService.getCardRarities(),
+      ]);
 
-      this._initFilterOptions(colors, sets);
+      this._initFilterOptions(colors, sets, rarities);
     } catch (error) {
       this._onFiltersLoadError(error);
     }
@@ -150,10 +189,10 @@ export class CardsGridPageComponent implements OnInit {
     this.isLoadingInProgress = false;
   }
 
-  private _initFilterOptions(colors: string[], sets: SetModel[]) {
+  private _initFilterOptions(colors: string[], sets: SetModel[], rarities: string[]) {
     this._initCardColorsFilter(colors);
     this._initCardSetsFilter(sets);
-
+    this._initCardRaritiesFilter(rarities);
   }
 
   private _initCardColorsFilter(colors: string[]) {
@@ -172,6 +211,15 @@ export class CardsGridPageComponent implements OnInit {
         label: set.name,
         value: set.id
       }));
+  }
+
+  private _initCardRaritiesFilter(rarities: string[]) {
+    this.cardRarities = rarities
+      .map((rarity) => ({
+        label: this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`),
+        value: rarity
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }
 
   private _onCardsListLoadError(error: any) {
@@ -203,7 +251,11 @@ export class CardsGridPageComponent implements OnInit {
       queryParams: {
         sets: this.selectedSets.length > 0 ? this.selectedSets : undefined,
         colors: this.selectedColors.length > 0 ? this.selectedColors : undefined,
-        searchText: this.searchText
+        rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
+        searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined,
+        showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined,
+        power: this.selectedPower.length === 2 ? this.selectedPower : undefined,
+        costs: this.selectedCosts.length === 2 ? this.selectedCosts : undefined
       }
     });
     await this._loadCards();
@@ -212,10 +264,14 @@ export class CardsGridPageComponent implements OnInit {
   public async onFiltersClearClick() {
     this.selectedColors = [];
     this.selectedSets = [];
+    this.selectedRarities = [];
     this.cards = [];
     this._page = 0;
     this._cardsTotalCount = null;
     this.searchText = '';
+    this.showOnlyOwnedFilter = false;
+    this.selectedPower = [0, 12000];
+    this.selectedCosts = [0, 10];
     await this._router.navigate([], {
       relativeTo: this._route
     })
@@ -259,4 +315,6 @@ export class CardsGridPageComponent implements OnInit {
     }
     return count;
   }
+
+  protected readonly console = console;
 }

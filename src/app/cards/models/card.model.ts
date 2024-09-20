@@ -18,6 +18,7 @@ export class CardModel {
   art: number;
   effect: string | null;
   type: string[];
+  foil: boolean;
   set: SetModel;
   inventory: InventoryModel | null;
   createdAt: Date;
@@ -40,6 +41,7 @@ export class CardModel {
     art: number,
     effect: string | null,
     type: string[],
+    foil: boolean,
     set: SetModel,
     inventory: InventoryModel | null,
     createdAt: string | Date,
@@ -61,6 +63,7 @@ export class CardModel {
     this.art = art;
     this.effect = effect;
     this.type = type;
+    this.foil = foil;
     this.set = set;
     this.inventory = inventory;
     this.createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);

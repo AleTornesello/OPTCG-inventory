@@ -9,4 +9,11 @@
       width: 100%;
     }
   }
+
+  .range-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    align-items: flex-start;
+  }
 }

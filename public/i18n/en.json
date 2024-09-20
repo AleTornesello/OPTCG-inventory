@@ -98,7 +98,24 @@
       "purple": "Purple",
       "black": "Black",
       "yellow": "Yellow"
-    }
+    },
+    "rarity": "Rarity",
+    "rarities": {
+     "don!!": "DON!!",
+     "secret_rare": "Secret Rare",
+     "alternate_art": "Alternate Art",
+     "uncommon": "Uncommon",
+     "promo": "Promo",
+     "special": "Special",
+     "leader": "Leader",
+     "rare": "Rare",
+     "common": "Common",
+     "super_rare": "Super Rare"
+    },
+    "showOnlyOwned": "Show only owned cards",
+    "foil": "Foil",
+    "cost": "Cost",
+    "power": "Power"
   },
   "statistics": {
     "statistics": "Statistics",

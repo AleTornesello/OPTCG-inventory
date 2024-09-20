@@ -5,7 +5,9 @@ import {ButtonComponent} from "../../../shared/components/button/button.componen
 import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
-import {NgClass} from "@angular/common";
+import {LowerCasePipe, NgClass} from "@angular/common";
+import {TranslocoPipe} from "@jsverse/transloco";
+import {SnakeCasePipe} from "../../../shared/pipes/snake-case.pipe";
 
 export interface CardPreviewModel {
   card: CardModel;
@@ -19,7 +21,10 @@ export interface CardPreviewModel {
     ButtonComponent,
     InputTextComponent,
     InputNumberComponent,
-    NgClass
+    NgClass,
+    LowerCasePipe,
+    TranslocoPipe,
+    SnakeCasePipe
   ],
   templateUrl: './card-preview.component.html',
   styleUrl: './card-preview.component.scss'
