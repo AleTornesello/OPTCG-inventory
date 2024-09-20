@@ -51,14 +51,34 @@
     border-radius: 0 0 var(--border-radius) var(--border-radius);
 
     .card-key,
-    .card-name,
-    .card-rarity {
+    .card-name {
       text-align: center;
     }
 
     .card-key,
     .card-rarity {
       font-size: 0.8rem;
+    }
+
+    .card-properties {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      span {
+        font-size: 0.75rem;
+        border-radius: 200px;
+        padding: 0.25rem 0.5rem;
+
+        &.rarity {
+          background-color: var(--green-500);
+        }
+
+        &.foil {
+          background-color: var(--red-500);
+        }
+      }
     }
 
     .card-actions {
