@@ -19,6 +19,7 @@ import {InputTextComponent} from "../../../shared/components/inputs/input-text/i
 import {ActivatedRoute, Router} from "@angular/router";
 import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
 import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
+import {InputSliderComponent} from "../../../shared/components/inputs/input-slider/input-slider.component";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -35,6 +36,7 @@ import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/chec
     RingSpinnerComponent,
     InputTextComponent,
     CheckboxComponent,
+    InputSliderComponent,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -55,6 +57,7 @@ export class CardsGridPageComponent implements OnInit {
   public searchText: string;
   public isLoadingInProgress: boolean;
   public showOnlyOwnedFilter: boolean;
+  public selectedPower: number[];
 
   protected readonly faFilter = faFilter;
   protected readonly faChevronUp = faChevronUp;
@@ -85,6 +88,7 @@ export class CardsGridPageComponent implements OnInit {
     this.cardRarities = [];
     this.selectedRarities = [];
     this.showOnlyOwnedFilter = false;
+    this.selectedPower = [0, 12000];
   }
 
   public ngOnInit() {
@@ -100,6 +104,11 @@ export class CardsGridPageComponent implements OnInit {
           ? params['sets']
           : [params['sets']]
         : [];
+      this.selectedPower = params['power']
+        ? Array.isArray(params['power'])
+          ? params['power']
+          : [params['power']]
+        : [0, 12000];
 
       await Promise.all([
         this._loadCards(),
@@ -124,7 +133,8 @@ export class CardsGridPageComponent implements OnInit {
         colors: this.selectedColors,
         sets: this.selectedSets,
         rarities: this.selectedRarities,
-        showOnlyOwned: this.showOnlyOwnedFilter
+        showOnlyOwned: this.showOnlyOwnedFilter,
+        power: this.selectedPower
       });
 
       this._page++;
@@ -138,13 +148,14 @@ export class CardsGridPageComponent implements OnInit {
 
   private async _loadFilters() {
     try {
-      const [colors, sets, rarities] = await Promise.all([
+      const [colors, sets, rarities, costs] = await Promise.all([
         this._cardsListService.getCardColors(),
         this._setsService.getSetsList(),
-        this._cardsListService.getCardRarities()
+        this._cardsListService.getCardRarities(),
+        this._cardsListService.getCardCosts()
       ]);
 
-      this._initFilterOptions(colors, sets, rarities);
+      this._initFilterOptions(colors, sets, rarities, costs);
     } catch (error) {
       this._onFiltersLoadError(error);
     }
@@ -163,10 +174,11 @@ export class CardsGridPageComponent implements OnInit {
     this.isLoadingInProgress = false;
   }
 
-  private _initFilterOptions(colors: string[], sets: SetModel[], rarities: string[]) {
+  private _initFilterOptions(colors: string[], sets: SetModel[], rarities: string[], costs: number[]) {
     this._initCardColorsFilter(colors);
     this._initCardSetsFilter(sets);
     this._initCardRaritiesFilter(rarities);
+    this._initCardCostsFilter(costs);
   }
 
   private _initCardColorsFilter(colors: string[]) {
@@ -192,6 +204,15 @@ export class CardsGridPageComponent implements OnInit {
       .map((rarity) => ({
         label: this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`),
         value: rarity
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
+
+  private _initCardCostsFilter(costs: number[]) {
+    this.cardRarities = costs
+      .map((cost) => ({
+        label: cost.toString(10),
+        value: cost
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
   }
@@ -227,7 +248,8 @@ export class CardsGridPageComponent implements OnInit {
         colors: this.selectedColors.length > 0 ? this.selectedColors : undefined,
         rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
         searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined,
-        showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined
+        showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined,
+        power: this.selectedPower.length === 2 ? this.selectedPower : undefined
       }
     });
     await this._loadCards();
@@ -242,6 +264,7 @@ export class CardsGridPageComponent implements OnInit {
     this._cardsTotalCount = null;
     this.searchText = '';
     this.showOnlyOwnedFilter = false;
+    this.selectedPower = [0, 12000];
     await this._router.navigate([], {
       relativeTo: this._route
     })
@@ -285,4 +308,6 @@ export class CardsGridPageComponent implements OnInit {
     }
     return count;
   }
+
+  protected readonly console = console;
 }

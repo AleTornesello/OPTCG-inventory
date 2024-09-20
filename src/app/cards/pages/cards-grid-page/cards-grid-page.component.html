@@ -46,6 +46,17 @@
         ></app-dropdown>
       </div>
       <div class="filter">
+        <app-input-slider
+          label="{{ 'cards.power' | transloco }}"
+          [range]="true"
+          [min]="0"
+          [max]="12000"
+          [step]="1000"
+          [showRange]="true"
+          [(ngModel)]="selectedPower"
+        ></app-input-slider>
+      </div>
+      <div class="filter">
         <app-checkbox
           label="{{ 'cards.showOnlyOwned' | transloco }}"
           [(ngModel)]="showOnlyOwnedFilter"

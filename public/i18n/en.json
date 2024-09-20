@@ -114,6 +114,8 @@
     },
     "showOnlyOwned": "Show only owned cards",
     "foil": "Foil",
+    "cost": "Cost",
+    "power": "Power"
   },
   "statistics": {
     "statistics": "Statistics",

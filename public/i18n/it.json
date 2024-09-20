@@ -114,7 +114,9 @@
       "super_rare": "Super Rare"
     },
     "showOnlyOwned": "Mostra solo le carte possedute",
-    "foil": "Foil"
+    "foil": "Foil",
+    "cost": "Costo",
+    "power": "Potenza"
   },
   "statistics": {
     "statistics": "Statistiche",

@@ -37,11 +37,13 @@ import {SliderChangeEvent, SliderModule} from "primeng/slider";
 })
 export class InputSliderComponent implements ControlValueAccessor {
 
-  @Input() value!: number;
   @Input() label: string | undefined;
   @Input() for: string | undefined;
   @Input() required: boolean;
   @Input() readonly: boolean;
+  @Input() range: boolean;
+  @Input() showRange: boolean;
+  @Input() value!: number | number[];
 
   @Input() set errors(errors: ValidationErrors | null) {
     this._errors = errors;
@@ -50,11 +52,12 @@ export class InputSliderComponent implements ControlValueAccessor {
   @Input() control: AbstractControl<any, any> | undefined;
   @Input() max: number | null;
   @Input() min: number | null;
+  @Input() step: number;
 
   @Input() textMode: boolean;
   @Input() inputClass: { [klass: string]: any } | undefined;
 
-  @Output() onChangeValue: EventEmitter<number>;
+  @Output() onChangeValue: EventEmitter<number | number[]>;
   @Output() onSlideEnd: EventEmitter<void>;
 
   protected readonly faTimes: IconDefinition;
@@ -74,9 +77,12 @@ export class InputSliderComponent implements ControlValueAccessor {
     this.isDisabled = false;
     this.max = null;
     this.min = null;
+    this.step = 1;
     this.textMode = false;
     this.required = false;
     this.readonly = false;
+    this.range = false;
+    this.showRange = false;
   }
 
   public writeValue(value: any): void {
@@ -96,6 +102,12 @@ export class InputSliderComponent implements ControlValueAccessor {
   }
 
   public onModelChange(event: SliderChangeEvent) {
+    if (this.range) {
+      this.value = event.values!;
+      this.onChange(event.values!);
+      this.onChangeValue.emit(event.values!);
+      return;
+    }
     this.value = event.value!;
     this.onChange(event.value!);
     this.onChangeValue.emit(event.value!);
@@ -118,5 +130,13 @@ export class InputSliderComponent implements ControlValueAccessor {
 
   public onSlideEndEvent() {
     this.onSlideEnd.emit();
+  }
+
+  public getLeftExtremum() {
+    return (this.value as number[])[0];
+  }
+
+  public getRightExtremum() {
+    return (this.value as number[])[1];
   }
 }

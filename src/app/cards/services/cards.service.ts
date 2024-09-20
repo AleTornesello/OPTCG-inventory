@@ -20,7 +20,8 @@ export class CardsService {
     colors?: string[],
     sets?: string[],
     rarities?: string[],
-    showOnlyOwned?: boolean
+    showOnlyOwned?: boolean,
+    power?: number[]
   }) {
     const selectColumns = filters?.showOnlyOwned
       ? "*, set:set_id(*), inventory!inner(*)"
@@ -63,6 +64,12 @@ export class CardsService {
         query = query
           .gt('inventory.quantity', 0);
       }
+
+      if(filters.power && filters.power.length === 2) {
+        query = query
+          .gte('power', filters.power[0])
+          .lte('power', filters.power[1]);
+      }
     }
 
     const {data, error, count} = await query.returns<CardEntity[]>();
@@ -90,6 +97,42 @@ export class CardsService {
     const {data, error} = await this._supabaseService.supabase
       .rpc('get_card_rarities')
       .returns<string[]>();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+  public async getCardCosts() {
+    const {data, error} = await this._supabaseService.supabase
+      .rpc('get_card_costs')
+      .returns<number[]>();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+  public async getCardMinPower() {
+    const {data, error} = await this._supabaseService.supabase
+      .rpc('get_card_min_power')
+      .returns<number>();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+  public async getCardMaxPower() {
+    const {data, error} = await this._supabaseService.supabase
+      .rpc('get_card_max_power')
+      .returns<number>();
 
     if (error) {
       throw error;
