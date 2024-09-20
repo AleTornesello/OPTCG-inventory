@@ -104,6 +104,14 @@ export class CardsGridPageComponent implements OnInit {
           ? params['sets']
           : [params['sets']]
         : [];
+      this.selectedRarities = params['rarities']
+        ? Array.isArray(params['rarities'])
+          ? params['rarities']
+          : [params['rarities']]
+        : [];
+      this.showOnlyOwnedFilter = params['showOnlyOwned'] !== null && params['showOnlyOwned'] !== undefined
+        ? params['showOnlyOwned'] === 'true'
+        : false;
       this.selectedPower = params['power']
         ? Array.isArray(params['power'])
           ? params['power']
