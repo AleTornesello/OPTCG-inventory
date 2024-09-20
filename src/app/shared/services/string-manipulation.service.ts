@@ -22,4 +22,8 @@ export class StringManipulationService {
   public capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  public toSnakeCase(str: string): string {
+    return str.toLowerCase().replace(" ", "_");
+  }
 }

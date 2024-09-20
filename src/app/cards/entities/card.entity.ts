@@ -18,6 +18,7 @@ export class CardEntity {
   art: number;
   effect: string | null;
   type: string[];
+  foil: boolean;
   set: SetEntity;
   inventory: InventoryEntity | null;
   created_at: string;
@@ -40,6 +41,7 @@ export class CardEntity {
     art: number,
     effect: string | null,
     type: string[],
+    foil: boolean,
     set: SetEntity,
     inventory: InventoryEntity | null,
     created_at: string,
@@ -61,6 +63,7 @@ export class CardEntity {
     this.art = art;
     this.effect = effect;
     this.type = type;
+    this.foil = foil;
     this.set = set;
     this.inventory = inventory;
     this.created_at = created_at;

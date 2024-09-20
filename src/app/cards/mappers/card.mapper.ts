@@ -23,6 +23,7 @@ export class CardMapper {
       card.art,
       card.effect,
       card.type,
+      card.foil,
       SetMapper.toSetModel(card.set),
       card.inventory
         ? Array.isArray(card.inventory) && card.inventory.length > 0
@@ -52,6 +53,7 @@ export class CardMapper {
       card.art,
       card.effect,
       card.type,
+      card.foil,
       SetMapper.toSetEntity(card.set),
       card.inventory
         ? Array.isArray(card.inventory) && card.inventory.length > 0

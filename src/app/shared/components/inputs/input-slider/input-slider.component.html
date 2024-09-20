@@ -17,11 +17,19 @@
             [ngModel]="value"
             [min]="min"
             [max]="max"
+            [range]="range"
+            [step]="step"
             (onChange)="onModelChange($event)"
             (onSlideEnd)="onSlideEndEvent()"
           ></p-slider>
           <ng-content select="[right]"></ng-content>
         </div>
+        @if(range && showRange) {
+          <div class="range-container">
+            <span>{{ getLeftExtremum() }}</span>
+            <span>{{ getRightExtremum() }}</span>
+          </div>
+        }
       </div>
     }
   </div>

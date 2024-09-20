@@ -99,7 +99,24 @@
       "purple": "Viola",
       "black": "Nero",
       "yellow": "Giallo"
-    }
+    },
+    "rarity": "Rarità",
+    "rarities": {
+      "don!!": "DON!!",
+      "secret_rare": "Secret Rare",
+      "alternate_art": "Alternate Art",
+      "uncommon": "Uncommon",
+      "promo": "Promo",
+      "special": "Special",
+      "leader": "Leader",
+      "rare": "Rare",
+      "common": "Common",
+      "super_rare": "Super Rare"
+    },
+    "showOnlyOwned": "Mostra solo le carte possedute",
+    "foil": "Foil",
+    "cost": "Costo",
+    "power": "Potenza"
   },
   "statistics": {
     "statistics": "Statistiche",
