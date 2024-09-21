@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {CardsService} from "../../services/cards.service";
-import {CardModel} from "../../models/card.model";
+import {CardModel, MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../../models/card.model";
 import {CardPreviewComponent, CardPreviewModel} from "../../components/card-preview/card-preview.component";
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
@@ -89,8 +89,8 @@ export class CardsGridPageComponent implements OnInit {
     this.cardRarities = [];
     this.selectedRarities = [];
     this.showOnlyOwnedFilter = false;
-    this.selectedPower = [0, 12000];
-    this.selectedCosts = [0, 10];
+    this.selectedPower = [MIN_POWER, MAX_POWER];
+    this.selectedCosts = [MIN_COST, MAX_COST];
   }
 
   public ngOnInit() {
@@ -116,14 +116,14 @@ export class CardsGridPageComponent implements OnInit {
         : false;
       this.selectedPower = params['power']
         ? Array.isArray(params['power'])
-          ? params['power']
+          ? params['power'].map((power) => typeof power === 'string' ? parseInt(power, 10) : power)
           : [params['power']]
-        : [0, 12000];
+        : [MIN_POWER, MAX_POWER];
       this.selectedCosts = params['costs']
         ? Array.isArray(params['costs'])
-          ? params['costs']
+          ? params['costs'].map((cost) => typeof cost === 'string' ? parseInt(cost, 10) : cost)
           : [params['costs']]
-        : [0, 10];
+        : [MIN_COST, MAX_COST];
 
       await Promise.all([
         this._loadCards(),
@@ -254,8 +254,8 @@ export class CardsGridPageComponent implements OnInit {
         rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
         searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined,
         showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined,
-        power: this.selectedPower.length === 2 ? this.selectedPower : undefined,
-        costs: this.selectedCosts.length === 2 ? this.selectedCosts : undefined
+        power: this.selectedPower.length === 2 && (this.selectedPower[0] !== MIN_POWER || this.selectedPower[1] !== MAX_POWER) ? this.selectedPower : undefined,
+        costs: this.selectedCosts.length === 2 && (this.selectedCosts[0] !== MIN_POWER || this.selectedCosts[1] !== MAX_POWER) ? this.selectedCosts : undefined
       }
     });
     await this._loadCards();
@@ -270,8 +270,8 @@ export class CardsGridPageComponent implements OnInit {
     this._cardsTotalCount = null;
     this.searchText = '';
     this.showOnlyOwnedFilter = false;
-    this.selectedPower = [0, 12000];
-    this.selectedCosts = [0, 10];
+    this.selectedPower = [MIN_POWER, MAX_POWER];
+    this.selectedCosts = [MIN_COST, MAX_COST];
     await this._router.navigate([], {
       relativeTo: this._route
     })

@@ -3,6 +3,7 @@ import {SupabaseService} from "../../shared/services/supabase.service";
 import {CardEntity} from "../entities/card.entity";
 import {CardMapper} from "../mappers/card.mapper";
 import {QueryParserService} from "../../shared/services/query-parser.service";
+import {MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../models/card.model";
 
 @Injectable({
   providedIn: 'root'
@@ -66,13 +67,13 @@ export class CardsService {
           .gt('inventory.quantity', 0);
       }
 
-      if(filters.power && filters.power.length === 2) {
+      if (filters.power && filters.power.length === 2 && (filters.power[0] !== MIN_POWER || filters.power[1] !== MAX_POWER)) {
         query = query
           .gte('power', filters.power[0])
           .lte('power', filters.power[1]);
       }
 
-      if(filters.costs && filters.costs.length === 2) {
+      if (filters.costs && filters.costs.length === 2 && (filters.costs[0] !== MIN_COST || filters.costs[1] !== MAX_COST)) {
         query = query
           .gte('cost', filters.costs[0])
           .lte('cost', filters.costs[1]);
