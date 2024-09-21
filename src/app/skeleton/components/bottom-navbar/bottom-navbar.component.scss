@@ -1,8 +1,8 @@
 #bottom-navbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+  justify-items: center;
   align-items: center;
-  justify-content: space-around;
-  gap: 12px;
   width: 100%;
   height: 4rem;
   padding: 0 0.5rem;

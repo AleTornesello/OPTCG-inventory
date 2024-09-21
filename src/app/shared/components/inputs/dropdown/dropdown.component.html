@@ -40,6 +40,7 @@
           [ngClass]="{ 'ng-invalid ng-dirty': isOnError }"
           (onChange)="onInputChange($event)"
           (onBlur)="onTouched()"
+          (onClear)="onClearClick()"
         >
           <ng-template pTemplate="selectedItem" let-item>
             <ng-container

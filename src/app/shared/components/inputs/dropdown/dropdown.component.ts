@@ -72,6 +72,7 @@ export class DropdownComponent implements ControlValueAccessor {
   @Input() styleClass: string;
 
   @Output() onChangeValue: EventEmitter<any>;
+  @Output() onClear: EventEmitter<void>;
   public onChange: any = () => {};
   public onTouched: any = () => {};
   public isDisabled: boolean;
@@ -86,6 +87,7 @@ export class DropdownComponent implements ControlValueAccessor {
     this.readonly = false;
     this._errors = null;
     this.onChangeValue = new EventEmitter();
+    this.onClear = new EventEmitter();
     this.isDisabled = false;
     this.textMode = false;
     this.styleClass = '';
@@ -145,5 +147,12 @@ export class DropdownComponent implements ControlValueAccessor {
     | TemplateRef<DropdownItemTemplateContext>
     | undefined {
     return this._dropdownItemDirectives?.first?.template;
+  }
+
+  public onClearClick() {
+    this.onClear.emit();
+    this.value = this.multipleSelect ? [] : null;
+    this.onChange(this.value);
+    this.onChangeValue.emit(this.value);
   }
 }
