@@ -93,15 +93,15 @@ export class StatisticsPageComponent implements OnInit {
       this._cardsService.getCardsList(undefined, {sets: [set.id]})
         .then(({data}) => {
           const filteredCards = data.filter((card) => {
-            if(card.rarity === "ALTERNATE ART") {
+            if (card.rarity === "ALTERNATE ART") {
               return this.includeAlternateArt;
             }
 
-            if(card.rarity === "SPECIAL") {
+            if (card.rarity === "SPECIAL") {
               return this.includeSpecial;
             }
 
-            if(card.rarity === "DON") {
+            if (card.category === "DON") {
               return this.includeDon;
             }
 
@@ -138,36 +138,26 @@ export class StatisticsPageComponent implements OnInit {
     let excessCards: number = 0;
 
     cards.forEach((card) => {
-      totalCards += card.category === 'LEADER' ? 1 : 4;
+      totalCards += this._getCardMinQuantityByCategory(card);
       completedCards +=
         card.inventory
-          ? card.category === 'LEADER'
-            ? card.inventory.quantity >= 1
-              ? 1
-              : 0
-            : card.inventory.quantity >= 4
-              ? 4
-              : 0
+          ? card.inventory.quantity >= this._getCardMinQuantityByCategory(card)
+            ? this._getCardMinQuantityByCategory(card)
+            : 0
           : 0;
 
       onGoingCards +=
         card.inventory
-          ? card.category === 'LEADER'
-            ? 0
-            : card.inventory.quantity > 0 && card.inventory.quantity < 4
-              ? 4 - card.inventory.quantity
-              : 0
+          ? card.inventory.quantity > 0 && card.inventory.quantity < this._getCardMinQuantityByCategory(card)
+            ? this._getCardMinQuantityByCategory(card) - card.inventory.quantity
+            : 0
           : 0;
 
       excessCards +=
         card.inventory
-          ? card.category === 'LEADER'
-            ? card.inventory.quantity > 1
-              ? card.inventory.quantity - 1
-              : 0
-            : card.inventory.quantity > 4
-              ? card.inventory.quantity - 4
-              : 0
+          ? card.inventory.quantity > this._getCardMinQuantityByCategory(card)
+            ? card.inventory.quantity - this._getCardMinQuantityByCategory(card)
+            : 0
           : 0;
     });
 
@@ -202,6 +192,18 @@ export class StatisticsPageComponent implements OnInit {
         value: statistic.excessCards
       },
     ]
+  }
+
+  private _getCardMinQuantityByCategory(card: CardModel): number {
+    if (card.category === "LEADER") {
+      return 1;
+    }
+
+    if (card.category === "DON") {
+      return 10;
+    }
+
+    return 4;
   }
 
   public getTotalCards(statistic: Statistic): number {

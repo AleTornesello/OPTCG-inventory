@@ -131,6 +131,8 @@ export class InputTextComponent implements ControlValueAccessor {
   public clearValue() {
     this.onClear.emit();
     this.value = '';
+    this.onChange(this.value);
+    this.onChangeValue.emit(this.value);
   }
 
   public getInputClasses() {

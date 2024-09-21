@@ -1,6 +1,11 @@
 import {SetModel} from "./set.model";
 import {InventoryModel} from "./inventory.model";
 
+export const MIN_COST = 0;
+export const MAX_COST = 10;
+export const MIN_POWER = 0;
+export const MAX_POWER = 12000;
+
 export class CardModel {
   id: string;
   code: string;
