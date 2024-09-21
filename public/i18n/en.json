@@ -80,6 +80,7 @@
       "generic": "An error has occurred during login, please try again later"
     },
     "registerErrors": {
+      "unexpectedFailure": "An error has occurred during registration, please try again later",
       "generic": "An error has occurred during registration, please try again later"
     }
   },
