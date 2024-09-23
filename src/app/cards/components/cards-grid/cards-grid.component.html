@@ -1,0 +1,11 @@
+<div class="cards-container" >
+  @for (card of cards; track card.card.id) {
+    <div class="card-container">
+      <app-card-preview
+        [card]="card"
+        (quantityIncrease)="onQuantityIncrease(card)"
+        (quantityDecrease)="onQuantityDecrease(card)"
+      ></app-card-preview>
+    </div>
+  }
+</div>

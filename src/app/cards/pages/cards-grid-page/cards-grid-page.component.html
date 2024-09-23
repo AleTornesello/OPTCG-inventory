@@ -86,16 +86,13 @@
     </div>
   </div>
 </div>
-<div class="cards-container" appScrollNearEnd (nearEnd)="onNearEndScroll()">
-  @for (card of cards; track card.card.id) {
-    <div class="card-container">
-      <app-card-preview
-        [card]="card"
-        (quantityIncrease)="onQuantityIncrease(card)"
-        (quantityDecrease)="onQuantityDecrease(card)"
-      ></app-card-preview>
-    </div>
-  }
+
+<div appScrollNearEnd (nearEnd)="onNearEndScroll()">
+  <app-cards-grid
+    [cards]="cards"
+    (quantityIncrease)="onQuantityIncrease($event)"
+    (quantityDecrease)="onQuantityDecrease($event)"
+  ></app-cards-grid>
 </div>
 
 @if (isLoadingInProgress) {

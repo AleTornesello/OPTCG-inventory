@@ -20,6 +20,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
 import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
 import {InputSliderComponent} from "../../../shared/components/inputs/input-slider/input-slider.component";
+import {CardsGridComponent} from "../../components/cards-grid/cards-grid.component";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -37,6 +38,7 @@ import {InputSliderComponent} from "../../../shared/components/inputs/input-slid
     InputTextComponent,
     CheckboxComponent,
     InputSliderComponent,
+    CardsGridComponent,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
