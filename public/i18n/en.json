@@ -131,5 +131,12 @@
       "includeAlternateArt": "Include alternate art cards",
       "includeDon": "Include Don cards"
     }
+  },
+  "settings": {
+    "settings": "Settings",
+    "setCompletion": "Set completion",
+    "leaderMinCardAmount": "Minimum number of Leader's cards per set",
+    "donMinCardAmount": "Minimum number of DON's cards per set",
+    "otherMinCardAmount": "Minimum number of other cards per set"
   }
 }

@@ -1,0 +1,24 @@
+<div class="user-settings-page-container">
+  <div class="user-setting-group-container round border">
+    <h2>
+      {{ "settings.setCompletion" | transloco }}
+    </h2>
+    <div class="user-setting-inputs">
+      <app-input-number
+        [label]="'settings.leaderMinCardAmount' | transloco"
+        [value]="getMinLeaderCardAmount()"
+        (onChangeValue)="onMinLeaderCardAmountChange($event)"
+      ></app-input-number>
+      <app-input-number
+        [label]="'settings.donMinCardAmount' | transloco"
+        [value]="getMinDonCardAmount()"
+        (onChangeValue)="onMinDonCardAmountChange($event)"
+      ></app-input-number>
+      <app-input-number
+        [label]="'settings.otherMinCardAmount' | transloco"
+        [value]="getMinOtherCardAmount()"
+        (onChangeValue)="onMinOtherCardAmountChange($event)"
+      ></app-input-number>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,7 @@ import {DefaultLayoutComponent} from "./skeleton/components/default-layout/defau
 import {CardsGridPageComponent} from "./cards/pages/cards-grid-page/cards-grid-page.component";
 import {StatisticsPageComponent} from "./statistics/pages/statistics-page/statistics-page.component";
 import {authGuard} from "./auth/guards/auththenticated.guard";
+import {UserSettingsPageComponent} from "./settings/pages/user-settings-page/user-settings-page.component";
 
 export enum OptcgRoute {
   AUTH = 'auth',
@@ -15,6 +16,7 @@ export enum OptcgRoute {
   VERIFY_EMAIL = 'verify-email',
   CARDS = 'cards',
   STATISTICS = 'statistics',
+  SETTINGS = 'settings',
 }
 
 export const routes: Routes = [
@@ -45,6 +47,17 @@ export const routes: Routes = [
           {
             path: '',
             component: StatisticsPageComponent
+          }
+        ]
+      },
+      {
+        path: OptcgRoute.SETTINGS,
+        component: DefaultLayoutComponent,
+        canActivate: [authGuard],
+        children: [
+          {
+            path: '',
+            component: UserSettingsPageComponent
           }
         ]
       },
