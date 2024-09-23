@@ -8,6 +8,13 @@ import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring
 import {CardModel} from "../../../cards/models/card.model";
 import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
 import {FormsModule} from "@angular/forms";
+import {SettingsService} from "../../../settings/services/settings.service";
+import {
+  DefaultUserSettingsValue,
+  UserSettingsKey,
+  UserSettingsModel,
+  UserSettingsValueSingleNumber
+} from "../../../settings/models/user-settings.model";
 
 interface Statistic {
   id: string;
@@ -44,11 +51,13 @@ export class StatisticsPageComponent implements OnInit {
   public includeDon: boolean;
 
   private _sets: SetModel[];
+  private _settings: UserSettingsModel[];
 
   constructor(
     private _cardsService: CardsService,
     private _translateService: TranslocoService,
-    private _setsService: SetsService
+    private _setsService: SetsService,
+    private _userSettingsService: SettingsService
   ) {
     this.statistics = [];
     this.cardsCount = 0;
@@ -57,10 +66,21 @@ export class StatisticsPageComponent implements OnInit {
     this.includeDon = false;
 
     this._sets = [];
+    this._settings = [];
   }
 
   public async ngOnInit() {
+    await this._loadSettings();
     await this._loadSets();
+  }
+
+  private async _loadSettings() {
+    try {
+      this._settings = await this._userSettingsService.getUserSettingsList();
+    } catch (error) {
+      // TODO: handle error
+      console.error(error);
+    }
   }
 
   private async _loadSets() {
@@ -196,14 +216,14 @@ export class StatisticsPageComponent implements OnInit {
 
   private _getCardMinQuantityByCategory(card: CardModel): number {
     if (card.category === "LEADER") {
-      return 1;
+      return (this._settings.find((setting) => setting.key === UserSettingsKey.LEADER_MIN_CARD_AMOUNT)?.value as UserSettingsValueSingleNumber).value ?? DefaultUserSettingsValue.LEADER_MIN_CARD_AMOUNT;
     }
 
     if (card.category === "DON") {
-      return 10;
+      return (this._settings.find((setting) => setting.key === UserSettingsKey.DON_MIN_CARD_AMOUNT)?.value as UserSettingsValueSingleNumber).value ?? DefaultUserSettingsValue.DON_MIN_CARD_AMOUNT;
     }
 
-    return 4;
+    return (this._settings.find((setting) => setting.key === UserSettingsKey.OTHER_MIN_CARD_AMOUNT)?.value as UserSettingsValueSingleNumber).value ?? DefaultUserSettingsValue.OTHER_MIN_CARD_AMOUNT;
   }
 
   public getTotalCards(statistic: Statistic): number {
