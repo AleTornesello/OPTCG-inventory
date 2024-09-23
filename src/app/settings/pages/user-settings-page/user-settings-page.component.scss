@@ -1,0 +1,30 @@
+.user-settings-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 1rem;
+
+  .user-setting-group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--white);
+
+    .user-setting-inputs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .user-settings-page-container {
+    .user-setting-group-container {
+      .user-setting-inputs {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

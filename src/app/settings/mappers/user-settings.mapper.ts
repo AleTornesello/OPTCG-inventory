@@ -6,7 +6,7 @@ export class UserSettingsMapper {
   public static toUserSettingsModel(entity: UserSettingsEntity): UserSettingsModel {
     return new UserSettingsModel(
       entity.id,
-      UserSettingsKey[entity.key as keyof typeof UserSettingsKey],
+      entity.key as UserSettingsKey,
       entity.value,
       entity.meta,
       entity.created_at,
