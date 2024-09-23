@@ -132,5 +132,12 @@
       "includeAlternateArt": "Includi carte Alternate Art",
       "includeDon": "Includi carte Don"
     }
+  },
+  "settings": {
+    "settings": "Impostazioni",
+    "setCompletion": "Completamento set",
+    "leaderMinCardAmount": "Numero minimo di carte Leader per set",
+    "donMinCardAmount": "Numero minimo di carte DON per set",
+    "otherMinCardAmount": "Numero minimo delle altre carte per set"
   }
 }

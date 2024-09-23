@@ -5,7 +5,8 @@ input[type="password"] {
   border-radius: var(--border-radius);
 }
 
-.p-password {
+.p-password,
+.p-inputnumber {
   width: 100%;
 }
 
@@ -21,4 +22,8 @@ p-inputnumber {
 .p-dropdown {
   border-radius: var(--border-radius);
   width: 100%;
+}
+
+input.p-inputnumber-input, {
+  box-shadow: none;
 }
