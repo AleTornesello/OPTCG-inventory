@@ -1,0 +1,43 @@
+<div class="sellable-cards-page-container">
+  @for (set of sets; track set.id) {
+    <div class="set-sellable-cards-container border round">
+      <h2>{{ set.name }}</h2>
+
+      @if (isSetLoading(set.id)) {
+        <div class="loader-container">
+          <app-ring-spinner></app-ring-spinner>
+        </div>
+      } @else if(getCardsBySetId(set.id).length > 0) {
+        <app-cards-grid
+          [cards]="getCardsBySetId(set.id)"
+        >
+          <ng-template let-card>
+            <div class="card-actions">
+              <div class="counter">
+                <p>{{ card.quantity }}x</p>
+              </div>
+              <app-button
+                label="1"
+                size="small"
+              ></app-button>
+              @if (canSellFourCards(card)) {
+                <app-button
+                  label="4"
+                  size="small"
+                ></app-button>
+              }
+              @if (canSellTenCards(card)) {
+                <app-button
+                  label="10"
+                  size="small"
+                ></app-button>
+              }
+            </div>
+          </ng-template>
+        </app-cards-grid>
+      } @else {
+        <p class="no-data">{{ "sell.noCards" | transloco }}</p>
+      }
+    </div>
+  }
+</div>

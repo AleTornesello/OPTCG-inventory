@@ -90,13 +90,32 @@
 <div appScrollNearEnd (nearEnd)="onNearEndScroll()">
   <app-cards-grid
     [cards]="cards"
-    (quantityIncrease)="onQuantityIncrease($event)"
-    (quantityDecrease)="onQuantityDecrease($event)"
-  ></app-cards-grid>
+  >
+    <ng-template let-card>
+      <div class="card-actions">
+        <app-button
+          [icon]="faMinus"
+          size="small"
+          [disabled]="!canDecreaseQuantity(card)"
+          (onClick)="onMinusClick(card)"
+        ></app-button>
+        <app-input-number [value]="card.quantity"></app-input-number>
+        <app-button
+          [icon]="faPlus"
+          size="small"
+          (onClick)="onPlusClick(card)"
+        ></app-button>
+      </div>
+    </ng-template>
+  </app-cards-grid>
 </div>
 
 @if (isLoadingInProgress) {
   <div class="loader-container">
-    <app-ring-spinner></app-ring-spinner>
+    @for (i of [].constructor(10); track $index) {
+      <div class="card-placeholder">
+        <p-skeleton width="100%" height="100%" styleClass="card-placeholder"/>
+      </div>
+    }
   </div>
 }

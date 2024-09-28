@@ -86,9 +86,25 @@
 }
 
 .loader-container {
+  width: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 1rem;
   padding: 1rem;
+  flex-wrap: wrap;
+
+  .card-placeholder {
+    width: 200px;
+    aspect-ratio: 210/297;
+    border-radius: var(--border-radius);
+  }
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @media only screen and (max-width: 767px) {
@@ -100,5 +116,9 @@
         }
       }
     }
+  }
+
+  .card-actions {
+    gap: 0.25rem;
   }
 }

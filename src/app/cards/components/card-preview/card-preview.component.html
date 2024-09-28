@@ -12,18 +12,7 @@
       }
     </div>
     <div class="card-actions">
-      <app-button
-        [icon]="faMinus"
-        size="small"
-        [disabled]="!canDecreaseQuantity"
-        (onClick)="onMinusClick()"
-      ></app-button>
-      <app-input-number [value]="card.quantity"></app-input-number>
-      <app-button
-        [icon]="faPlus"
-        size="small"
-        (onClick)="onPlusClick()"
-      ></app-button>
+      <ng-content select="[actions]"></ng-content>
     </div>
   </div>
 </div>

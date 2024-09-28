@@ -5,7 +5,7 @@ import {CardPreviewComponent, CardPreviewModel} from "../../components/card-prev
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
-import {faChevronUp, faFilter} from "@fortawesome/free-solid-svg-icons";
+import {faChevronUp, faFilter, faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {DropdownComponent} from "../../../shared/components/inputs/dropdown/dropdown.component";
 import {SelectItem} from "primeng/api";
@@ -21,6 +21,8 @@ import {StringManipulationService} from "../../../shared/services/string-manipul
 import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/checkbox.component";
 import {InputSliderComponent} from "../../../shared/components/inputs/input-slider/input-slider.component";
 import {CardsGridComponent} from "../../components/cards-grid/cards-grid.component";
+import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
+import {SkeletonModule} from "primeng/skeleton";
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -39,6 +41,8 @@ import {CardsGridComponent} from "../../components/cards-grid/cards-grid.compone
     CheckboxComponent,
     InputSliderComponent,
     CardsGridComponent,
+    InputNumberComponent,
+    SkeletonModule,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -64,6 +68,8 @@ export class CardsGridPageComponent implements OnInit {
 
   protected readonly faFilter = faFilter;
   protected readonly faChevronUp = faChevronUp;
+  protected readonly faPlus = faPlus;
+  protected readonly faMinus = faMinus;
 
   private _page: number;
   private readonly _cardsPerPage: number;
@@ -318,5 +324,21 @@ export class CardsGridPageComponent implements OnInit {
     return count;
   }
 
-  protected readonly console = console;
+  public async onPlusClick(card: CardPreviewModel) {
+    card.quantity++;
+    await this.onQuantityIncrease(card);
+  }
+
+  public async onMinusClick(card: CardPreviewModel) {
+    if (card.quantity <= 0) {
+      return;
+    }
+
+    card.quantity--;
+    await this.onQuantityDecrease(card);
+  }
+
+  public canDecreaseQuantity(card: CardPreviewModel): boolean {
+    return card.quantity > 0;
+  }
 }

@@ -133,6 +133,10 @@
       "includeDon": "Includi carte Don"
     }
   },
+  "sell": {
+    "sell": "Vendi",
+    "noCards": "Non ci sono carte da vendere per questo set"
+  },
   "settings": {
     "settings": "Impostazioni",
     "setCompletion": "Completamento set",
