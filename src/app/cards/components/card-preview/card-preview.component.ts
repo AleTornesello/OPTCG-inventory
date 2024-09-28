@@ -32,37 +32,7 @@ export interface CardPreviewModel {
 export class CardPreviewComponent {
   @Input({required: true}) card!: CardPreviewModel;
 
-  @Output() quantityIncrease: EventEmitter<number>;
-  @Output() quantityDecrease: EventEmitter<number>;
-
-  public readonly faPlus = faPlus;
-  public readonly faMinus = faMinus;
-
   constructor(
   ) {
-    this.quantityIncrease = new EventEmitter();
-    this.quantityDecrease = new EventEmitter();
-  }
-
-  // public get cardImageUrl(): string {
-  //   return this._cardsListService.getCardImageUrl(this.card);
-  // }
-
-  public onPlusClick() {
-    this.card.quantity++;
-    this.quantityIncrease.emit();
-  }
-
-  public onMinusClick() {
-    if (this.card.quantity <= 0) {
-      return;
-    }
-
-    this.card.quantity--;
-    this.quantityDecrease.emit();
-  }
-
-  public get canDecreaseQuantity(): boolean {
-    return this.card.quantity > 0;
   }
 }

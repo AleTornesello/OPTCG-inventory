@@ -11,6 +11,8 @@
     "clear": "Clear",
     "apply": "Apply",
     "search": "Search",
+    "yes": "Yes",
+    "no": "No",
     "validationErrors": {
       "alpha": "The {{field}} field can only contain alphabetic characters",
       "alphaNum": "The {{field}} field can only contain alphanumeric characters",
@@ -131,6 +133,12 @@
       "includeAlternateArt": "Include alternate art cards",
       "includeDon": "Include Don cards"
     }
+  },
+  "sell": {
+    "sell": "Sell",
+    "noCards": "No cards to sell for this set",
+    "confirmSellTitle": "Confirm sell",
+    "confirmSellMessage": "Are you sure you want to sell {quantity} {quantity, plural, =0 {} one {card} other {cards}} of {name}?"
   },
   "settings": {
     "settings": "Settings",

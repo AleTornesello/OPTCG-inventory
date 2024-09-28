@@ -66,5 +66,23 @@
       font-style: italic;
       color: var(--gray-500);
     }
+
+    .meter-descriptions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      .meter-description {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        .meter-color {
+          width: 0.75rem;
+          height: 0.75rem;
+          border-radius: 50%;
+        }
+      }
+    }
   }
 }

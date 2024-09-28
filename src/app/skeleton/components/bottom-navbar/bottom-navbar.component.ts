@@ -14,15 +14,17 @@ import {RouteUtilsService} from "../../../shared/services/route-utils.service";
 })
 export class BottomNavbarComponent {
   get items(): NavigationItem[] {
-    return this._items.filter((item) => item.navbarVisible);
+    return this._items;
   }
-  @Input({ required: true }) set items(items: NavigationItem[]) {
-    this._items = items;
+  @Input({required: true}) set items(items: NavigationItem[]) {
+    this._items = items.filter((item) => item.navbarVisible);
   }
 
-  private _items!: NavigationItem[];
+  private _items: NavigationItem[];
 
-  constructor(private _routeUtilsService: RouteUtilsService) {}
+  constructor(private _routeUtilsService: RouteUtilsService) {
+    this._items = [];
+  }
 
   public isRouteActive(route: string | string[]): string {
     return this._routeUtilsService.isRouteActive(route);
