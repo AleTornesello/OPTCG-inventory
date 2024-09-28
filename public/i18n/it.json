@@ -11,6 +11,8 @@
     "clear": "Cancella",
     "apply": "Applica",
     "search": "Cerca",
+    "yes": "Si",
+    "no": "No",
     "validationErrors": {
       "alpha": "Il campo {{field}} può contenere solo caratteri alfabetici",
       "alphaNum": "Il campo {{field}} può contenere solo caratteri alfanumerici",
@@ -135,7 +137,9 @@
   },
   "sell": {
     "sell": "Vendi",
-    "noCards": "Non ci sono carte da vendere per questo set"
+    "noCards": "Non ci sono carte da vendere per questo set",
+    "confirmSellTitle": "Conferma vendita",
+    "confirmSellMessage": "Sei sicuro di voler vendere {quantity} {quantity, plural, =0 {} one {carta} other {carte}} di {name}?"
   },
   "settings": {
     "settings": "Impostazioni",

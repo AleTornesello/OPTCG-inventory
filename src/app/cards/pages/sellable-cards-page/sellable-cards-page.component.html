@@ -19,17 +19,20 @@
               <app-button
                 label="1"
                 size="small"
+                (onClick)="onSellOneCardClick($event, card)"
               ></app-button>
               @if (canSellFourCards(card)) {
                 <app-button
                   label="4"
                   size="small"
+                  (onClick)="onSellFourCardsClick($event, card)"
                 ></app-button>
               }
               @if (canSellTenCards(card)) {
                 <app-button
                   label="10"
                   size="small"
+                  (onClick)="onSellTenCardsClick($event, card)"
                 ></app-button>
               }
             </div>
@@ -41,3 +44,5 @@
     </div>
   }
 </div>
+
+<p-confirmDialog />

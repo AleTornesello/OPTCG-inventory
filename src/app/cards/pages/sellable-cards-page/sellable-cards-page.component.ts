@@ -3,9 +3,9 @@ import {SetsService} from "../../services/sets.service";
 import {SetModel} from "../../models/set.model";
 import {DecimalPipe} from "@angular/common";
 import {MeterGroupModule} from "primeng/metergroup";
-import {PrimeTemplate} from "primeng/api";
+import {ConfirmationService, PrimeTemplate} from "primeng/api";
 import {RingSpinnerComponent} from "../../../shared/components/ring-spinner/ring-spinner.component";
-import {TranslocoPipe} from "@jsverse/transloco";
+import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
 import {CardsGridComponent} from "../../components/cards-grid/cards-grid.component";
 import {CardPreviewModel} from "../../components/card-preview/card-preview.component";
 import {CardsService} from "../../services/cards.service";
@@ -18,8 +18,9 @@ import {
 } from "../../../settings/models/user-settings.model";
 import {ButtonComponent} from "../../../shared/components/button/button.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
-import {fa0, fa1, fa4} from "@fortawesome/free-solid-svg-icons";
 import {CardModel} from "../../models/card.model";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {InventoryService} from "../../services/inventory.service";
 
 @Component({
   selector: 'app-sellable-cards-page',
@@ -32,7 +33,8 @@ import {CardModel} from "../../models/card.model";
     TranslocoPipe,
     CardsGridComponent,
     ButtonComponent,
-    InputNumberComponent
+    InputNumberComponent,
+    ConfirmDialogModule
   ],
   templateUrl: './sellable-cards-page.component.html',
   styleUrl: './sellable-cards-page.component.scss'
@@ -40,10 +42,6 @@ import {CardModel} from "../../models/card.model";
 export class SellableCardsPageComponent implements OnInit {
 
   public sets: SetModel[];
-
-  protected readonly fa1 = fa1;
-  protected readonly fa4 = fa4;
-  protected readonly fa0 = fa0;
 
   private _cardsMap: Map<string, {
     cards: CardPreviewModel[],
@@ -55,7 +53,10 @@ export class SellableCardsPageComponent implements OnInit {
   constructor(
     private _setsService: SetsService,
     private _cardsService: CardsService,
-    private _userSettingsService: SettingsService
+    private _userSettingsService: SettingsService,
+    private _confirmationService: ConfirmationService,
+    private _translocoService: TranslocoService,
+    private _inventoryService: InventoryService
   ) {
     this.sets = [];
     this._cardsMap = new Map();
@@ -123,5 +124,56 @@ export class SellableCardsPageComponent implements OnInit {
 
   public canSellTenCards(card: CardPreviewModel): boolean {
     return card.card.category === "DON" && card.quantity >= 10;
+  }
+
+  public onSellOneCardClick(event: Event, card: CardPreviewModel) {
+    this._onSellCard(event, card, 1);
+  }
+
+  public onSellFourCardsClick(event: Event, card: CardPreviewModel) {
+    this._onSellCard(event, card, 4);
+  }
+
+  public onSellTenCardsClick(event: Event, card: CardPreviewModel) {
+    this._onSellCard(event, card, 10);
+  }
+
+  private _onSellCard(event: Event, card: CardPreviewModel, quantity: number) {
+    this._confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: this._translocoService.translate("sell.confirmSellMessage", {quantity: quantity, name: card.card.name}),
+      header: this._translocoService.translate("sell.confirmSellTitle"),
+      icon: 'pi pi-exclamation-triangle',
+      acceptIcon: "none",
+      rejectIcon: "none",
+      acceptLabel: this._translocoService.translate("sell.sell"),
+      rejectLabel: this._translocoService.translate("common.no"),
+      rejectButtonStyleClass: "p-button-text",
+      accept: this._onAcceptSellCard.bind(this, card, quantity),
+    });
+  }
+
+  private async _onAcceptSellCard(card: CardPreviewModel, quantity: number) {
+    try {
+      const inventory = (await this._inventoryService.upsertInventory(
+        card.card,
+        card.card.inventory!.quantity - quantity
+      ))[0]
+
+      card.card.inventory = inventory;
+      card.quantity = this._getExceededQuantity(card.card);
+
+      if (this._getExceededQuantity(card.card) <= 0) {
+        this._cardsMap.set(
+          card.card.setId,
+          {
+            cards: this._cardsMap.get(card.card.setId)?.cards.filter((c) => c.card.id !== card.card.id) || [],
+            loading: false
+          }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

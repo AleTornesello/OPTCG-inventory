@@ -8,7 +8,7 @@ import {TranslocoHttpLoader} from './transloco-loader';
 import {provideTransloco, Translation, TranslocoService,} from '@jsverse/transloco';
 import {lastValueFrom} from 'rxjs';
 import {provideTranslocoMessageformat} from "@jsverse/transloco-messageformat";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +45,7 @@ export const appConfig: ApplicationConfig = {
       deps: [TranslocoService],
       multi: true,
     },
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
 };
