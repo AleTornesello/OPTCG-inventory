@@ -49,7 +49,20 @@
           <app-ring-spinner></app-ring-spinner>
         </div>
       } @else if (statistic.totalCards > 0) {
-        <p-meterGroup [value]="getStatisticsForMeter(statistic)" [max]="getTotalCards(statistic)"/>
+        <p-meterGroup [value]="getStatisticsForMeter(statistic)" [max]="getTotalCards(statistic)">
+          <ng-template pTemplate="label">
+            <div class="meter-descriptions">
+              @for (meter of getStatisticsForMeter(statistic); track $index) {
+                <div class="meter-description">
+                  <span class="meter-color" [style.background-color]="meter.color"></span>
+                  <span class="meter-label">
+                    {{ meter.label }}:&nbsp;<b>{{ meter.value }}</b>&nbsp;({{  meter.value ? (meter.value / getTotalCards(statistic) * 100 | number: '1.0-0') : 0 }}%)
+                  </span>
+                </div>
+              }
+            </div>
+          </ng-template>
+        </p-meterGroup>
       } @else {
         <p class="no-data">{{ "statistics.noData" | transloco }}</p>
       }

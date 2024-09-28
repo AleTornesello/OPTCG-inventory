@@ -15,6 +15,7 @@ import {
   UserSettingsModel,
   UserSettingsValueSingleNumber
 } from "../../../settings/models/user-settings.model";
+import {DecimalPipe} from "@angular/common";
 
 interface Statistic {
   id: string;
@@ -36,7 +37,8 @@ interface Statistic {
     TranslocoPipe,
     RingSpinnerComponent,
     CheckboxComponent,
-    FormsModule
+    FormsModule,
+    DecimalPipe
   ],
   templateUrl: './statistics-page.component.html',
   styleUrl: './statistics-page.component.scss'
