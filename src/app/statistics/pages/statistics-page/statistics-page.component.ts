@@ -16,6 +16,8 @@ import {
   UserSettingsValueSingleNumber
 } from "../../../settings/models/user-settings.model";
 import {DecimalPipe} from "@angular/common";
+import {SkeletonModule} from "primeng/skeleton";
+import {RandomOffsetPipe} from "../../../shared/pipes/random-offset.pipe";
 
 interface Statistic {
   id: string;
@@ -38,7 +40,9 @@ interface Statistic {
     RingSpinnerComponent,
     CheckboxComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    SkeletonModule,
+    RandomOffsetPipe
   ],
   templateUrl: './statistics-page.component.html',
   styleUrl: './statistics-page.component.scss'
