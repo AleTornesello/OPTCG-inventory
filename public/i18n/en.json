@@ -131,7 +131,8 @@
     "filters": {
       "includeSpecial": "Include special cards",
       "includeAlternateArt": "Include alternate art cards",
-      "includeDon": "Include Don cards"
+      "includeDon": "Include Don cards",
+      "excludeExcess": "Exclude excess cards"
     }
   },
   "sell": {

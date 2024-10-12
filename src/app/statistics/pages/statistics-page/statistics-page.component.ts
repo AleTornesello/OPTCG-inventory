@@ -55,8 +55,10 @@ export class StatisticsPageComponent implements OnInit {
   public includeSpecial: boolean;
   public includeAlternateArt: boolean;
   public includeDon: boolean;
+  public excludeExcess: boolean;
 
   private _sets: SetModel[];
+  private _cardsPerSetMap: Map<string, CardModel[]>;
   private _settings: UserSettingsModel[];
 
   constructor(
@@ -70,9 +72,11 @@ export class StatisticsPageComponent implements OnInit {
     this.includeSpecial = false;
     this.includeAlternateArt = false;
     this.includeDon = false;
+    this.excludeExcess = true;
 
     this._sets = [];
     this._settings = [];
+    this._cardsPerSetMap = new Map();
   }
 
   public async ngOnInit() {
@@ -118,6 +122,7 @@ export class StatisticsPageComponent implements OnInit {
     sets.forEach((set) => {
       this._cardsService.getCardsList(undefined, {sets: [set.id]})
         .then(({data}) => {
+          this._cardsPerSetMap.set(set.id, data);
           const filteredCards = this._filterCardsByLocalFilters(data);
           this._updateLocalStatistics(set.id, filteredCards);
         });
@@ -186,12 +191,14 @@ export class StatisticsPageComponent implements OnInit {
             : 0
           : 0;
 
-      excessCards +=
-        card.inventory
-          ? card.inventory.quantity > this._getCardMinQuantityByCategory(card)
-            ? card.inventory.quantity - this._getCardMinQuantityByCategory(card)
-            : 0
-          : 0;
+      if (!excludeExcess) {
+        excessCards +=
+          card.inventory
+            ? card.inventory.quantity > this._getCardMinQuantityByCategory(card)
+              ? card.inventory.quantity - this._getCardMinQuantityByCategory(card)
+              : 0
+            : 0;
+      }
     });
 
     return {
@@ -262,7 +269,17 @@ export class StatisticsPageComponent implements OnInit {
       .reduce((acc, stat) => acc + stat.excessCards, 0);
   }
 
+  // Event triggered when a filter that requires the cards to be reloaded is changed
   public onFiltersChange(): void {
     this._updateStatistics(this._sets);
+  }
+
+  // Event triggered when a filter that NOT requires the cards to be reloaded is changed
+  public onLocalFiltersChange(): void {
+    for (const setId of this._cardsPerSetMap.keys()) {
+      const cards = this._cardsPerSetMap.get(setId) ?? [];
+      const filteredCards = this._filterCardsByLocalFilters(cards);
+      this._updateLocalStatistics(setId, filteredCards);
+    }
   }
 }

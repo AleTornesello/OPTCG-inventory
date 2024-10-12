@@ -37,6 +37,13 @@
         (onChangeValue)="onFiltersChange()"
       ></app-checkbox>
     </div>
+    <div class="filter-container">
+      <app-checkbox
+        [label]="'statistics.filters.excludeExcess' | transloco"
+        [(ngModel)]="excludeExcess"
+        (onChangeValue)="onLocalFiltersChange()"
+      ></app-checkbox>
+    </div>
   </div>
 </div>
 
