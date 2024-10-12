@@ -132,7 +132,8 @@
     "filters": {
       "includeSpecial": "Includi carte speciali",
       "includeAlternateArt": "Includi carte Alternate Art",
-      "includeDon": "Includi carte Don"
+      "includeDon": "Includi carte Don",
+      "excludeExcess": "Escludi carte in eccesso"
     }
   },
   "sell": {

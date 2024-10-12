@@ -20,21 +20,28 @@
       <app-checkbox
         [label]="'statistics.filters.includeSpecial' | transloco"
         [(ngModel)]="includeSpecial"
-        (onChangeValue)="onFiltersChange()"
+        (onChangeValue)="onLocalFiltersChange()"
       ></app-checkbox>
     </div>
     <div class="filter-container">
       <app-checkbox
         [label]="'statistics.filters.includeAlternateArt' | transloco"
         [(ngModel)]="includeAlternateArt"
-        (onChangeValue)="onFiltersChange()"
+        (onChangeValue)="onLocalFiltersChange()"
       ></app-checkbox>
     </div>
     <div class="filter-container">
       <app-checkbox
         [label]="'statistics.filters.includeDon' | transloco"
         [(ngModel)]="includeDon"
-        (onChangeValue)="onFiltersChange()"
+        (onChangeValue)="onLocalFiltersChange()"
+      ></app-checkbox>
+    </div>
+    <div class="filter-container">
+      <app-checkbox
+        [label]="'statistics.filters.excludeExcess' | transloco"
+        [(ngModel)]="excludeExcess"
+        (onChangeValue)="onLocalFiltersChange()"
       ></app-checkbox>
     </div>
   </div>
@@ -46,7 +53,15 @@
       <h2>{{ statistic.name }}</h2>
       @if (statistic.isLoading) {
         <div class="loader-container">
-          <app-ring-spinner></app-ring-spinner>
+          <p-skeleton width="100%" height="0.5rem"/>
+          <div class="skeleton-bar-items">
+            <p-skeleton shape="circle" size="0.75rem" />
+            <p-skeleton [width]="(100 | randomOffset) + 'px'" height="1rem"/>
+            <p-skeleton shape="circle" size="0.75rem" />
+            <p-skeleton [width]="(100 | randomOffset) + 'px'" height="1rem"/>
+            <p-skeleton shape="circle" size="0.75rem" />
+            <p-skeleton [width]="(100 | randomOffset) + 'px'" height="1rem"/>
+          </div>
         </div>
       } @else if (statistic.totalCards > 0) {
         <p-meterGroup [value]="getStatisticsForMeter(statistic)" [max]="getTotalCards(statistic)">

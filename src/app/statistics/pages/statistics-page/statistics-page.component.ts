@@ -16,6 +16,8 @@ import {
   UserSettingsValueSingleNumber
 } from "../../../settings/models/user-settings.model";
 import {DecimalPipe} from "@angular/common";
+import {SkeletonModule} from "primeng/skeleton";
+import {RandomOffsetPipe} from "../../../shared/pipes/random-offset.pipe";
 
 interface Statistic {
   id: string;
@@ -38,7 +40,9 @@ interface Statistic {
     RingSpinnerComponent,
     CheckboxComponent,
     FormsModule,
-    DecimalPipe
+    DecimalPipe,
+    SkeletonModule,
+    RandomOffsetPipe
   ],
   templateUrl: './statistics-page.component.html',
   styleUrl: './statistics-page.component.scss'
@@ -51,8 +55,10 @@ export class StatisticsPageComponent implements OnInit {
   public includeSpecial: boolean;
   public includeAlternateArt: boolean;
   public includeDon: boolean;
+  public excludeExcess: boolean;
 
   private _sets: SetModel[];
+  private _cardsPerSetMap: Map<string, CardModel[]>;
   private _settings: UserSettingsModel[];
 
   constructor(
@@ -66,9 +72,11 @@ export class StatisticsPageComponent implements OnInit {
     this.includeSpecial = false;
     this.includeAlternateArt = false;
     this.includeDon = false;
+    this.excludeExcess = true;
 
     this._sets = [];
     this._settings = [];
+    this._cardsPerSetMap = new Map();
   }
 
   public async ngOnInit() {
@@ -114,46 +122,54 @@ export class StatisticsPageComponent implements OnInit {
     sets.forEach((set) => {
       this._cardsService.getCardsList(undefined, {sets: [set.id]})
         .then(({data}) => {
-          const filteredCards = data.filter((card) => {
-            if (card.rarity === "ALTERNATE ART") {
-              return this.includeAlternateArt;
-            }
-
-            if (card.rarity === "SPECIAL") {
-              return this.includeSpecial;
-            }
-
-            if (card.category === "DON") {
-              return this.includeDon;
-            }
-
-            return true;
-          });
-
-          const statisticIndex = this.statistics.findIndex((statistic) => statistic.id === set.id);
-          if (statisticIndex < 0) {
-            return;
-          }
-
-          const {
-            totalCards,
-            completedCards,
-            onGoingCards,
-            excessCards
-          } = this._getStatsFromCards(filteredCards);
-
-          this.statistics[statisticIndex].totalCards = totalCards;
-          this.statistics[statisticIndex].singleCardsCount = filteredCards.length;
-          this.statistics[statisticIndex].singleCardsCompletedCount = filteredCards.filter((card) => card.inventory && card.inventory.quantity > 0).length;
-          this.statistics[statisticIndex].completedCards = completedCards;
-          this.statistics[statisticIndex].onGoingCards = onGoingCards;
-          this.statistics[statisticIndex].excessCards = excessCards;
-          this.statistics[statisticIndex].isLoading = false;
+          this._cardsPerSetMap.set(set.id, data);
+          const filteredCards = this._filterCardsByLocalFilters(data);
+          this._updateLocalStatistics(set.id, filteredCards);
         });
     })
   }
 
-  private _getStatsFromCards(cards: CardModel[]) {
+  private _filterCardsByLocalFilters(cards: CardModel[]) {
+    return cards.filter((card) => {
+      if (card.rarity === "ALTERNATE ART") {
+        return this.includeAlternateArt;
+      }
+
+      if (card.rarity === "SPECIAL") {
+        return this.includeSpecial;
+      }
+
+      if (card.category === "DON") {
+        return this.includeDon;
+      }
+
+      return true;
+    });
+  }
+
+  private _updateLocalStatistics(id: string, cards: CardModel[]) {
+    const statisticIndex = this.statistics.findIndex((statistic) => statistic.id === id);
+    if (statisticIndex < 0) {
+      return;
+    }
+
+    const {
+      totalCards,
+      completedCards,
+      onGoingCards,
+      excessCards
+    } = this._getStatsFromCards(cards, this.excludeExcess);
+
+    this.statistics[statisticIndex].totalCards = totalCards;
+    this.statistics[statisticIndex].singleCardsCount = cards.length;
+    this.statistics[statisticIndex].singleCardsCompletedCount = cards.filter((card) => card.inventory && card.inventory.quantity > 0).length;
+    this.statistics[statisticIndex].completedCards = completedCards;
+    this.statistics[statisticIndex].onGoingCards = onGoingCards;
+    this.statistics[statisticIndex].excessCards = excessCards;
+    this.statistics[statisticIndex].isLoading = false;
+  }
+
+  private _getStatsFromCards(cards: CardModel[], excludeExcess: boolean) {
     let totalCards: number = 0;
     let completedCards: number = 0;
     let onGoingCards: number = 0;
@@ -175,12 +191,14 @@ export class StatisticsPageComponent implements OnInit {
             : 0
           : 0;
 
-      excessCards +=
-        card.inventory
-          ? card.inventory.quantity > this._getCardMinQuantityByCategory(card)
-            ? card.inventory.quantity - this._getCardMinQuantityByCategory(card)
-            : 0
-          : 0;
+      if (!excludeExcess) {
+        excessCards +=
+          card.inventory
+            ? card.inventory.quantity > this._getCardMinQuantityByCategory(card)
+              ? card.inventory.quantity - this._getCardMinQuantityByCategory(card)
+              : 0
+            : 0;
+      }
     });
 
     return {
@@ -251,7 +269,17 @@ export class StatisticsPageComponent implements OnInit {
       .reduce((acc, stat) => acc + stat.excessCards, 0);
   }
 
+  // Event triggered when a filter that requires the cards to be reloaded is changed
   public onFiltersChange(): void {
     this._updateStatistics(this._sets);
+  }
+
+  // Event triggered when a filter that NOT requires the cards to be reloaded is changed
+  public onLocalFiltersChange(): void {
+    for (const setId of this._cardsPerSetMap.keys()) {
+      const cards = this._cardsPerSetMap.get(setId) ?? [];
+      const filteredCards = this._filterCardsByLocalFilters(cards);
+      this._updateLocalStatistics(setId, filteredCards);
+    }
   }
 }
