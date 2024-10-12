@@ -118,46 +118,53 @@ export class StatisticsPageComponent implements OnInit {
     sets.forEach((set) => {
       this._cardsService.getCardsList(undefined, {sets: [set.id]})
         .then(({data}) => {
-          const filteredCards = data.filter((card) => {
-            if (card.rarity === "ALTERNATE ART") {
-              return this.includeAlternateArt;
-            }
-
-            if (card.rarity === "SPECIAL") {
-              return this.includeSpecial;
-            }
-
-            if (card.category === "DON") {
-              return this.includeDon;
-            }
-
-            return true;
-          });
-
-          const statisticIndex = this.statistics.findIndex((statistic) => statistic.id === set.id);
-          if (statisticIndex < 0) {
-            return;
-          }
-
-          const {
-            totalCards,
-            completedCards,
-            onGoingCards,
-            excessCards
-          } = this._getStatsFromCards(filteredCards);
-
-          this.statistics[statisticIndex].totalCards = totalCards;
-          this.statistics[statisticIndex].singleCardsCount = filteredCards.length;
-          this.statistics[statisticIndex].singleCardsCompletedCount = filteredCards.filter((card) => card.inventory && card.inventory.quantity > 0).length;
-          this.statistics[statisticIndex].completedCards = completedCards;
-          this.statistics[statisticIndex].onGoingCards = onGoingCards;
-          this.statistics[statisticIndex].excessCards = excessCards;
-          this.statistics[statisticIndex].isLoading = false;
+          const filteredCards = this._filterCardsByLocalFilters(data);
+          this._updateLocalStatistics(set.id, filteredCards);
         });
     })
   }
 
-  private _getStatsFromCards(cards: CardModel[]) {
+  private _filterCardsByLocalFilters(cards: CardModel[]) {
+    return cards.filter((card) => {
+      if (card.rarity === "ALTERNATE ART") {
+        return this.includeAlternateArt;
+      }
+
+      if (card.rarity === "SPECIAL") {
+        return this.includeSpecial;
+      }
+
+      if (card.category === "DON") {
+        return this.includeDon;
+      }
+
+      return true;
+    });
+  }
+
+  private _updateLocalStatistics(id: string, cards: CardModel[]) {
+    const statisticIndex = this.statistics.findIndex((statistic) => statistic.id === id);
+    if (statisticIndex < 0) {
+      return;
+    }
+
+    const {
+      totalCards,
+      completedCards,
+      onGoingCards,
+      excessCards
+    } = this._getStatsFromCards(cards, this.excludeExcess);
+
+    this.statistics[statisticIndex].totalCards = totalCards;
+    this.statistics[statisticIndex].singleCardsCount = cards.length;
+    this.statistics[statisticIndex].singleCardsCompletedCount = cards.filter((card) => card.inventory && card.inventory.quantity > 0).length;
+    this.statistics[statisticIndex].completedCards = completedCards;
+    this.statistics[statisticIndex].onGoingCards = onGoingCards;
+    this.statistics[statisticIndex].excessCards = excessCards;
+    this.statistics[statisticIndex].isLoading = false;
+  }
+
+  private _getStatsFromCards(cards: CardModel[], excludeExcess: boolean) {
     let totalCards: number = 0;
     let completedCards: number = 0;
     let onGoingCards: number = 0;
