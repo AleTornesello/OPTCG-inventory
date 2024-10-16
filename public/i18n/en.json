@@ -118,7 +118,16 @@
     "showOnlyOwned": "Show only owned cards",
     "foil": "Foil",
     "cost": "Cost",
-    "power": "Power"
+    "power": "Power",
+    "filters": {
+      "search": "Search: {searchText}",
+      "color": "Color: {color}",
+      "set": "Set: {set}",
+      "rarity": "Rarity: {rarity}",
+      "power": "Power: {min}-{max}",
+      "cost": "Cost: {min}-{max}",
+      "onlyOwned": "Only owned cards"
+    }
   },
   "statistics": {
     "statistics": "Statistics",
