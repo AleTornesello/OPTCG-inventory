@@ -1,0 +1,15 @@
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 100px;
+  background-color: var(--primary-500);
+  color: var(--primary-text-color);
+  font-size: 0.9rem;
+  line-height: 0.9rem;
+
+  .close {
+    cursor: pointer;
+  }
+}

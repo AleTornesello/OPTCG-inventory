@@ -119,7 +119,16 @@
     "showOnlyOwned": "Mostra solo le carte possedute",
     "foil": "Foil",
     "cost": "Costo",
-    "power": "Potenza"
+    "power": "Potenza",
+    "filters": {
+      "search": "Cerca: {searchText}",
+      "color": "Colore: {color}",
+      "set": "Set: {set}",
+      "rarity": "Rarità: {rarity}",
+      "power": "Potenza: {min}-{max}",
+      "cost": "Costo: {min}-{max}",
+      "onlyOwned": "Solo carte possedute"
+    }
   },
   "statistics": {
     "statistics": "Statistiche",
