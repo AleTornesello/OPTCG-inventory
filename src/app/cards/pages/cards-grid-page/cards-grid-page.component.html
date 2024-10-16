@@ -3,9 +3,6 @@
     <fa-icon [icon]="faFilter"></fa-icon>
     <div class="label">
       <span>{{ "common.filters" | transloco }}</span>
-      @if (activeFiltersCount > 0) {
-        <span class="active-filters-badge">{{ activeFiltersCount }}</span>
-      }
     </div>
     <fa-icon class="chevron" [icon]="faChevronUp"></fa-icon>
   </button>
@@ -85,6 +82,15 @@
       ></app-button>
     </div>
   </div>
+</div>
+
+<div class="applied-filters-chips-container">
+  @for (filter of getAppliedFiltersForChips(); track $index) {
+    <app-chip
+      [label]="filter.label"
+      (remove)="onFilterChipRemoveClick(filter)"
+    ></app-chip>
+  }
 </div>
 
 <div appScrollNearEnd (nearEnd)="onNearEndScroll()">

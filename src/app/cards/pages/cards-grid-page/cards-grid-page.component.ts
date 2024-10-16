@@ -5,7 +5,7 @@ import {CardPreviewComponent, CardPreviewModel} from "../../components/card-prev
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
-import {faChevronUp, faFilter, faPlus, faMinus} from "@fortawesome/free-solid-svg-icons";
+import {faChevronUp, faFilter, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {DropdownComponent} from "../../../shared/components/inputs/dropdown/dropdown.component";
 import {SelectItem} from "primeng/api";
@@ -23,6 +23,19 @@ import {InputSliderComponent} from "../../../shared/components/inputs/input-slid
 import {CardsGridComponent} from "../../components/cards-grid/cards-grid.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
 import {SkeletonModule} from "primeng/skeleton";
+import {ChipModule} from "primeng/chip";
+import { v4 as uuidv4 } from 'uuid';
+import {ChipComponent} from "../../../shared/components/chip/chip.component";
+
+type FilterType = 'colors' | 'sets' | 'rarities' | 'power' | 'costs' | 'searchText' | 'showOnlyOwned';
+
+interface FilterChip {
+  // Identifier used for local tracking
+  id: string;
+  label: string;
+  type: FilterType;
+  value?: string | number | boolean;
+}
 
 @Component({
   selector: 'app-cards-grid-page',
@@ -43,6 +56,8 @@ import {SkeletonModule} from "primeng/skeleton";
     CardsGridComponent,
     InputNumberComponent,
     SkeletonModule,
+    ChipModule,
+    ChipComponent,
   ],
   templateUrl: './cards-grid-page.component.html',
   styleUrl: './cards-grid-page.component.scss'
@@ -61,10 +76,19 @@ export class CardsGridPageComponent implements OnInit {
   public selectedSets: string[];
   public selectedRarities: string[];
   public searchText: string;
-  public isLoadingInProgress: boolean;
   public showOnlyOwnedFilter: boolean;
   public selectedPower: number[];
   public selectedCosts: number[];
+
+  public appliedSelectedColors: string[];
+  public appliedSelectedSets: string[];
+  public appliedSelectedRarities: string[];
+  public appliedSearchText: string;
+  public appliedShowOnlyOwnedFilter: boolean;
+  public appliedSelectedPower: number[];
+  public appliedSelectedCosts: number[];
+
+  public isLoadingInProgress: boolean;
 
   protected readonly faFilter = faFilter;
   protected readonly faChevronUp = faChevronUp;
@@ -99,39 +123,60 @@ export class CardsGridPageComponent implements OnInit {
     this.showOnlyOwnedFilter = false;
     this.selectedPower = [MIN_POWER, MAX_POWER];
     this.selectedCosts = [MIN_COST, MAX_COST];
+
+    this.appliedSelectedColors = this.selectedColors;
+    this.appliedSelectedSets = this.selectedSets;
+    this.appliedSelectedRarities = this.selectedRarities;
+    this.appliedSearchText = this.searchText;
+    this.appliedShowOnlyOwnedFilter = this.showOnlyOwnedFilter;
+    this.appliedSelectedPower = [...this.selectedPower];
+    this.appliedSelectedCosts = [...this.selectedCosts];
   }
 
   public ngOnInit() {
     this._route.queryParams.subscribe(async (params) => {
-      this.searchText = params['searchText'] ?? ''
+      this.searchText = params['searchText'] ?? '';
+      this.appliedSearchText = this.searchText;
+
       this.selectedColors = params['colors']
         ? Array.isArray(params['colors'])
           ? params['colors']
           : [params['colors']]
         : [];
+      this.appliedSelectedColors = this.selectedColors;
+
       this.selectedSets = params['sets']
         ? Array.isArray(params['sets'])
           ? params['sets']
           : [params['sets']]
         : [];
+      this.appliedSelectedSets = this.selectedSets;
+
       this.selectedRarities = params['rarities']
         ? Array.isArray(params['rarities'])
           ? params['rarities']
           : [params['rarities']]
         : [];
+      this.appliedSelectedRarities = this.selectedRarities;
+
       this.showOnlyOwnedFilter = params['showOnlyOwned'] !== null && params['showOnlyOwned'] !== undefined
         ? params['showOnlyOwned'] === 'true'
         : false;
+      this.appliedShowOnlyOwnedFilter = this.showOnlyOwnedFilter;
+
       this.selectedPower = params['power']
         ? Array.isArray(params['power'])
           ? params['power'].map((power) => typeof power === 'string' ? parseInt(power, 10) : power)
           : [params['power']]
         : [MIN_POWER, MAX_POWER];
+      this.appliedSelectedPower = [...this.selectedPower];
+
       this.selectedCosts = params['costs']
         ? Array.isArray(params['costs'])
           ? params['costs'].map((cost) => typeof cost === 'string' ? parseInt(cost, 10) : cost)
           : [params['costs']]
         : [MIN_COST, MAX_COST];
+      this.appliedSelectedCosts = [...this.selectedCosts];
 
       await Promise.all([
         this._loadCards(),
@@ -152,13 +197,13 @@ export class CardsGridPageComponent implements OnInit {
         pageSize: this._cardsPerPage,
         page: this._page
       }, {
-        searchText: this.searchText,
-        colors: this.selectedColors,
-        sets: this.selectedSets,
-        rarities: this.selectedRarities,
-        showOnlyOwned: this.showOnlyOwnedFilter,
-        power: this.selectedPower,
-        costs: this.selectedCosts
+        searchText: this.appliedSearchText,
+        colors: this.appliedSelectedColors,
+        sets: this.appliedSelectedSets,
+        rarities: this.appliedSelectedRarities,
+        showOnlyOwned: this.appliedShowOnlyOwnedFilter,
+        power: this.appliedSelectedPower,
+        costs: this.appliedSelectedCosts
       });
 
       this._page++;
@@ -250,22 +295,37 @@ export class CardsGridPageComponent implements OnInit {
     this.filtersPanel?.nativeElement.classList.toggle('active');
   }
 
-  public async onFiltersApplyClick() {
+  private _resetLocalCardsPagination() {
     this.cards = [];
     this._page = 0;
     this._cardsTotalCount = null;
+  }
+
+  private async _updateFiltersQueryParams() {
     await this._router.navigate([], {
       relativeTo: this._route,
       queryParams: {
-        sets: this.selectedSets.length > 0 ? this.selectedSets : undefined,
-        colors: this.selectedColors.length > 0 ? this.selectedColors : undefined,
-        rarities: this.selectedRarities.length > 0 ? this.selectedRarities : undefined,
-        searchText: this.searchText !== '' && this.searchText !== undefined && this.searchText !== null ? this.searchText : undefined,
-        showOnlyOwned: this.showOnlyOwnedFilter ? this.showOnlyOwnedFilter : undefined,
-        power: this.selectedPower.length === 2 && (this.selectedPower[0] !== MIN_POWER || this.selectedPower[1] !== MAX_POWER) ? this.selectedPower : undefined,
-        costs: this.selectedCosts.length === 2 && (this.selectedCosts[0] !== MIN_POWER || this.selectedCosts[1] !== MAX_POWER) ? this.selectedCosts : undefined
+        sets: this.appliedSelectedSets.length > 0 ? this.appliedSelectedSets : undefined,
+        colors: this.appliedSelectedColors.length > 0 ? this.appliedSelectedColors : undefined,
+        rarities: this.appliedSelectedRarities.length > 0 ? this.appliedSelectedRarities : undefined,
+        searchText: this.appliedSearchText !== '' && this.appliedSearchText !== undefined && this.appliedSearchText !== null ? this.appliedSearchText : undefined,
+        showOnlyOwned: this.appliedShowOnlyOwnedFilter ? this.appliedShowOnlyOwnedFilter : undefined,
+        power: this.appliedSelectedPower.length === 2 && (this.appliedSelectedPower[0] !== MIN_POWER || this.appliedSelectedPower[1] !== MAX_POWER) ? this.appliedSelectedPower : undefined,
+        costs: this.appliedSelectedCosts.length === 2 && (this.appliedSelectedCosts[0] !== MIN_POWER || this.appliedSelectedCosts[1] !== MAX_POWER) ? this.appliedSelectedCosts : undefined
       }
     });
+  }
+
+  public async onFiltersApplyClick() {
+    this._resetLocalCardsPagination();
+    this.appliedSearchText = this.searchText;
+    this.appliedSelectedColors = this.selectedColors;
+    this.appliedSelectedSets = this.selectedSets;
+    this.appliedSelectedRarities = this.selectedRarities;
+    this.appliedShowOnlyOwnedFilter = this.showOnlyOwnedFilter;
+    this.appliedSelectedPower = [...this.selectedPower];
+    this.appliedSelectedCosts = [...this.selectedCosts];
+    await this._updateFiltersQueryParams();
     await this._loadCards();
   }
 
@@ -310,20 +370,6 @@ export class CardsGridPageComponent implements OnInit {
     }
   }
 
-  public get activeFiltersCount() {
-    let count = 0;
-    if (this.selectedColors.length > 0) {
-      count += this.selectedColors.length;
-    }
-    if (this.selectedSets.length > 0) {
-      count += this.selectedSets.length;
-    }
-    if (this.searchText) {
-      count++;
-    }
-    return count;
-  }
-
   public async onPlusClick(card: CardPreviewModel) {
     card.quantity++;
     await this.onQuantityIncrease(card);
@@ -340,5 +386,116 @@ export class CardsGridPageComponent implements OnInit {
 
   public canDecreaseQuantity(card: CardPreviewModel): boolean {
     return card.quantity > 0;
+  }
+
+  public getAppliedFiltersForChips(): FilterChip[] {
+    const filters: FilterChip[] = [];
+    if (this.appliedSearchText !== '' && this.appliedSearchText !== undefined && this.appliedSearchText !== null) {
+      filters.push({
+        id: uuidv4(),
+        label: this._translateService.translate('cards.filters.search', {searchText: this.appliedSearchText}),
+        type: 'searchText'
+      });
+    }
+    if (this.appliedSelectedColors.length > 0) {
+      filters.push(...this.appliedSelectedColors.map((color) => {
+        const translatedColor = this._translateService.translate(`cards.colors.${this._stringManipulationService.toSnakeCase(color)}`);
+
+        return {
+          id: uuidv4(),
+          label: this._translateService.translate('cards.filters.color', {color: translatedColor}),
+          type: "colors" as FilterType,
+          value: color
+        }
+      }));
+    }
+    if (this.appliedSelectedSets.length > 0) {
+      filters.push(...this.appliedSelectedSets.map((set) => {
+        const setName = this.cardSets.find((cardSet) => cardSet.value === set)?.label;
+
+        return {
+          id: uuidv4(),
+          label: this._translateService.translate('cards.filters.set', {set: setName}),
+          type: 'sets' as FilterType,
+          value: set
+        }
+      }));
+    }
+    if (this.appliedSelectedRarities.length > 0) {
+      filters.push(...this.appliedSelectedRarities.map((rarity) => {
+        const translatedRarity = this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`);
+
+        return {
+          id: uuidv4(),
+          label: this._translateService.translate('cards.filters.rarity', {rarity: translatedRarity}),
+          type: 'rarities' as FilterType,
+          value: rarity
+        }
+      }));
+    }
+    if (this.appliedSelectedPower.length === 2 && (this.appliedSelectedPower[0] !== MIN_POWER || this.appliedSelectedPower[1] !== MAX_POWER)) {
+      filters.push({
+        id: uuidv4(),
+        label: this._translateService.translate('cards.filters.power', {
+          min: this.appliedSelectedPower[0],
+          max: this.appliedSelectedPower[1]
+        }),
+        type: 'power',
+      });
+
+    }
+    if (this.appliedSelectedCosts.length === 2 && (this.appliedSelectedCosts[0] !== MIN_COST || this.appliedSelectedCosts[1] !== MAX_COST)) {
+      filters.push({
+        id: uuidv4(),
+        label: this._translateService.translate('cards.filters.cost', {
+          min: this.appliedSelectedCosts[0],
+          max: this.appliedSelectedCosts[1]
+        }),
+        type: 'costs',
+      });
+    }
+    if (this.appliedShowOnlyOwnedFilter) {
+      filters.push({
+        id: uuidv4(),
+        label: this._translateService.translate('cards.filters.onlyOwned'),
+        type: 'showOnlyOwned'
+      });
+    }
+    return filters;
+  }
+
+  public async onFilterChipRemoveClick(filter: FilterChip) {
+    switch (filter.type) {
+      case 'searchText':
+        this.searchText = '';
+        this.appliedSearchText = '';
+        break;
+      case 'colors':
+        this.selectedColors = this.selectedColors.filter((color) => color !== filter.value);
+        this.appliedSelectedColors = this.appliedSelectedColors.filter((color) => color !== filter.value);
+        break;
+      case 'sets':
+        this.selectedSets = this.selectedSets.filter((set) => set !== filter.value);
+        this.appliedSelectedSets = this.appliedSelectedSets.filter((set) => set !== filter.value);
+        break;
+      case 'rarities':
+        this.selectedRarities = this.selectedRarities.filter((rarity) => rarity !== filter.value);
+        this.appliedSelectedRarities = this.appliedSelectedRarities.filter((rarity) => rarity !== filter.value);
+        break;
+      case 'power':
+        this.selectedPower = [MIN_POWER, MAX_POWER];
+        this.appliedSelectedPower = [MIN_POWER, MAX_POWER];
+        break;
+      case 'costs':
+        this.selectedCosts = [MIN_COST, MAX_COST];
+        this.appliedSelectedCosts = [MIN_COST, MAX_COST];
+        break;
+      case 'showOnlyOwned':
+        this.showOnlyOwnedFilter = false;
+        this.appliedShowOnlyOwnedFilter = false;
+        break;
+    }
+    this._resetLocalCardsPagination();
+    await this._updateFiltersQueryParams();
   }
 }

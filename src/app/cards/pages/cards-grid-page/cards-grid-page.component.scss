@@ -85,6 +85,13 @@
   }
 }
 
+.applied-filters-chips-container {
+  margin: 0 1rem 1rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .loader-container {
   width: 100%;
   display: flex;
