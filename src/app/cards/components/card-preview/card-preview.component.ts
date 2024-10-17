@@ -1,8 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CardModel} from "../../models/card.model";
-import {CardsService} from "../../services/cards.service";
 import {ButtonComponent} from "../../../shared/components/button/button.component";
-import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {InputTextComponent} from "../../../shared/components/inputs/input-text/input-text.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
 import {LowerCasePipe, NgClass} from "@angular/common";
@@ -34,8 +32,11 @@ export interface CardPreviewModel {
 export class CardPreviewComponent {
   @Input({required: true}) card!: CardPreviewModel;
 
-  constructor(
-  ) {
+  constructor() {
+  }
+
+  public get cardRarity(): string | null {
+    return this.card.card.properties.find((p) => p.key === 'rarity')?.value ?? null;
   }
 
   public get isFoil(): boolean {

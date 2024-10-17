@@ -4,6 +4,9 @@ import {CardEntity} from "../entities/card.entity";
 import {CardMapper} from "../mappers/card.mapper";
 import {QueryParserService} from "../../shared/services/query-parser.service";
 import {MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../models/card.model";
+import {CardPropertiesService} from "./card_properties.service";
+import {CardPropertyModel} from "../models/card_property.model";
+import {CardPropertyEntity} from "../entities/card_property.entity";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,8 @@ export class CardsService {
 
   constructor(
     private _supabaseService: SupabaseService,
-    private _queryParserService: QueryParserService
+    private _queryParserService: QueryParserService,
+    private _cardPropertiesService: CardPropertiesService
   ) {
   }
 
@@ -25,7 +29,7 @@ export class CardsService {
     power?: number[]
     costs?: number[]
   }) {
-    let selectColumns = "*, set:set_id(*), properties:card_properties(*)";
+    let selectColumns = "id, code, name, image_url, set:set_id(*), properties:card_properties!inner(key, value)";
 
     selectColumns = `${selectColumns}${filters?.showOnlyOwned
       ? ", inventory!inner(*)"
@@ -44,7 +48,11 @@ export class CardsService {
     if (filters) {
       if (filters.colors && filters.colors.length > 0) {
         query = query
-          .or(filters.colors.map((color) => `color.cs.{${color}}`).join(', '));
+          .or(filters.colors
+              .map((color) => `and(key.eq.color, value.eq.${color})`)
+              .join(', '),
+            {referencedTable: 'properties'}
+          )
       }
 
       if (filters.sets && filters.sets.length > 0) {
@@ -61,7 +69,11 @@ export class CardsService {
 
       if (filters.rarities && filters.rarities.length > 0) {
         query = query
-          .in('rarity', filters.rarities);
+          .or(filters.rarities
+              .map((rarity) => `and(key.eq.rarity, value.eq.${rarity})`)
+              .join(', '),
+            {referencedTable: 'properties'}
+          )
       }
 
       if (filters.showOnlyOwned) {
@@ -84,11 +96,21 @@ export class CardsService {
 
     const {data, error, count} = await query.returns<CardEntity[]>();
 
+    // Workaround: reload card properties because the search query
+    // return only the properties that match the filters
+    let properties: Map<string, CardPropertyEntity[]> = new Map();
+    if (data) {
+      properties = new Map((await Promise.all(data.map((card) => this._cardPropertiesService.getCardPropertiesByCardId(card.id)))).map((p) => [p[0].card_id, p]));
+    }
+
     if (error) {
       throw error;
     }
 
-    return {data: data.map((card) => CardMapper.toCardModel(card)), count};
+    return {data: data.map((card) => CardMapper.toCardModel({
+        ...card,
+        properties: properties.get(card.id) ?? []
+      })), count};
   }
 
   public async getCardColors() {

@@ -7,7 +7,8 @@ export class CardPropertyMapper {
     return new CardPropertyModel(
       set.id,
       set.key,
-      set.value.value
+      this._toModelValueParser(set.key, set.value),
+      set.card_id
     );
   }
 
@@ -15,9 +16,23 @@ export class CardPropertyMapper {
     return new CardPropertyEntity(
       set.id,
       set.key,
-      {
-        value: set.value
-      }
+      set.value,
+      set.cardId
     );
+  }
+
+  private static _toModelValueParser(key: string, value: any) {
+    switch (key) {
+      case 'foil':
+      case 'alternate_art':
+      case 'manga_art':
+        return value === 'true';
+      case 'power':
+      case 'counter':
+      case 'art':
+        return parseInt(value, 10);
+      default:
+        return value;
+    }
   }
 }
