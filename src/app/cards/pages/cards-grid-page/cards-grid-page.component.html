@@ -15,61 +15,61 @@
           [clear]="true"
         ></app-input-text>
       </div>
-      <div class="filter">
-        <app-dropdown
-          [options]="cardColors"
-          label="{{ 'cards.color' | transloco }}"
-          [multipleSelect]="true"
-          [(ngModel)]="selectedColors"
-          [showClear]="true"
-        ></app-dropdown>
-      </div>
-      <div class="filter">
-        <app-dropdown
-          [options]="cardSets"
-          label="{{ 'cards.set' | transloco }}"
-          [multipleSelect]="true"
-          [(ngModel)]="selectedSets"
-          [showClear]="true"
-        ></app-dropdown>
-      </div>
-      <div class="filter">
-        <app-dropdown
-          [options]="cardRarities"
-          label="{{ 'cards.rarity' | transloco }}"
-          [multipleSelect]="true"
-          [(ngModel)]="selectedRarities"
-          [showClear]="true"
-        ></app-dropdown>
-      </div>
-      <div class="filter">
-        <app-input-slider
-          label="{{ 'cards.power' | transloco }}"
-          [range]="true"
-          [min]="0"
-          [max]="12000"
-          [step]="1000"
-          [showRange]="true"
-          [(ngModel)]="selectedPower"
-        ></app-input-slider>
-      </div>
-      <div class="filter">
-        <app-input-slider
-          label="{{ 'cards.cost' | transloco }}"
-          [range]="true"
-          [min]="0"
-          [max]="10"
-          [step]="1"
-          [showRange]="true"
-          [(ngModel)]="selectedCosts"
-        ></app-input-slider>
-      </div>
-      <div class="filter">
-        <app-checkbox
-          label="{{ 'cards.showOnlyOwned' | transloco }}"
-          [(ngModel)]="showOnlyOwnedFilter"
-        ></app-checkbox>
-      </div>
+<!--      <div class="filter">-->
+<!--        <app-dropdown-->
+<!--          [options]="cardColors"-->
+<!--          label="{{ 'cards.color' | transloco }}"-->
+<!--          [multipleSelect]="true"-->
+<!--          [(ngModel)]="selectedColors"-->
+<!--          [showClear]="true"-->
+<!--        ></app-dropdown>-->
+<!--      </div>-->
+<!--      <div class="filter">-->
+<!--        <app-dropdown-->
+<!--          [options]="cardSets"-->
+<!--          label="{{ 'cards.set' | transloco }}"-->
+<!--          [multipleSelect]="true"-->
+<!--          [(ngModel)]="selectedSets"-->
+<!--          [showClear]="true"-->
+<!--        ></app-dropdown>-->
+<!--      </div>-->
+<!--      <div class="filter">-->
+<!--        <app-dropdown-->
+<!--          [options]="cardRarities"-->
+<!--          label="{{ 'cards.rarity' | transloco }}"-->
+<!--          [multipleSelect]="true"-->
+<!--          [(ngModel)]="selectedRarities"-->
+<!--          [showClear]="true"-->
+<!--        ></app-dropdown>-->
+<!--      </div>-->
+<!--      <div class="filter">-->
+<!--        <app-input-slider-->
+<!--          label="{{ 'cards.power' | transloco }}"-->
+<!--          [range]="true"-->
+<!--          [min]="0"-->
+<!--          [max]="12000"-->
+<!--          [step]="1000"-->
+<!--          [showRange]="true"-->
+<!--          [(ngModel)]="selectedPower"-->
+<!--        ></app-input-slider>-->
+<!--      </div>-->
+<!--      <div class="filter">-->
+<!--        <app-input-slider-->
+<!--          label="{{ 'cards.cost' | transloco }}"-->
+<!--          [range]="true"-->
+<!--          [min]="0"-->
+<!--          [max]="10"-->
+<!--          [step]="1"-->
+<!--          [showRange]="true"-->
+<!--          [(ngModel)]="selectedCosts"-->
+<!--        ></app-input-slider>-->
+<!--      </div>-->
+<!--      <div class="filter">-->
+<!--        <app-checkbox-->
+<!--          label="{{ 'cards.showOnlyOwned' | transloco }}"-->
+<!--          [(ngModel)]="showOnlyOwnedFilter"-->
+<!--        ></app-checkbox>-->
+<!--      </div>-->
     </div>
     <div class="filters-actions">
       <app-button
@@ -105,7 +105,7 @@
           [disabled]="!canDecreaseQuantity(card)"
           (onClick)="onMinusClick(card)"
         ></app-button>
-        <app-input-number [value]="card.quantity"></app-input-number>
+        <app-input-number [value]="card.quantity" (onChangeValue)="onQuantityChange($event, card)"></app-input-number>
         <app-button
           [icon]="faPlus"
           size="small"
