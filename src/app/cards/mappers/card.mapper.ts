@@ -2,6 +2,7 @@ import {CardEntity} from "../entities/card.entity";
 import {CardModel} from "../models/card.model";
 import {SetMapper} from "./set.mapper";
 import {InventoryMapper} from "./inventory.mapper";
+import {CardPropertyMapper} from "./card_property.mapper";
 
 export class CardMapper {
 
@@ -30,6 +31,7 @@ export class CardMapper {
           ? InventoryMapper.toInventoryModel(card.inventory[0])
           : null
         : null,
+      card.properties.map((p) => CardPropertyMapper.toCardPropertyModel(p)),
       card.created_at,
       card.created_by,
     );
@@ -60,6 +62,7 @@ export class CardMapper {
           ? InventoryMapper.toInventoryEntity(card.inventory[0])
           : null
         : null,
+      card.properties.map((p) => CardPropertyMapper.toCardPropertyEntity(p)),
       card.createdAt.toISOString(),
       card.createdBy,
     );

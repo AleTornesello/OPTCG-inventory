@@ -5,7 +5,8 @@ import {Injectable} from '@angular/core';
 })
 export class StringManipulationService {
 
-  constructor() { }
+  constructor() {
+  }
 
   public camelToKebab(str: string): string {
     return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -25,5 +26,17 @@ export class StringManipulationService {
 
   public toSnakeCase(str: string): string {
     return str.toLowerCase().replace(" ", "_");
+  }
+
+  public toCamelCase(str: string): string {
+    return str
+      .split(" ")
+      .map((s, i) => {
+        if (i === 0) {
+          return s.toLowerCase();
+        }
+        return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
+      })
+      .join("");
   }
 }

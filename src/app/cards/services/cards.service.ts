@@ -25,9 +25,11 @@ export class CardsService {
     power?: number[]
     costs?: number[]
   }) {
-    const selectColumns = filters?.showOnlyOwned
-      ? "*, set:set_id(*), inventory!inner(*)"
-      : "*, set:set_id(*), inventory(*)"
+    let selectColumns = "*, set:set_id(*), properties:card_properties(*)";
+
+    selectColumns = `${selectColumns}${filters?.showOnlyOwned
+      ? ", inventory!inner(*)"
+      : ", inventory(*)"}`;
 
     let query = this._supabaseService.supabase
       .from('cards')

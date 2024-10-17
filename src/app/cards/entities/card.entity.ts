@@ -1,5 +1,6 @@
 import {SetEntity} from "./set.entity";
 import {InventoryEntity} from "./inventory.entity";
+import {CardPropertyEntity} from "./card_property.entity";
 
 export class CardEntity {
   id: string;
@@ -21,6 +22,7 @@ export class CardEntity {
   foil: boolean;
   set: SetEntity;
   inventory: InventoryEntity | null;
+  properties: CardPropertyEntity[];
   created_at: string;
   created_by: string;
 
@@ -44,6 +46,7 @@ export class CardEntity {
     foil: boolean,
     set: SetEntity,
     inventory: InventoryEntity | null,
+    properties: CardPropertyEntity[],
     created_at: string,
     created_by: string,
   ) {
@@ -66,6 +69,7 @@ export class CardEntity {
     this.foil = foil;
     this.set = set;
     this.inventory = inventory;
+    this.properties = properties;
     this.created_at = created_at;
     this.created_by = created_by;
   }

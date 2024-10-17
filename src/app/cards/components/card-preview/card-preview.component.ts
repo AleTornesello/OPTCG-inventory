@@ -8,6 +8,7 @@ import {InputNumberComponent} from "../../../shared/components/inputs/input-numb
 import {LowerCasePipe, NgClass} from "@angular/common";
 import {TranslocoPipe} from "@jsverse/transloco";
 import {SnakeCasePipe} from "../../../shared/pipes/snake-case.pipe";
+import {CamelCasePipe} from "../../../shared/pipes/camel-case.pipe";
 
 export interface CardPreviewModel {
   card: CardModel;
@@ -24,7 +25,8 @@ export interface CardPreviewModel {
     NgClass,
     LowerCasePipe,
     TranslocoPipe,
-    SnakeCasePipe
+    SnakeCasePipe,
+    CamelCasePipe
   ],
   templateUrl: './card-preview.component.html',
   styleUrl: './card-preview.component.scss'
@@ -34,5 +36,17 @@ export class CardPreviewComponent {
 
   constructor(
   ) {
+  }
+
+  public get isFoil(): boolean {
+    return this.card.card.properties.some((p) => p.key === 'foil' && p.value);
+  }
+
+  public get isAlternateArt(): boolean {
+    return this.card.card.properties.some((p) => p.key === 'alternate_art' && p.value);
+  }
+
+  public get isMangaArt(): boolean {
+    return this.card.card.properties.some((p) => p.key === 'manga_art' && p.value);
   }
 }

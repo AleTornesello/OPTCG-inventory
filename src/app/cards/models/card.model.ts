@@ -1,5 +1,6 @@
 import {SetModel} from "./set.model";
 import {InventoryModel} from "./inventory.model";
+import {CardPropertyModel} from "./card_property.model";
 
 export const MIN_COST = 0;
 export const MAX_COST = 10;
@@ -26,6 +27,7 @@ export class CardModel {
   foil: boolean;
   set: SetModel;
   inventory: InventoryModel | null;
+  properties: CardPropertyModel[];
   createdAt: Date;
   createdBy: string;
 
@@ -49,6 +51,7 @@ export class CardModel {
     foil: boolean,
     set: SetModel,
     inventory: InventoryModel | null,
+    properties: CardPropertyModel[],
     createdAt: string | Date,
     createdBy: string,
   ) {
@@ -71,6 +74,7 @@ export class CardModel {
     this.foil = foil;
     this.set = set;
     this.inventory = inventory;
+    this.properties = properties;
     this.createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);
     this.createdBy = createdBy;
   }

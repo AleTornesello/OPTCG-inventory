@@ -346,7 +346,7 @@ export class CardsGridPageComponent implements OnInit {
     await this._loadCards();
   }
 
-  public async onQuantityIncrease(card: CardPreviewModel) {
+  private async _updateCardInventory(card: CardPreviewModel) {
     try {
       const inventory = await this._inventoryService.upsertInventory(card.card, card.quantity);
 
@@ -358,21 +358,14 @@ export class CardsGridPageComponent implements OnInit {
     }
   }
 
-  public async onQuantityDecrease(card: CardPreviewModel) {
-    try {
-      const inventory = await this._inventoryService.upsertInventory(card.card, card.quantity);
-
-      card.card.inventory = inventory[0];
-    } catch (error) {
-      // TODO show error message
-      // card.quantity++;
-      console.log(error);
-    }
-  }
-
   public async onPlusClick(card: CardPreviewModel) {
     card.quantity++;
-    await this.onQuantityIncrease(card);
+    await this._updateCardInventory(card);
+  }
+
+  public async onQuantityChange(quantity: number | null, card: CardPreviewModel) {
+    card.quantity = quantity ?? 0;
+    await this._updateCardInventory(card);
   }
 
   public async onMinusClick(card: CardPreviewModel) {
@@ -381,7 +374,7 @@ export class CardsGridPageComponent implements OnInit {
     }
 
     card.quantity--;
-    await this.onQuantityDecrease(card);
+    await this._updateCardInventory(card);
   }
 
   public canDecreaseQuantity(card: CardPreviewModel): boolean {

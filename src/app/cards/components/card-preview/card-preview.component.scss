@@ -91,6 +91,16 @@
         &.foil {
           background-color: var(--red-500);
         }
+
+        &.alternate-art {
+          background-color: var(--yellow-500);
+          color: var(--black);
+        }
+
+        &.manga-art {
+          background-color: var(--white);
+          color: var(--black);
+        }
       }
     }
   }
