@@ -15,33 +15,33 @@
           [clear]="true"
         ></app-input-text>
       </div>
-<!--      <div class="filter">-->
-<!--        <app-dropdown-->
-<!--          [options]="cardColors"-->
-<!--          label="{{ 'cards.color' | transloco }}"-->
-<!--          [multipleSelect]="true"-->
-<!--          [(ngModel)]="selectedColors"-->
-<!--          [showClear]="true"-->
-<!--        ></app-dropdown>-->
-<!--      </div>-->
-<!--      <div class="filter">-->
-<!--        <app-dropdown-->
-<!--          [options]="cardSets"-->
-<!--          label="{{ 'cards.set' | transloco }}"-->
-<!--          [multipleSelect]="true"-->
-<!--          [(ngModel)]="selectedSets"-->
-<!--          [showClear]="true"-->
-<!--        ></app-dropdown>-->
-<!--      </div>-->
-<!--      <div class="filter">-->
-<!--        <app-dropdown-->
-<!--          [options]="cardRarities"-->
-<!--          label="{{ 'cards.rarity' | transloco }}"-->
-<!--          [multipleSelect]="true"-->
-<!--          [(ngModel)]="selectedRarities"-->
-<!--          [showClear]="true"-->
-<!--        ></app-dropdown>-->
-<!--      </div>-->
+      <div class="filter">
+        <app-dropdown
+          [options]="cardColors"
+          label="{{ 'cards.color' | transloco }}"
+          [multipleSelect]="true"
+          [(ngModel)]="selectedColors"
+          [showClear]="true"
+        ></app-dropdown>
+      </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardSets"
+          label="{{ 'cards.set' | transloco }}"
+          [multipleSelect]="true"
+          [(ngModel)]="selectedSets"
+          [showClear]="true"
+        ></app-dropdown>
+      </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardRarities"
+          label="{{ 'cards.rarity' | transloco }}"
+          [multipleSelect]="true"
+          [(ngModel)]="selectedRarities"
+          [showClear]="true"
+        ></app-dropdown>
+      </div>
 <!--      <div class="filter">-->
 <!--        <app-input-slider-->
 <!--          label="{{ 'cards.power' | transloco }}"-->
@@ -64,12 +64,12 @@
 <!--          [(ngModel)]="selectedCosts"-->
 <!--        ></app-input-slider>-->
 <!--      </div>-->
-<!--      <div class="filter">-->
-<!--        <app-checkbox-->
-<!--          label="{{ 'cards.showOnlyOwned' | transloco }}"-->
-<!--          [(ngModel)]="showOnlyOwnedFilter"-->
-<!--        ></app-checkbox>-->
-<!--      </div>-->
+      <div class="filter">
+        <app-checkbox
+          label="{{ 'cards.showOnlyOwned' | transloco }}"
+          [(ngModel)]="showOnlyOwnedFilter"
+        ></app-checkbox>
+      </div>
     </div>
     <div class="filters-actions">
       <app-button
