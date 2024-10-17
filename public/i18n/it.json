@@ -106,20 +106,21 @@
     "rarity": "Rarità",
     "rarities": {
       "don!!": "DON!!",
-      "secret_rare": "Secret Rare",
-      "alternate_art": "Alternate Art",
+      "secretRare": "Secret Rare",
+      "alternateArt": "Alternate Art",
       "uncommon": "Uncommon",
       "promo": "Promo",
       "special": "Special",
       "leader": "Leader",
       "rare": "Rare",
       "common": "Common",
-      "super_rare": "Super Rare"
+      "superRare": "Super Rare"
     },
     "showOnlyOwned": "Mostra solo le carte possedute",
     "foil": "Foil",
     "cost": "Costo",
     "power": "Potenza",
+    "mangaArt": "Manga Art",
     "filters": {
       "search": "Cerca: {searchText}",
       "color": "Colore: {color}",
