@@ -1,4 +1,4 @@
-<div class="card border" [ngClass]="{'not-owned': card.quantity === 0, 'foil': card.card.foil}">
+<div class="card border" [ngClass]="{'not-owned': card.quantity === 0, 'foil': isFoil}">
   @if (card.card.imageUrl) {
     <img [src]="card.card.imageUrl" [alt]="card.card.name">
   }
