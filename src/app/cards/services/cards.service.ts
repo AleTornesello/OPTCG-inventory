@@ -62,7 +62,7 @@ export class CardsService {
 
       if (filters.searchText && filters.searchText !== '') {
         query = query.textSearch(
-          'name',
+          'search_text',
           this._queryParserService.parse(filters.searchText)
         );
       }
