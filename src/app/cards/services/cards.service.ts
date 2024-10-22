@@ -5,7 +5,6 @@ import {CardMapper} from "../mappers/card.mapper";
 import {QueryParserService} from "../../shared/services/query-parser.service";
 import {MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../models/card.model";
 import {CardPropertiesService} from "./card_properties.service";
-import {CardPropertyModel} from "../models/card_property.model";
 import {CardPropertyEntity} from "../entities/card_property.entity";
 
 @Injectable({
@@ -28,8 +27,12 @@ export class CardsService {
     showOnlyOwned?: boolean,
     power?: number[]
     costs?: number[]
-  }) {
-    let selectColumns = "id, code, name, image_url, set:set_id(*), properties:card_properties!inner(key, value)";
+  }, ignoreProperties: boolean = false) {
+    let selectColumns = "id, code, name, image_url, set:set_id(*)";
+
+    if (!ignoreProperties) {
+      selectColumns = `${selectColumns}, properties:card_properties!inner(key, value)`
+    }
 
     selectColumns = `${selectColumns}${filters?.showOnlyOwned
       ? ", inventory!inner(*)"
@@ -99,7 +102,7 @@ export class CardsService {
     // Workaround: reload card properties because the search query
     // return only the properties that match the filters
     let properties: Map<string, CardPropertyEntity[]> = new Map();
-    if (data) {
+    if (!ignoreProperties && data) {
       properties = new Map((await Promise.all(data.map((card) => this._cardPropertiesService.getCardPropertiesByCardId(card.id)))).map((p) => [p[0].card_id, p]));
     }
 
@@ -107,10 +110,12 @@ export class CardsService {
       throw error;
     }
 
-    return {data: data.map((card) => CardMapper.toCardModel({
+    return {
+      data: data.map((card) => CardMapper.toCardModel({
         ...card,
         properties: properties.get(card.id) ?? []
-      })), count};
+      })), count
+    };
   }
 
   public async getCardColors() {
