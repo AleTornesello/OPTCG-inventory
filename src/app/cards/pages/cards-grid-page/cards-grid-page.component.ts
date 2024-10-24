@@ -269,7 +269,7 @@ export class CardsGridPageComponent implements OnInit {
   private _initCardRaritiesFilter(rarities: string[]) {
     this.cardRarities = rarities
       .map((rarity) => ({
-        label: this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`),
+        label: this._translateService.translate(`cards.rarities.${this._stringManipulationService.toCamelCase(rarity)}`),
         value: rarity
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
@@ -392,7 +392,7 @@ export class CardsGridPageComponent implements OnInit {
     }
     if (this.appliedSelectedColors.length > 0) {
       filters.push(...this.appliedSelectedColors.map((color) => {
-        const translatedColor = this._translateService.translate(`cards.colors.${this._stringManipulationService.toSnakeCase(color)}`);
+        const translatedColor = this._translateService.translate(`cards.colors.${this._stringManipulationService.toCamelCase(color)}`);
 
         return {
           id: uuidv4(),
@@ -416,7 +416,7 @@ export class CardsGridPageComponent implements OnInit {
     }
     if (this.appliedSelectedRarities.length > 0) {
       filters.push(...this.appliedSelectedRarities.map((rarity) => {
-        const translatedRarity = this._translateService.translate(`cards.rarities.${this._stringManipulationService.toSnakeCase(rarity)}`);
+        const translatedRarity = this._translateService.translate(`cards.rarities.${this._stringManipulationService.toCamelCase(rarity)}`);
 
         return {
           id: uuidv4(),
