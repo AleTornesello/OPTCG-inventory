@@ -236,8 +236,7 @@ export class StatisticsPageComponent implements OnInit {
   }
 
   private _getCardMinQuantityByCategory(card: CardModel): number {
-    const category = card.category;
-
+    const category = card.properties?.find((p) => p.key === "category")?.value;
     if (!category) {
       return 0;
     }

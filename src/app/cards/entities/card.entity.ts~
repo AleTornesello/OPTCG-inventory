@@ -1,3 +1,7 @@
+import {SetEntity} from "./set.entity";
+import {InventoryEntity} from "./inventory.entity";
+import {CardPropertyEntity} from "./card_property.entity";
+
 export class CardEntity {
   id: string;
   code: string;

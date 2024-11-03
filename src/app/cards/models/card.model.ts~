@@ -1,3 +1,7 @@
+import {SetModel} from "./set.model";
+import {InventoryModel} from "./inventory.model";
+import {CardPropertyModel} from "./card_property.model";
+
 export const MIN_COST = 0;
 export const MAX_COST = 10;
 export const MIN_POWER = 0;
