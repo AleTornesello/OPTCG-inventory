@@ -84,6 +84,28 @@ export class CardsService {
     //
     const {data, error, count} = await query.returns<CardEntity[]>();
 
+    // const {data, error} = await this._supabaseService.supabase.functions.invoke<CardEntity[]>("get_cards", {
+    //   body: {
+    //     pagination,
+    //     filters: filters ? {
+    //       searchText: filters.searchText !== "" && filters.searchText !== undefined ? filters.searchText : undefined,
+    //       colors: filters.colors && filters.colors.length > 0 ? filters.colors : undefined,
+    //       sets: filters.sets && filters.sets.length > 0 ? filters.sets : undefined,
+    //       rarities: filters.rarities && filters.rarities.length > 0 ? filters.rarities : undefined,
+    //       showOnlyOwned: filters.showOnlyOwned,
+    //       power: filters.power && filters.power.length === 2 && (filters.power[0] !== MIN_POWER || filters.power[1] !== MAX_POWER) ? filters.power : undefined,
+    //       costs: filters.costs && filters.costs.length === 2 && (filters.costs[0] !== MIN_COST || filters.costs[1] !== MAX_COST) ? filters.costs : undefined
+    //     } : undefined
+    //   }
+    // });
+
+    // Workaround: reload card properties because the search query
+    // return only the properties that match the filters
+    // let properties: Map<string, CardPropertyEntity[]> = new Map();
+    // if (!refreshProperties && data) {
+    //   properties = new Map((await Promise.all(data.map((card) => this._cardPropertiesService.getCardPropertiesByCardId(card.id)))).map((p) => [p[0].card_id, p]));
+    // }
+
     if (error) {
       throw error;
     }
@@ -91,6 +113,9 @@ export class CardsService {
     return {
       data: data?.map((card) => CardMapper.toCardModel({
         ...card,
+        // properties: refreshProperties
+        //   ? card.properties
+        //   : properties.get(card.id) ?? []
       })) ?? [], count
     };
   }
