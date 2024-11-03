@@ -44,10 +44,10 @@ export class CardPreviewComponent {
   }
 
   public get isAlternateArt(): boolean {
-    return this.card.card.alternateArt;
+    return this.card.card.properties.some((p) => p.key === 'alternate_art' && p.value);
   }
 
   public get isMangaArt(): boolean {
-    return this.card.card.mangaArt;
+    return this.card.card.properties.some((p) => p.key === 'manga_art' && p.value);
   }
 }

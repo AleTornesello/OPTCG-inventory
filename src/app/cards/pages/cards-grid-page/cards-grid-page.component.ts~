@@ -236,7 +236,7 @@ export class CardsGridPageComponent implements OnInit {
       .map((card) => {
         return {
           card,
-          quantity: card.inventoryQuantity ?? 0
+          quantity: card.inventory?.quantity ?? 0
         };
       }));
     this.isLoadingInProgress = false;
@@ -350,8 +350,7 @@ export class CardsGridPageComponent implements OnInit {
     try {
       const inventory = await this._inventoryService.upsertInventory(card.card, card.quantity);
 
-      card.card.inventoryId = inventory[0].id;
-      card.card.inventoryQuantity = inventory[0].quantity;
+      card.card.inventory = inventory[0];
     } catch (error) {
       // TODO show error message
       // card.quantity--;

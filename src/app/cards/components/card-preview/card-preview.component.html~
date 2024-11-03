@@ -3,7 +3,7 @@
     <img [src]="card.card.imageUrl" [alt]="card.card.name">
   }
   <div class="card-overlay">
-    <span class="card-key">{{ card.card.code }} ({{ card.card.setCode }})</span>
+    <span class="card-key">{{ card.card.code }} ({{ card.card.set.code }})</span>
     <span class="card-name">{{ card.card.name }}</span>
     <div class="card-properties">
       <span class="rarity">{{ 'cards.rarities.' + (cardRarity | camelCase) | transloco }}</span>

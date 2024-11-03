@@ -160,8 +160,7 @@ export class SellableCardsPageComponent implements OnInit {
         (card.card.inventoryQuantity ?? 0) - quantity
       ))[0]
 
-      card.card.inventoryId = inventory.id;
-      card.card.inventoryQuantity = inventory.quantity;
+      card.card.inventory = inventory;
       card.quantity = this._getExceededQuantity(card.card);
 
       if (this._getExceededQuantity(card.card) <= 0) {

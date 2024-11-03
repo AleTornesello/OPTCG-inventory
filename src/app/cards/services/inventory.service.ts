@@ -18,7 +18,7 @@ export class InventoryService {
     let query = this._supabaseService.supabase
       .from('inventory')
       .upsert(
-        {id: card.inventory?.id, quantity, card_id: card.id},
+        {id: card.inventoryId, quantity, card_id: card.id},
         {
           onConflict: 'id',
           ignoreDuplicates: false
