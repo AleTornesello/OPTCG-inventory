@@ -111,41 +111,37 @@ export class CardsGridPageComponent implements OnInit {
 
   public ngOnInit() {
     this._route.queryParams.subscribe(async (params) => {
-      this.filters.searchText = params['searchText'] ?? '';
-
-      this.filters.colors = params['colors']
-        ? Array.isArray(params['colors'])
-          ? params['colors']
-          : [params['colors']]
-        : [];
-
-      this.filters.sets = params['sets']
-        ? Array.isArray(params['sets'])
-          ? params['sets']
-          : [params['sets']]
-        : [];
-
-      this.filters.rarities = params['rarities']
-        ? Array.isArray(params['rarities'])
-          ? params['rarities']
-          : [params['rarities']]
-        : [];
-
-      this.filters.showOnlyOwned = params['showOnlyOwned'] !== null && params['showOnlyOwned'] !== undefined
-        ? params['showOnlyOwned'] === 'true'
-        : false;
-
-      this.filters.power = params['power']
-        ? Array.isArray(params['power'])
-          ? params['power'].map((power) => typeof power === 'string' ? parseInt(power, 10) : power)
-          : [params['power']]
-        : [MIN_POWER, MAX_POWER];
-
-      this.filters.costs = params['costs']
-        ? Array.isArray(params['costs'])
-          ? params['costs'].map((cost) => typeof cost === 'string' ? parseInt(cost, 10) : cost)
-          : [params['costs']]
-        : [MIN_COST, MAX_COST];
+      this.filters = {
+        searchText: params['searchText'] ?? this.filters.searchText,
+        showOnlyOwned: params['showOnlyOwned'] !== null && params['showOnlyOwned'] !== undefined
+          ? params['showOnlyOwned'] === 'true'
+          : this.filters.showOnlyOwned,
+        colors: params['colors']
+          ? Array.isArray(params['colors'])
+            ? params['colors']
+            : [params['colors']]
+          : this.filters.colors,
+        sets: params['sets']
+          ? Array.isArray(params['sets'])
+            ? params['sets']
+            : [params['sets']]
+          : this.filters.sets,
+        rarities: params['rarities']
+          ? Array.isArray(params['rarities'])
+            ? params['rarities']
+            : [params['rarities']]
+          : this.filters.rarities,
+        power: params['power']
+          ? Array.isArray(params['power'])
+            ? params['power'].map((power) => typeof power === 'string' ? parseInt(power, 10) : power)
+            : [params['power']]
+          : this.filters.power,
+        costs:  params['costs']
+          ? Array.isArray(params['costs'])
+            ? params['costs'].map((cost) => typeof cost === 'string' ? parseInt(cost, 10) : cost)
+            : [params['costs']]
+          : this.filters.costs
+      };
 
       await Promise.all([
         this._loadCards(),
@@ -307,7 +303,7 @@ export class CardsGridPageComponent implements OnInit {
     }
     if (this.filters.sets && this.filters.sets.length > 0) {
       filters.push(...this.filters.sets.map((setId) => {
-        const setName = this.cardSets.find((cardSet) => cardSet.id === setId)?.name ?? "";
+        const setName = this.cardSets.find((cardSet) => cardSet.id === setId)?.name ?? "-";
 
         return {
           id: uuidv4(),
