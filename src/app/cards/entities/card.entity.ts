@@ -17,6 +17,8 @@ export class CardEntity {
   foil_property_id: string | null;
   alternate_art_property_id: string | null;
   manga_art_property_id: string | null;
+  prb01_skull: boolean;
+  prb01_skull_property_id: string | null;
 
   constructor(
     id: string,
@@ -34,9 +36,11 @@ export class CardEntity {
     manga_art: boolean,
     inventory_id: string | null,
     inventory_quantity: number | string | null,
-    foil_property_id: string | null = null,
-    alternate_art_property_id: string | null = null,
-    manga_art_property_id: string | null = null
+    foil_property_id: string | null,
+    alternate_art_property_id: string | null,
+    manga_art_property_id: string | null,
+    prb01_skull: boolean,
+    prb01_skull_property_id: string | null
   ) {
 
     this.id = id;
@@ -57,5 +61,7 @@ export class CardEntity {
     this.foil_property_id = foil_property_id;
     this.alternate_art_property_id = alternate_art_property_id;
     this.manga_art_property_id = manga_art_property_id;
+    this.prb01_skull = prb01_skull;
+    this.prb01_skull_property_id = prb01_skull_property_id;
   }
 }

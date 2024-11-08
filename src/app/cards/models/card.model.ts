@@ -22,6 +22,8 @@ export class CardModel {
   foilPropertyId: string | null;
   alternateArtPropertyId: string | null;
   mangaArtPropertyId: string | null;
+  prb01Skull: boolean;
+  prb01SkullPropertyId: string | null;
 
   constructor(
     id: string,
@@ -39,9 +41,11 @@ export class CardModel {
     mangaArt: boolean,
     inventoryId: string | null,
     inventoryQuantity: number | null,
-    foilPropertyId: string | null = null,
-    alternateArtPropertyId: string | null = null,
-    mangaArtPropertyId: string | null = null
+    foilPropertyId: string | null,
+    alternateArtPropertyId: string | null,
+    mangaArtPropertyId: string | null,
+    prb01Skull: boolean,
+    prb01SkullPropertyId: string | null
   ) {
     this.id = id;
     this.code = code;
@@ -61,5 +65,7 @@ export class CardModel {
     this.foilPropertyId = foilPropertyId;
     this.alternateArtPropertyId = alternateArtPropertyId;
     this.mangaArtPropertyId = mangaArtPropertyId;
+    this.prb01Skull = prb01Skull;
+    this.prb01SkullPropertyId = prb01SkullPropertyId;
   }
 }

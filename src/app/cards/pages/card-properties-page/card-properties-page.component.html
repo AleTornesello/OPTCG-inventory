@@ -7,6 +7,8 @@
     [columns]="columns"
     [hideSelection]="true"
     [totalItems]="cardsTotalCount ?? 0"
+    [hideAddButton]="true"
+    [hideSearch]="true"
   >
     <ng-template appTableCell="image" let-card>
       <p-image
@@ -21,6 +23,9 @@
     </ng-template>
     <ng-template appTableCell="foil" let-card>
       <app-checkbox [value]="card.foil" (onChangeValue)="onFoilPropertyChange(card, $event)"></app-checkbox>
+    </ng-template>
+    <ng-template appTableCell="prb01Skull" let-card>
+      <app-checkbox [value]="card.prb01Skull" (onChangeValue)="onPrb01SkullPropertyChange(card, $event)"></app-checkbox>
     </ng-template>
     <ng-template appTableCell="alternateArt" let-card>
       <app-checkbox [value]="card.alternateArt"

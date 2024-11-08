@@ -78,6 +78,10 @@ export class CardPropertiesPageComponent implements OnInit {
         field: 'foil',
       },
       {
+        header: this._translateService.translate('cards.prb01Skull'),
+        field: 'prb01Skull',
+      },
+      {
         header: this._translateService.translate('cards.alternateArt'),
         field: 'alternateArt',
       },
@@ -217,6 +221,10 @@ export class CardPropertiesPageComponent implements OnInit {
     await this._onPropertyChange(card.foilPropertyId, 'foil', value, card.id)
   }
 
+  public async onPrb01SkullPropertyChange(card: CardModel, value: any) {
+    await this._onPropertyChange(card.prb01SkullPropertyId, 'prb01_skull', value, card.id)
+  }
+
   public async onAlternateArtPropertyChange(card: CardModel, value: any) {
     await this._onPropertyChange(card.alternateArtPropertyId, 'alternate_art', value, card.id)
   }
@@ -241,6 +249,9 @@ export class CardPropertiesPageComponent implements OnInit {
           switch (key) {
             case 'foil':
               card.foilPropertyId = updatedCardProperty[0].id;
+              break;
+            case 'prb01_skull':
+              card.prb01SkullPropertyId = updatedCardProperty[0].id;
               break;
             case 'alternate_art':
               card.alternateArtPropertyId = updatedCardProperty[0].id;

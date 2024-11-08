@@ -26,7 +26,9 @@ export class CardMapper {
         : null,
       card.foil_property_id,
       card.alternate_art_property_id,
-      card.manga_art_property_id
+      card.manga_art_property_id,
+      card.prb01_skull,
+      card.prb01_skull_property_id
     );
   }
 
@@ -49,7 +51,9 @@ export class CardMapper {
       card.inventoryQuantity,
       card.foilPropertyId,
       card.alternateArtPropertyId,
-      card.mangaArtPropertyId
+      card.mangaArtPropertyId,
+      card.prb01Skull,
+      card.prb01SkullPropertyId
     );
   }
 }
