@@ -120,7 +120,7 @@ export class StatisticsPageComponent implements OnInit {
 
   private _updateStatistics(sets: SetModel[]) {
     sets.forEach((set) => {
-      this._cardsService.getCardsList(undefined, {sets: [set.id]}, true)
+      this._cardsService.getCardsList(undefined, {sets: [set.id]})
         .then(({data}) => {
           this._cardsPerSetMap.set(set.id, data);
           const filteredCards = this._filterCardsByLocalFilters(data);
