@@ -14,6 +14,9 @@ export class CardEntity {
   manga_art: boolean;
   inventory_id: string | null;
   inventory_quantity: number | string | null;
+  foil_property_id: string | null;
+  alternate_art_property_id: string | null;
+  manga_art_property_id: string | null;
 
   constructor(
     id: string,
@@ -30,7 +33,10 @@ export class CardEntity {
     alternate_art: boolean,
     manga_art: boolean,
     inventory_id: string | null,
-    inventory_quantity: number | string | null
+    inventory_quantity: number | string | null,
+    foil_property_id: string | null = null,
+    alternate_art_property_id: string | null = null,
+    manga_art_property_id: string | null = null
   ) {
 
     this.id = id;
@@ -48,5 +54,8 @@ export class CardEntity {
     this.manga_art = manga_art;
     this.inventory_id = inventory_id;
     this.inventory_quantity = inventory_quantity;
+    this.foil_property_id = foil_property_id;
+    this.alternate_art_property_id = alternate_art_property_id;
+    this.manga_art_property_id = manga_art_property_id;
   }
 }

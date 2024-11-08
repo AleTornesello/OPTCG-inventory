@@ -129,7 +129,10 @@
       "cost": "Cost: {min}-{max}",
       "onlyOwned": "Only owned cards"
     },
-    "cardProperties": "Card properties"
+    "cardProperties": "Card properties",
+    "name": "Name",
+    "code": "Code",
+    "alternateArt": "Alternate Art"
   },
   "statistics": {
     "statistics": "Statistics",

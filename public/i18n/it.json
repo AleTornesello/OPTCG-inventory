@@ -130,7 +130,10 @@
       "cost": "Costo: {min}-{max}",
       "onlyOwned": "Solo carte possedute"
     },
-    "cardProperties": "Proprietà carte"
+    "cardProperties": "Proprietà carte",
+    "name": "Nome",
+    "code": "Codice",
+    "alternateArt": "Alternate Art"
   },
   "statistics": {
     "statistics": "Statistiche",

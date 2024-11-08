@@ -24,6 +24,9 @@ export class CardMapper {
           ? parseInt(card.inventory_quantity)
           : card.inventory_quantity
         : null,
+      card.foil_property_id,
+      card.alternate_art_property_id,
+      card.manga_art_property_id
     );
   }
 
@@ -43,7 +46,10 @@ export class CardMapper {
       card.alternateArt,
       card.mangaArt,
       card.inventoryId,
-      card.inventoryQuantity
+      card.inventoryQuantity,
+      card.foilPropertyId,
+      card.alternateArtPropertyId,
+      card.mangaArtPropertyId
     );
   }
 }

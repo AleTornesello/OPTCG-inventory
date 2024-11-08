@@ -19,6 +19,9 @@ export class CardModel {
   mangaArt: boolean;
   inventoryId: string | null;
   inventoryQuantity: number | null;
+  foilPropertyId: string | null;
+  alternateArtPropertyId: string | null;
+  mangaArtPropertyId: string | null;
 
   constructor(
     id: string,
@@ -35,7 +38,10 @@ export class CardModel {
     alternateArt: boolean,
     mangaArt: boolean,
     inventoryId: string | null,
-    inventoryQuantity: number | null
+    inventoryQuantity: number | null,
+    foilPropertyId: string | null = null,
+    alternateArtPropertyId: string | null = null,
+    mangaArtPropertyId: string | null = null
   ) {
     this.id = id;
     this.code = code;
@@ -52,5 +58,8 @@ export class CardModel {
     this.mangaArt = mangaArt;
     this.inventoryId = inventoryId;
     this.inventoryQuantity = inventoryQuantity;
+    this.foilPropertyId = foilPropertyId;
+    this.alternateArtPropertyId = alternateArtPropertyId;
+    this.mangaArtPropertyId = mangaArtPropertyId;
   }
 }

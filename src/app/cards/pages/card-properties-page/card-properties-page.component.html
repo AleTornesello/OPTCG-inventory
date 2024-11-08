@@ -1,1 +1,33 @@
-<app-cards-filter-panel></app-cards-filter-panel>
+<app-cards-filter-panel [filters]="filters" [colors]="cardColors" [sets]="cardSets" [rarities]="cardRarities"
+                        (apply)="onFiltersApply($event)"></app-cards-filter-panel>
+
+<div class="list-container border round">
+  <app-generic-table
+    [items]="cards"
+    [columns]="columns"
+    [hideSelection]="true"
+    [totalItems]="cardsTotalCount ?? 0"
+  >
+    <ng-template appTableCell="image" let-card>
+      <p-image
+        [src]="card.imageUrl"
+        alt="Image"
+        width="50"
+        [preview]="true"
+      />
+    </ng-template>
+    <ng-template appTableCell="name" let-card>
+      <b>{{ card.name }}</b><br><span>{{ card.code }}</span>
+    </ng-template>
+    <ng-template appTableCell="foil" let-card>
+      <app-checkbox [value]="card.foil" (onChangeValue)="onFoilPropertyChange(card, $event)"></app-checkbox>
+    </ng-template>
+    <ng-template appTableCell="alternateArt" let-card>
+      <app-checkbox [value]="card.alternateArt"
+                    (onChangeValue)="onAlternateArtPropertyChange(card, $event)"></app-checkbox>
+    </ng-template>
+    <ng-template appTableCell="mangaArt" let-card>
+      <app-checkbox [value]="card.mangaArt" (onChangeValue)="onMangaArtPropertyChange(card, $event)"></app-checkbox>
+    </ng-template>
+  </app-generic-table>
+</div>

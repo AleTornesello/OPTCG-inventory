@@ -45,3 +45,5 @@ src/environments/environment.ts
 *.html~
 *.scss~
 *.ts~
+*.json~
+*.ts~
