@@ -128,7 +128,8 @@
       "power": "Power: {min}-{max}",
       "cost": "Cost: {min}-{max}",
       "onlyOwned": "Only owned cards"
-    }
+    },
+    "cardProperties": "Card properties"
   },
   "statistics": {
     "statistics": "Statistics",

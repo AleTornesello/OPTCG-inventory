@@ -129,7 +129,8 @@
       "power": "Potenza: {min}-{max}",
       "cost": "Costo: {min}-{max}",
       "onlyOwned": "Solo carte possedute"
-    }
+    },
+    "cardProperties": "Proprietà carte"
   },
   "statistics": {
     "statistics": "Statistiche",
