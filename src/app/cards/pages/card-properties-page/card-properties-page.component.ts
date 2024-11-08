@@ -39,7 +39,7 @@ export class CardPropertiesPageComponent implements OnInit {
   public columns: GenericTableColumn[];
 
   private _page: number;
-  private readonly _cardsPerPage: number;
+  private _cardsPerPage: number;
 
   constructor(
     private _route: ActivatedRoute,
@@ -63,7 +63,7 @@ export class CardPropertiesPageComponent implements OnInit {
     this.isLoadingInProgress = false;
     this.cardsTotalCount = null;
     this._page = 0;
-    this._cardsPerPage = 20;
+    this._cardsPerPage = 10;
     this.columns = [
       {
         header: "",
@@ -146,7 +146,6 @@ export class CardPropertiesPageComponent implements OnInit {
         page: this._page
       }, this.filters);
 
-      this._page++;
       this.cardsTotalCount = count;
 
       this._onCardsListLoadSuccess(data);
@@ -266,5 +265,17 @@ export class CardPropertiesPageComponent implements OnInit {
       // TODO: handle error
       console.log(error);
     }
+  }
+
+  public async onPageChange(event: { page: number; itemsPerPage: number }) {
+    if(event.itemsPerPage !== this._cardsPerPage) {
+      this._page = 0;
+      this._cardsPerPage = event.itemsPerPage;
+      await this._loadCards();
+      return;
+    }
+
+    this._page = event.page - 1;
+    await this._loadCards();
   }
 }

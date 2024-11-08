@@ -9,6 +9,7 @@
     [totalItems]="cardsTotalCount ?? 0"
     [hideAddButton]="true"
     [hideSearch]="true"
+    (page)="onPageChange($event)"
   >
     <ng-template appTableCell="image" let-card>
       <p-image
