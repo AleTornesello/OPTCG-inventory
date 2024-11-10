@@ -16,6 +16,12 @@
       @if (isMangaArt) {
         <span class="manga-art">{{ 'cards.mangaArt' | transloco }}</span>
       }
+      @if (isPrb01Skull) {
+        <span class="manga-art">
+          <fa-icon [icon]="faSkull"></fa-icon>
+          {{ 'cards.prb01Skull' | transloco }}
+        </span>
+      }
     </div>
     <div class="card-actions">
       <ng-content select="[actions]"></ng-content>

@@ -7,6 +7,8 @@ import {LowerCasePipe, NgClass} from "@angular/common";
 import {TranslocoPipe} from "@jsverse/transloco";
 import {SnakeCasePipe} from "../../../shared/pipes/snake-case.pipe";
 import {CamelCasePipe} from "../../../shared/pipes/camel-case.pipe";
+import {faSkull} from "@fortawesome/free-solid-svg-icons";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 export interface CardPreviewModel {
   card: CardModel;
@@ -24,13 +26,16 @@ export interface CardPreviewModel {
     LowerCasePipe,
     TranslocoPipe,
     SnakeCasePipe,
-    CamelCasePipe
+    CamelCasePipe,
+    FaIconComponent
   ],
   templateUrl: './card-preview.component.html',
   styleUrl: './card-preview.component.scss'
 })
 export class CardPreviewComponent {
   @Input({required: true}) card!: CardPreviewModel;
+
+  protected readonly faSkull = faSkull;
 
   constructor() {
   }
@@ -49,5 +54,9 @@ export class CardPreviewComponent {
 
   public get isMangaArt(): boolean {
     return this.card.card.mangaArt;
+  }
+
+  public get isPrb01Skull(): boolean {
+    return this.card.card.prb01Skull;
   }
 }
