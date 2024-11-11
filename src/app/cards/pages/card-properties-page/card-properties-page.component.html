@@ -20,7 +20,7 @@
       />
     </ng-template>
     <ng-template appTableCell="name" let-card>
-      <b>{{ card.name }}</b><br><span>{{ card.code }}</span>
+      <b>{{ card.name }}</b><br><span>{{ card.setCodes }}</span><br><span>{{ card.code }}</span>
     </ng-template>
     <ng-template appTableCell="foil" let-card>
       <app-checkbox [value]="card.foil" (onChangeValue)="onFoilPropertyChange(card, $event)"></app-checkbox>

@@ -165,13 +165,15 @@ export class SellableCardsPageComponent implements OnInit {
       card.quantity = this._getExceededQuantity(card.card);
 
       if (this._getExceededQuantity(card.card) <= 0) {
-        this._cardsMap.set(
-          card.card.setId,
-          {
-            cards: this._cardsMap.get(card.card.setId)?.cards.filter((c) => c.card.id !== card.card.id) || [],
-            loading: false
-          }
-        );
+        card.card.setIds.forEach((setId) => {
+          this._cardsMap.set(
+            setId,
+            {
+              cards: this._cardsMap.get(setId)?.cards.filter((c) => c.card.id !== card.card.id) || [],
+              loading: false
+            }
+          );
+        });
       }
     } catch (error) {
       console.error(error);

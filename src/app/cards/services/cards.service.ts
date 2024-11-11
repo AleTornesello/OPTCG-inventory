@@ -35,7 +35,7 @@ export class CardsService {
 
       if (filters.sets && filters.sets.length > 0) {
         query = query
-          .in('set_id', filters.sets);
+          .overlaps('set_ids', filters.sets);
       }
 
       if (filters.searchText && filters.searchText !== '') {

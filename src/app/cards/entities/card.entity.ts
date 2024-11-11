@@ -3,8 +3,8 @@ export class CardEntity {
   code: string;
   name: string;
   image_url: string;
-  set_id: string;
-  set_code: string;
+  set_ids: string[];
+  set_codes: string[];
   rarity: string;
   category: string;
   colors: string[];
@@ -25,8 +25,8 @@ export class CardEntity {
     code: string,
     name: string,
     image_url: string,
-    set_id: string,
-    set_code: string,
+    set_ids: string[],
+    set_codes: string[],
     rarity: string,
     category: string,
     colors: string[],
@@ -47,8 +47,8 @@ export class CardEntity {
     this.code = code;
     this.name = name;
     this.image_url = image_url;
-    this.set_id = set_id;
-    this.set_code = set_code;
+    this.set_ids = set_ids;
+    this.set_codes = set_codes;
     this.rarity = rarity;
     this.category = category;
     this.colors = colors;

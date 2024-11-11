@@ -8,8 +8,8 @@ export class CardModel {
   code: string;
   name: string;
   imageUrl: string;
-  setId: string;
-  setCode: string;
+  setIds: string[];
+  setCodes: string[];
   rarity: string;
   category: string;
   colors: string[];
@@ -30,8 +30,8 @@ export class CardModel {
     code: string,
     name: string,
     imageUrl: string,
-    setId: string,
-    setCode: string,
+    setIds: string[],
+    setCodes: string[],
     rarity: string,
     category: string,
     colors: string[],
@@ -51,8 +51,8 @@ export class CardModel {
     this.code = code;
     this.name = name;
     this.imageUrl = imageUrl;
-    this.setId = setId;
-    this.setCode = setCode;
+    this.setIds = setIds;
+    this.setCodes = setCodes;
     this.rarity = rarity;
     this.category = category;
     this.colors = colors;

@@ -74,6 +74,10 @@ export class CardPropertiesPageComponent implements OnInit {
         field: 'name',
       },
       {
+        header: "",
+        field: 'inventoryQuantity',
+      },
+      {
         header: this._translateService.translate('cards.foil'),
         field: 'foil',
       },
