@@ -72,6 +72,22 @@
       font-size: 0.8rem;
     }
 
+    .sets-chip-list {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      .set-chip {
+        font-size: 0.75rem;
+        border-radius: 200px;
+        padding: 0.25rem 0.5rem;
+        background-color: var(--yellow-500);
+        color: var(--black);
+      }
+    }
+
     .card-properties {
       display: flex;
       align-items: center;
