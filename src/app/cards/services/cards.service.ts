@@ -3,9 +3,7 @@ import {SupabaseService} from "../../shared/services/supabase.service";
 import {CardEntity} from "../entities/card.entity";
 import {CardMapper} from "../mappers/card.mapper";
 import {QueryParserService} from "../../shared/services/query-parser.service";
-import {MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../models/card.model";
-import {CardPropertiesService} from "./card_properties.service";
-import {CardPropertyEntity} from "../entities/card_property.entity";
+import {CardFilters} from "../components/cards-filter-panel/cards-filter-panel.component";
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +13,10 @@ export class CardsService {
   constructor(
     private _supabaseService: SupabaseService,
     private _queryParserService: QueryParserService,
-    private _cardPropertiesService: CardPropertiesService
   ) {
   }
 
-  public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: {
-    searchText?: string,
-    colors?: string[],
-    sets?: string[],
-    rarities?: string[],
-    showOnlyOwned?: boolean,
-    power?: number[]
-    costs?: number[]
-  }, refreshProperties: boolean = false) {
+  public async getCardsList(pagination?: { page: number, pageSize: number }, filters?: CardFilters) {
     let query = this._supabaseService.supabase
       .from('cards_view')
       .select("*", {count: "exact"});
@@ -46,7 +35,7 @@ export class CardsService {
 
       if (filters.sets && filters.sets.length > 0) {
         query = query
-          .in('set_id', filters.sets);
+          .overlaps('set_ids', filters.sets);
       }
 
       if (filters.searchText && filters.searchText !== '') {
@@ -68,18 +57,18 @@ export class CardsService {
         query = query
           .gt('inventory_quantity', 0);
       }
-    //
-    //   if (filters.power && filters.power.length === 2 && (filters.power[0] !== MIN_POWER || filters.power[1] !== MAX_POWER)) {
-    //     query = query
-    //       .gte('power', filters.power[0])
-    //       .lte('power', filters.power[1]);
-    //   }
-    //
-    //   if (filters.costs && filters.costs.length === 2 && (filters.costs[0] !== MIN_COST || filters.costs[1] !== MAX_COST)) {
-    //     query = query
-    //       .gte('cost', filters.costs[0])
-    //       .lte('cost', filters.costs[1]);
-    //   }
+      //
+      //   if (filters.power && filters.power.length === 2 && (filters.power[0] !== MIN_POWER || filters.power[1] !== MAX_POWER)) {
+      //     query = query
+      //       .gte('power', filters.power[0])
+      //       .lte('power', filters.power[1]);
+      //   }
+      //
+      //   if (filters.costs && filters.costs.length === 2 && (filters.costs[0] !== MIN_COST || filters.costs[1] !== MAX_COST)) {
+      //     query = query
+      //       .gte('cost', filters.costs[0])
+      //       .lte('cost', filters.costs[1]);
+      //   }
     }
     //
     const {data, error, count} = await query.returns<CardEntity[]>();

@@ -5,11 +5,19 @@ import {TopbarComponent} from '../topbar/topbar.component';
 import {BottomNavbarComponent} from '../bottom-navbar/bottom-navbar.component';
 import {TranslocoModule, TranslocoService} from '@jsverse/transloco';
 import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
-import {faArrowUpFromBracket, faChartSimple, faLayerGroup, faWrench} from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowUpFromBracket,
+  faChartSimple,
+  faLayerGroup,
+  faUserLock,
+  faWrench
+} from '@fortawesome/free-solid-svg-icons';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {ToastModule} from "primeng/toast";
 import {OverlayLoaderComponent} from "../../../shared/components/overlay-loader/overlay-loader.component";
 import {OptcgRoute} from "../../../app.routes";
+import {UserRoles} from "../../../shared/models/authorization/user-roles";
+import {UserRoleService} from "../../../shared/services/authorization/user-role.service";
 
 export interface NavigationItem {
   label: string;
@@ -17,6 +25,7 @@ export interface NavigationItem {
   icon: IconDefinition;
   sidebarVisible: boolean;
   navbarVisible: boolean;
+  roles?: UserRoles[];
 }
 
 @Component({
@@ -36,11 +45,14 @@ export interface NavigationItem {
   styleUrl: './default-layout.component.scss'
 })
 export class DefaultLayoutComponent {
-  public navigationItems: NavigationItem[];
+  private _navigationItems: NavigationItem[];
   public sidebarVisible: boolean;
 
-  constructor(private _translateService: TranslocoService) {
-    this.navigationItems = [
+  constructor(
+    private _translateService: TranslocoService,
+    private _userRoleService: UserRoleService
+  ) {
+    this._navigationItems = [
       {
         label: this._translateService.translate('cards.cards'),
         route: `/${OptcgRoute.CARDS}`,
@@ -63,6 +75,14 @@ export class DefaultLayoutComponent {
         navbarVisible: true,
       },
       {
+        label: this._translateService.translate('cards.cardProperties'),
+        route: `/${OptcgRoute.CARD_PROPERTIES}`,
+        icon: faUserLock,
+        sidebarVisible: true,
+        navbarVisible: false,
+        roles: [UserRoles.ADMIN]
+      },
+      {
         label: this._translateService.translate('settings.settings'),
         route: `/${OptcgRoute.SETTINGS}`,
         icon: faWrench,
@@ -79,5 +99,12 @@ export class DefaultLayoutComponent {
 
   public onSidebarVisibleChange(visible: boolean) {
     this.sidebarVisible = visible;
+  }
+
+  public get navigationItems(): NavigationItem[] {
+    if(!this._userRoleService.currentUserRole) {
+      return this._navigationItems.filter((item) => !item.roles);
+    }
+    return this._navigationItems.filter((item) => !item.roles || item.roles.includes(this._userRoleService.currentUserRole));
   }
 }

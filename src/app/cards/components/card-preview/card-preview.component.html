@@ -3,7 +3,12 @@
     <img [src]="card.card.imageUrl" [alt]="card.card.name">
   }
   <div class="card-overlay">
-    <span class="card-key">{{ card.card.code }} ({{ card.card.setCode }})</span>
+    <div class="sets-chip-list">
+      @for (setCode of card.card.setCodes; track setCode) {
+        <span class="set-chip">{{ setCode }}</span>
+      }
+    </div>
+    <span class="card-key">{{ card.card.code }}</span>
     <span class="card-name">{{ card.card.name }}</span>
     <div class="card-properties">
       <span class="rarity">{{ 'cards.rarities.' + (cardRarity | camelCase) | transloco }}</span>
@@ -15,6 +20,12 @@
       }
       @if (isMangaArt) {
         <span class="manga-art">{{ 'cards.mangaArt' | transloco }}</span>
+      }
+      @if (isPrb01Skull) {
+        <span class="manga-art">
+          <fa-icon [icon]="faSkull"></fa-icon>
+          {{ 'cards.prb01Skull' | transloco }}
+        </span>
       }
     </div>
     <div class="card-actions">

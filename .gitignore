@@ -42,3 +42,8 @@ testem.log
 Thumbs.db
 src/environments/environment.ts
 .vscode
+*.html~
+*.scss~
+*.ts~
+*.json~
+*.ts~

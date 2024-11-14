@@ -129,7 +129,12 @@
       "power": "Potenza: {min}-{max}",
       "cost": "Costo: {min}-{max}",
       "onlyOwned": "Solo carte possedute"
-    }
+    },
+    "cardProperties": "Proprietà carte",
+    "name": "Nome",
+    "code": "Codice",
+    "alternateArt": "Alternate Art",
+    "prb01Skull": "Effetto teschi PRB01"
   },
   "statistics": {
     "statistics": "Statistiche",
