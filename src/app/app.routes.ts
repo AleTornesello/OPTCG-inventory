@@ -9,6 +9,7 @@ import {StatisticsPageComponent} from "./statistics/pages/statistics-page/statis
 import {authGuard} from "./auth/guards/auththenticated.guard";
 import {UserSettingsPageComponent} from "./settings/pages/user-settings-page/user-settings-page.component";
 import {SellableCardsPageComponent} from "./cards/pages/sellable-cards-page/sellable-cards-page.component";
+import {CardPropertiesPageComponent} from "./cards/pages/card-properties-page/card-properties-page.component";
 
 export enum OptcgRoute {
   AUTH = 'auth',
@@ -19,6 +20,7 @@ export enum OptcgRoute {
   STATISTICS = 'statistics',
   SETTINGS = 'settings',
   SELLABLE_CARDS = 'sellable-cards',
+  CARD_PROPERTIES = 'card-properties'
 }
 
 export const routes: Routes = [
@@ -71,6 +73,17 @@ export const routes: Routes = [
           {
             path: '',
             component: SellableCardsPageComponent
+          }
+        ]
+      },
+      {
+        path: OptcgRoute.CARD_PROPERTIES,
+        component: DefaultLayoutComponent,
+        canActivate: [authGuard],
+        children: [
+          {
+            path: '',
+            component: CardPropertiesPageComponent
           }
         ]
       },

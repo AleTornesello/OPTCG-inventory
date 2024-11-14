@@ -128,7 +128,12 @@
       "power": "Power: {min}-{max}",
       "cost": "Cost: {min}-{max}",
       "onlyOwned": "Only owned cards"
-    }
+    },
+    "cardProperties": "Card properties",
+    "name": "Name",
+    "code": "Code",
+    "alternateArt": "Alternate Art",
+    "prb01Skull": "PRB01 Skull effect"
   },
   "statistics": {
     "statistics": "Statistics",

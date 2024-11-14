@@ -1,0 +1,87 @@
+<div class="filters-container border round">
+  <button #filtersButton class="accordion" (click)="onFiltersClick()">
+    <fa-icon [icon]="faFilter"></fa-icon>
+    <div class="label">
+      <span>{{ "common.filters" | transloco }}</span>
+    </div>
+    <fa-icon class="chevron" [icon]="faChevronUp"></fa-icon>
+  </button>
+  <div #filtersPanel class="panel">
+    <form [formGroup]="form" (ngSubmit)="onFiltersApplyClick()" (reset)="onFiltersClearClick()">
+    <div class="filters-container">
+      <div class="filter full">
+        <app-input-text
+          label="{{ 'common.search' | transloco }}"
+          formControlName="searchText"
+          [clear]="true"
+        ></app-input-text>
+      </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardColors"
+          label="{{ 'cards.color' | transloco }}"
+          [multipleSelect]="true"
+          formControlName="colors"
+          [showClear]="true"
+        ></app-dropdown>
+      </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardSets"
+          label="{{ 'cards.set' | transloco }}"
+          [multipleSelect]="true"
+          formControlName="sets"
+          [showClear]="true"
+        ></app-dropdown>
+      </div>
+      <div class="filter">
+        <app-dropdown
+          [options]="cardRarities"
+          label="{{ 'cards.rarity' | transloco }}"
+          [multipleSelect]="true"
+          formControlName="rarities"
+          [showClear]="true"
+        ></app-dropdown>
+      </div>
+      <!--      <div class="filter">-->
+      <!--        <app-input-slider-->
+      <!--          label="{{ 'cards.power' | transloco }}"-->
+      <!--          [range]="true"-->
+      <!--          [min]="0"-->
+      <!--          [max]="12000"-->
+      <!--          [step]="1000"-->
+      <!--          [showRange]="true"-->
+      <!--          [(ngModel)]="selectedPower"-->
+      <!--        ></app-input-slider>-->
+      <!--      </div>-->
+      <!--      <div class="filter">-->
+      <!--        <app-input-slider-->
+      <!--          label="{{ 'cards.cost' | transloco }}"-->
+      <!--          [range]="true"-->
+      <!--          [min]="0"-->
+      <!--          [max]="10"-->
+      <!--          [step]="1"-->
+      <!--          [showRange]="true"-->
+      <!--          [(ngModel)]="selectedCosts"-->
+      <!--        ></app-input-slider>-->
+      <!--      </div>-->
+      <div class="filter">
+        <app-checkbox
+          label="{{ 'cards.showOnlyOwned' | transloco }}"
+          formControlName="showOnlyOwned"
+        ></app-checkbox>
+      </div>
+    </div>
+    <div class="filters-actions">
+      <app-button
+        [label]="'common.clear' | transloco"
+        type="reset"
+      ></app-button>
+      <app-button
+        [label]="'common.apply' | transloco"
+        type="submit"
+      ></app-button>
+    </div>
+    </form>
+  </div>
+</div>
