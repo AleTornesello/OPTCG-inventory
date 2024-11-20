@@ -28,16 +28,6 @@
 }
 
 @media only screen and (max-width: 767px) {
-  .filters-container {
-    .panel {
-      .filters-container {
-        .filter {
-          width: 100%;
-        }
-      }
-    }
-  }
-
   .card-actions {
     gap: 0.25rem;
   }
