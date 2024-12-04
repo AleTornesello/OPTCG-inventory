@@ -18,6 +18,8 @@ import {
 import {DecimalPipe} from "@angular/common";
 import {SkeletonModule} from "primeng/skeleton";
 import {RandomOffsetPipe} from "../../../shared/pipes/random-offset.pipe";
+import {QueueCollection} from "../../../shared/data-structures/queue";
+import {HttpQueueCollection} from "../../../shared/data-structures/http-queue";
 
 interface Statistic {
   id: string;
@@ -60,6 +62,7 @@ export class StatisticsPageComponent implements OnInit {
   private _sets: SetModel[];
   private _cardsPerSetMap: Map<string, CardModel[]>;
   private _settings: UserSettingsModel[];
+  private _setsQueue: HttpQueueCollection<void>;
 
   constructor(
     private _cardsService: CardsService,
@@ -77,6 +80,7 @@ export class StatisticsPageComponent implements OnInit {
     this._sets = [];
     this._settings = [];
     this._cardsPerSetMap = new Map();
+    this._setsQueue = new HttpQueueCollection();
   }
 
   public async ngOnInit() {
@@ -115,18 +119,22 @@ export class StatisticsPageComponent implements OnInit {
       singleCardsCompletedCount: 0,
       isLoading: true
     }) as Statistic));
-    this._updateStatistics(sets);
+
+    this._updateStatistics(this._sets);
   }
 
   private _updateStatistics(sets: SetModel[]) {
-    sets.forEach((set) => {
-      this._cardsService.getCardsList(undefined, {sets: [set.id]})
-        .then(({data}) => {
-          this._cardsPerSetMap.set(set.id, data);
-          const filteredCards = this._filterCardsByLocalFilters(data);
-          this._updateLocalStatistics(set.id, filteredCards);
-        });
-    })
+    this._setsQueue.clear();
+    this._sets.forEach((set) => {
+      this._setsQueue.enqueue(this._updateSetStatistics.bind(this, set.id));
+    });
+  }
+
+  private async _updateSetStatistics(setId: string) {
+    const {data} = await this._cardsService.getCardsList(undefined, {sets: [setId]})
+    this._cardsPerSetMap.set(setId, data);
+    const filteredCards = this._filterCardsByLocalFilters(data);
+    this._updateLocalStatistics(setId, filteredCards);
   }
 
   private _filterCardsByLocalFilters(cards: CardModel[]) {
