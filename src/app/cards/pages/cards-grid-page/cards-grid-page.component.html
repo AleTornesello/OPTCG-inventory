@@ -22,7 +22,11 @@
           [disabled]="!canDecreaseQuantity(card)"
           (onClick)="onMinusClick(card)"
         ></app-button>
-        <app-input-number [value]="card.quantity" (onChangeValue)="onQuantityChange($event, card)"></app-input-number>
+        <app-input-number
+          [lazy]="true"
+          [value]="card.quantity"
+          (onChangeValue)="onQuantityChange($event, card)"
+        ></app-input-number>
         <app-button
           [icon]="faPlus"
           size="small"

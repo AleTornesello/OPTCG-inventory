@@ -18,7 +18,6 @@ import {
 import {DecimalPipe} from "@angular/common";
 import {SkeletonModule} from "primeng/skeleton";
 import {RandomOffsetPipe} from "../../../shared/pipes/random-offset.pipe";
-import {QueueCollection} from "../../../shared/data-structures/queue";
 import {HttpQueueCollection} from "../../../shared/data-structures/http-queue";
 
 interface Statistic {
