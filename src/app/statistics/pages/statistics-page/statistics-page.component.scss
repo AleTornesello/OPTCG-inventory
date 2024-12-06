@@ -71,6 +71,14 @@
         gap: 1rem;
         justify-content: flex-start;
         align-items: center;
+        flex-wrap: wrap;
+
+        span {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 1rem;
+        }
       }
     }
 
