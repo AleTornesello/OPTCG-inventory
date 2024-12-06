@@ -1,19 +1,16 @@
 import {
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
   forwardRef,
   Input,
+  OnInit,
   Output,
 } from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor, FormsModule,
-  NG_VALUE_ACCESSOR,
-  ValidationErrors,
-} from '@angular/forms';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors,} from '@angular/forms';
+import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {InputWrapperComponent} from "../input-wrapper/input-wrapper.component";
 import {NgClass} from "@angular/common";
 import {AvoidEmptyValuePipe} from "../../../pipes/avoid-empty-value.pipe";
@@ -23,6 +20,8 @@ import {InputTextModule} from "primeng/inputtext";
 import {CamelToKebabPipe} from "../../../pipes/camel-to-kebab.pipe";
 import {Button} from "primeng/button";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-input-number',
@@ -49,7 +48,7 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
     FaIconComponent
   ],
 })
-export class InputNumberComponent implements ControlValueAccessor {
+export class InputNumberComponent implements ControlValueAccessor, OnInit {
   @Input() label: string | undefined;
   @Input() for: string | undefined;
   @Input() autocomplete: string | undefined;
@@ -75,17 +74,25 @@ export class InputNumberComponent implements ControlValueAccessor {
 
   @Input() value: number | null;
 
+  @Input() lazyDebounceTime: number;
+  @Input() lazy: boolean;
+
   @Output() onClear: EventEmitter<void>;
   @Output() onChangeValue: EventEmitter<number | null>;
 
   public faTimes: IconDefinition;
 
   public isDisabled: boolean;
-  public onChange: any = () => {};
-  public onTouched: any = () => {};
+  public onChange: any = () => {
+  };
+  public onTouched: any = () => {
+  };
   private _errors: ValidationErrors | null;
+  private _searchUpdate: Subject<number>;
 
-  constructor(private _cdRef: ChangeDetectorRef) {
+  constructor(
+    private _destroyRef: DestroyRef
+  ) {
     this.placeholder = '';
     this._errors = null;
     this.clear = false;
@@ -98,6 +105,23 @@ export class InputNumberComponent implements ControlValueAccessor {
     this.readonly = false;
     this.required = false;
     this.value = null;
+    this.lazyDebounceTime = 400;
+    this.lazy = false;
+    this._searchUpdate = new Subject();
+  }
+
+  public ngOnInit() {
+    this._searchUpdate
+      .pipe(
+        debounceTime(this.lazyDebounceTime),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this._destroyRef)
+      )
+      .subscribe({
+        next: (value) => {
+          this.onChangeValue.emit(value);
+        },
+      });
   }
 
   public writeValue(value: any): void {
@@ -119,7 +143,12 @@ export class InputNumberComponent implements ControlValueAccessor {
   public onInputChange(event: any) {
     this.value = event.value;
     this.onChange(event.value);
-    this.onChangeValue.emit(event.value);
+
+    if (this.lazy) {
+      this._searchUpdate.next(event.target.value);
+    } else {
+      this.onChangeValue.emit(event.target.value);
+    }
   }
 
   public get isOnError(): boolean {
@@ -135,10 +164,6 @@ export class InputNumberComponent implements ControlValueAccessor {
       return null;
     }
     return this._errors;
-  }
-
-  ngAfterContentChecked() {
-    this._cdRef.detectChanges();
   }
 
   public clearValue() {

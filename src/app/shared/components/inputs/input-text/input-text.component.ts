@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, forwardRef, Input, Output,} from '@angular/core';
+import {Component, DestroyRef, EventEmitter, forwardRef, Input, OnInit, Output,} from '@angular/core';
 import {AbstractControl, ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors,} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
@@ -10,6 +10,8 @@ import {InputWrapperComponent} from '../input-wrapper/input-wrapper.component';
 import {AvoidEmptyValuePipe} from "../../../pipes/avoid-empty-value.pipe";
 import {CamelToKebabPipe} from "../../../pipes/camel-to-kebab.pipe";
 import {ButtonComponent} from "../../button/button.component";
+import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-input-text',
@@ -35,7 +37,8 @@ import {ButtonComponent} from "../../button/button.component";
     },
   ],
 })
-export class InputTextComponent implements ControlValueAccessor {
+export class InputTextComponent implements ControlValueAccessor, OnInit {
+  @Input() value!: string;
   @Input() label: string | undefined;
   @Input() for: string | undefined;
   @Input() autocomplete: string | undefined;
@@ -57,19 +60,25 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() textMode: boolean;
   @Input() inputClass: { [klass: string]: any } | undefined;
   @Input() showCounter: boolean;
+  @Input() lazyDebounceTime: number;
+  @Input() lazy: boolean;
 
   @Output() onClear: EventEmitter<void>;
   @Output() onChangeValue: EventEmitter<string>;
 
   public faTimes: IconDefinition;
 
-  @Input() value!: string;
   public isDisabled: boolean;
-  public onChange: any = () => {};
-  public onTouched: any = () => {};
+  public onChange: any = () => {
+  };
+  public onTouched: any = () => {
+  };
   private _errors: ValidationErrors | null;
+  private _searchUpdate: Subject<string>;
 
-  constructor() {
+  constructor(
+    private _destroyRef: DestroyRef
+  ) {
     this.type = 'text';
     this.placeholder = '';
     this._errors = null;
@@ -85,6 +94,23 @@ export class InputTextComponent implements ControlValueAccessor {
     this.showCounter = false;
     this.required = false;
     this.readonly = false;
+    this._searchUpdate = new Subject();
+    this.lazyDebounceTime = 400;
+    this.lazy = false;
+  }
+
+  public ngOnInit() {
+    this._searchUpdate
+      .pipe(
+        debounceTime(this.lazyDebounceTime),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this._destroyRef)
+      )
+      .subscribe({
+        next: (value) => {
+          this.onChangeValue.emit(value);
+        },
+      });
   }
 
   public writeValue(value: any): void {
@@ -105,7 +131,11 @@ export class InputTextComponent implements ControlValueAccessor {
 
   public onInputChange(event: any) {
     this.onChange(event.target.value);
-    this.onChangeValue.emit(event.target.value);
+    if (this.lazy) {
+      this._searchUpdate.next(event.target.value);
+    } else {
+      this.onChangeValue.emit(event.target.value);
+    }
   }
 
   public onModelChange(value: string) {
