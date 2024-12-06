@@ -1,14 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CardsService} from "../../services/cards.service";
 import {CardModel, MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../../models/card.model";
 import {CardPreviewComponent, CardPreviewModel} from "../../components/card-preview/card-preview.component";
 import {ScrollNearEndDirective} from "../../../shared/directives/scroll-near-end.directive";
 import {AccordionModule} from "primeng/accordion";
 import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
-import {faChevronUp, faFilter, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {DropdownComponent} from "../../../shared/components/inputs/dropdown/dropdown.component";
-import {SelectItem} from "primeng/api";
 import {ButtonComponent} from "../../../shared/components/button/button.component";
 import {FormsModule} from "@angular/forms";
 import {SetsService} from "../../services/sets.service";
@@ -22,9 +21,8 @@ import {CheckboxComponent} from "../../../shared/components/inputs/checkbox/chec
 import {InputSliderComponent} from "../../../shared/components/inputs/input-slider/input-slider.component";
 import {CardsGridComponent} from "../../components/cards-grid/cards-grid.component";
 import {InputNumberComponent} from "../../../shared/components/inputs/input-number/input-number.component";
-import {SkeletonModule} from "primeng/skeleton";
 import {ChipModule} from "primeng/chip";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {ChipComponent} from "../../../shared/components/chip/chip.component";
 import {CardFilters, CardsFilterPanelComponent} from "../../components/cards-filter-panel/cards-filter-panel.component";
 
@@ -56,7 +54,6 @@ interface FilterChip {
     InputSliderComponent,
     CardsGridComponent,
     InputNumberComponent,
-    SkeletonModule,
     ChipModule,
     ChipComponent,
     CardsFilterPanelComponent,
@@ -76,9 +73,9 @@ export class CardsGridPageComponent implements OnInit {
 
   protected readonly faPlus = faPlus;
   protected readonly faMinus = faMinus;
+  protected readonly cardsPerPage: number = 15;
 
   private _page: number;
-  private readonly _cardsPerPage: number;
   private _cardsTotalCount: number | null;
 
   constructor(
@@ -95,7 +92,6 @@ export class CardsGridPageComponent implements OnInit {
     this.cardSets = [];
     this.cardRarities = [];
     this._page = 0;
-    this._cardsPerPage = 20;
     this.isLoadingInProgress = false;
     this._cardsTotalCount = null;
     this.filters = {
@@ -136,7 +132,7 @@ export class CardsGridPageComponent implements OnInit {
             ? params['power'].map((power) => typeof power === 'string' ? parseInt(power, 10) : power)
             : [params['power']]
           : this.filters.power,
-        costs:  params['costs']
+        costs: params['costs']
           ? Array.isArray(params['costs'])
             ? params['costs'].map((cost) => typeof cost === 'string' ? parseInt(cost, 10) : cost)
             : [params['costs']]
@@ -180,7 +176,7 @@ export class CardsGridPageComponent implements OnInit {
 
     try {
       const {data, count} = await this._cardsListService.getCardsList({
-        pageSize: this._cardsPerPage,
+        pageSize: this.cardsPerPage,
         page: this._page
       }, this.filters);
 
@@ -232,7 +228,7 @@ export class CardsGridPageComponent implements OnInit {
         searchText: this.filters.searchText && this.filters.searchText !== '' && this.filters.searchText !== undefined && this.filters.searchText !== null ? this.filters.searchText : undefined,
         showOnlyOwned: this.filters.showOnlyOwned !== undefined ? this.filters.showOnlyOwned : undefined,
         power: this.filters.power && this.filters.power.length === 2 && (this.filters.power[0] !== MIN_POWER || this.filters.power[1] !== MAX_POWER) ? this.filters.power : undefined,
-        costs:  this.filters.costs && this.filters.costs.length === 2 && (this.filters.costs[0] !== MIN_POWER || this.filters.costs[1] !== MAX_POWER) ? this.filters.costs : undefined
+        costs: this.filters.costs && this.filters.costs.length === 2 && (this.filters.costs[0] !== MIN_POWER || this.filters.costs[1] !== MAX_POWER) ? this.filters.costs : undefined
       }
     });
   }

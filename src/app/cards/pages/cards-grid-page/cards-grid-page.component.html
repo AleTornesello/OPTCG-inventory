@@ -13,6 +13,8 @@
 <div appScrollNearEnd (nearEnd)="onNearEndScroll()">
   <app-cards-grid
     [cards]="cards"
+    [showLoading]="isLoadingInProgress"
+    [loadingItemsCount]="cardsPerPage"
   >
     <ng-template let-card>
       <div class="card-actions">
@@ -36,13 +38,3 @@
     </ng-template>
   </app-cards-grid>
 </div>
-
-@if (isLoadingInProgress) {
-  <div class="loader-container">
-    @for (i of [].constructor(10); track $index) {
-      <div class="card-placeholder">
-        <p-skeleton width="100%" height="100%" styleClass="card-placeholder"/>
-      </div>
-    }
-  </div>
-}
