@@ -7,8 +7,9 @@ import {LowerCasePipe, NgClass} from "@angular/common";
 import {TranslocoPipe} from "@jsverse/transloco";
 import {SnakeCasePipe} from "../../../shared/pipes/snake-case.pipe";
 import {CamelCasePipe} from "../../../shared/pipes/camel-case.pipe";
-import {faSkull} from "@fortawesome/free-solid-svg-icons";
+import {faEye, faSkull} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {GalleriaModule} from "primeng/galleria";
 
 export interface CardPreviewModel {
   card: CardModel;
@@ -27,7 +28,8 @@ export interface CardPreviewModel {
     TranslocoPipe,
     SnakeCasePipe,
     CamelCasePipe,
-    FaIconComponent
+    FaIconComponent,
+    GalleriaModule
   ],
   templateUrl: './card-preview.component.html',
   styleUrl: './card-preview.component.scss'
@@ -35,9 +37,32 @@ export interface CardPreviewModel {
 export class CardPreviewComponent {
   @Input({required: true}) card!: CardPreviewModel;
 
+  public displayGallery: boolean;
+  public galleryResponsiveOptions: any[];
+
   protected readonly faSkull = faSkull;
+  protected readonly faEye = faEye;
 
   constructor() {
+    this.displayGallery = false;
+    this.galleryResponsiveOptions = [
+      {
+        breakpoint: '1500px',
+        numVisible: 5
+      },
+      {
+        breakpoint: '1024px',
+        numVisible: 3
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 2
+      },
+      {
+        breakpoint: '560px',
+        numVisible: 1
+      }
+    ];
   }
 
   public get cardRarity(): string | null {
@@ -58,5 +83,16 @@ export class CardPreviewComponent {
 
   public get isPrb01Skull(): boolean {
     return this.card.card.prb01Skull;
+  }
+
+  public get galleryImages(): { source: string, alt: string }[] {
+    return [{
+      source: this.card.card.imageUrl,
+      alt: this.card.card.name
+    }]
+  }
+
+  public onGalleryClick(): void {
+    this.displayGallery = true;
   }
 }
