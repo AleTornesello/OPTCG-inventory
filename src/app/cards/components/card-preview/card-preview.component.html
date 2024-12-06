@@ -3,6 +3,11 @@
     <img [src]="card.card.imageUrl" [alt]="card.card.name">
   }
   <div class="card-overlay">
+    <app-button
+      [icon]="faEye"
+      size="small"
+      (onClick)="onGalleryClick()"
+    ></app-button>
     <div class="sets-chip-list">
       @for (setCode of card.card.setCodes; track setCode) {
         <span class="set-chip">{{ setCode }}</span>
@@ -33,3 +38,29 @@
     </div>
   </div>
 </div>
+
+<p-galleria
+  [value]="galleryImages"
+  [(visible)]="displayGallery"
+  [responsiveOptions]="galleryResponsiveOptions"
+  [containerStyle]="{ 'max-width': '50%' }"
+  [fullScreen]="true"
+  [showItemNavigators]="false"
+  [showThumbnailNavigators]="false"
+  [showThumbnails]="false"
+>
+  <ng-template pTemplate="item" let-item>
+    <img
+      [src]="item.source"
+      [alt]="item.alt"
+      style="width: 100%; display: block;" />
+  </ng-template>
+  <ng-template pTemplate="thumbnail" let-item>
+    <div class="grid grid-nogutter justify-content-center">
+      <img
+        [src]="item.source"
+        [alt]="item.alt"
+        style="display: block;" />
+    </div>
+  </ng-template>
+</p-galleria>
