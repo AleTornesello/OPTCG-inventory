@@ -10,6 +10,7 @@ import {CamelCasePipe} from "../../../shared/pipes/camel-case.pipe";
 import {faEye, faSkull} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {GalleriaModule} from "primeng/galleria";
+import {ImageFallbackDirective} from "../../../shared/directives/image-fallback.directive";
 
 export interface CardPreviewModel {
   card: CardModel;
@@ -29,7 +30,8 @@ export interface CardPreviewModel {
     SnakeCasePipe,
     CamelCasePipe,
     FaIconComponent,
-    GalleriaModule
+    GalleriaModule,
+    ImageFallbackDirective
   ],
   templateUrl: './card-preview.component.html',
   styleUrl: './card-preview.component.scss'
