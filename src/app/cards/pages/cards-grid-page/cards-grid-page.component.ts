@@ -74,6 +74,7 @@ export class CardsGridPageComponent implements OnInit {
   protected readonly faPlus = faPlus;
   protected readonly faMinus = faMinus;
   protected readonly cardsPerPage: number = 15;
+  protected readonly loadingCardsPerPage: number = 5;
 
   private _page: number;
   private _cardsTotalCount: number | null;
