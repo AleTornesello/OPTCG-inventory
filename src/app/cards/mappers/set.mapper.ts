@@ -10,6 +10,7 @@ export class SetMapper {
       set.name,
       set.ct_id,
       set.ct_game_id,
+      set.set_group,
       set.created_at,
       set.created_by
     );
@@ -22,6 +23,7 @@ export class SetMapper {
       set.name,
       set.ctId,
       set.ctGameId,
+      set.setGroup,
       set.createdAt.toISOString(),
       set.createdBy
     );

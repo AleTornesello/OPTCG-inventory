@@ -4,6 +4,7 @@ export class SetModel {
   name: string;
   ctId: number;
   ctGameId: number;
+  setGroup: string;
   createdAt: Date;
   createdBy: string;
 
@@ -13,6 +14,7 @@ export class SetModel {
     name: string,
     ctId: number,
     ctGameId: number,
+    setGroup: string,
     createdAt: string | Date,
     createdBy: string,
   ) {
@@ -21,6 +23,7 @@ export class SetModel {
     this.name = name;
     this.ctId = ctId;
     this.ctGameId = ctGameId;
+    this.setGroup = setGroup;
     this.createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);
     this.createdBy = createdBy;
   }
