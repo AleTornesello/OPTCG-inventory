@@ -1,5 +1,5 @@
 <app-cards-filter-panel [filters]="filters" [colors]="cardColors" [sets]="cardSets" [rarities]="cardRarities"
-                        (apply)="onFiltersApply($event)"></app-cards-filter-panel>
+                        [setGroups]="cardSetGroups" (apply)="onFiltersApply($event)"></app-cards-filter-panel>
 
 <div class="applied-filters-chips-container">
   @for (filter of getAppliedFiltersForChips(); track $index) {

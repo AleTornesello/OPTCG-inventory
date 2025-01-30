@@ -38,6 +38,7 @@
           [readonly]="readonly"
           [disabled]="isDisabled"
           [ngClass]="{ 'ng-invalid ng-dirty': isOnError }"
+          [group]="enableGrouping"
           (onChange)="onInputChange($event)"
           (onBlur)="onTouched()"
           (onClear)="onClearClick()"

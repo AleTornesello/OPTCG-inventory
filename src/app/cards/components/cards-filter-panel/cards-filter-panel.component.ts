@@ -9,10 +9,9 @@ import {TranslocoPipe, TranslocoService} from "@jsverse/transloco";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SelectItem} from "primeng/api";
 import {MAX_COST, MAX_POWER, MIN_COST, MIN_POWER} from "../../models/card.model";
-import {CardsService} from "../../services/cards.service";
-import {SetsService} from "../../services/sets.service";
 import {SetModel} from "../../models/set.model";
 import {StringManipulationService} from "../../../shared/services/string-manipulation.service";
+import {SetGroupModel} from "../../models/set_group.models";
 
 export interface CardFilters {
   searchText?: string;
@@ -48,14 +47,21 @@ export class CardsFilterPanelComponent {
   @Input() set filters(filters: CardFilters) {
     this.form.patchValue(filters);
   }
+
   @Input() set colors(colors: string[]) {
     this._initCardColorsFilter(colors);
   }
+
   @Input() set sets(sets: SetModel[]) {
     this._initCardSetsFilter(sets);
   }
+
   @Input() set rarities(rarities: string[]) {
     this._initCardRaritiesFilter(rarities);
+  }
+
+  @Input() set setGroups(setGroups: SetGroupModel[]) {
+    this._initCardSetGroups(setGroups);
   }
 
   @Output() apply: EventEmitter<CardFilters>;
@@ -63,8 +69,9 @@ export class CardsFilterPanelComponent {
   public form: FormGroup;
 
   protected cardColors: SelectItem[];
-  protected cardSets: SelectItem[];
+  protected cardSets: (SelectItem & { group?: string })[];
   protected cardRarities: SelectItem[];
+  protected cardSetGroups: SelectItem[];
 
   protected readonly faChevronUp = faChevronUp;
   protected readonly faFilter = faFilter;
@@ -81,6 +88,7 @@ export class CardsFilterPanelComponent {
     this.cardColors = [];
     this.cardSets = [];
     this.cardRarities = [];
+    this.cardSetGroups = [];
   }
 
   private _buildForm() {
@@ -142,7 +150,8 @@ export class CardsFilterPanelComponent {
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((set) => ({
         label: set.name,
-        value: set.id
+        value: set.id,
+        group: set.setGroup
       }));
   }
 
@@ -153,5 +162,14 @@ export class CardsFilterPanelComponent {
         value: rarity
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
+  }
+
+  private _initCardSetGroups(setGroups: SetGroupModel[]) {
+    this.cardSetGroups = setGroups
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((setGroup) => ({
+        label: setGroup.name,
+        value: setGroup.id
+      }));
   }
 }

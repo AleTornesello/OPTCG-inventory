@@ -32,6 +32,9 @@
           [multipleSelect]="true"
           formControlName="sets"
           [showClear]="true"
+          [enableGrouping]="true"
+          groupChildKey="group"
+          [groups]="cardSetGroups"
         ></app-dropdown>
       </div>
       <div class="filter">
