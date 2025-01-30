@@ -25,6 +25,7 @@ import {ChipModule} from "primeng/chip";
 import {v4 as uuidv4} from 'uuid';
 import {ChipComponent} from "../../../shared/components/chip/chip.component";
 import {CardFilters, CardsFilterPanelComponent} from "../../components/cards-filter-panel/cards-filter-panel.component";
+import {SetGroupModel} from "../../models/set_group.models";
 
 type FilterType = 'colors' | 'sets' | 'rarities' | 'power' | 'costs' | 'searchText' | 'showOnlyOwned';
 
@@ -66,6 +67,7 @@ export class CardsGridPageComponent implements OnInit {
   public cards: CardPreviewModel[];
   public cardColors: string[];
   public cardSets: SetModel[];
+  public cardSetGroups: SetGroupModel[];
   public cardRarities: string[];
   public filters: CardFilters;
 
@@ -91,6 +93,7 @@ export class CardsGridPageComponent implements OnInit {
     this.cards = [];
     this.cardColors = [];
     this.cardSets = [];
+    this.cardSetGroups = [];
     this.cardRarities = [];
     this._page = 0;
     this.isLoadingInProgress = false;
@@ -149,15 +152,17 @@ export class CardsGridPageComponent implements OnInit {
 
   private async _loadFilters() {
     try {
-      const [colors, sets, rarities] = await Promise.all([
+      const [colors, sets, rarities, setGroups] = await Promise.all([
         this._cardsListService.getCardColors(),
         this._setsService.getSetsList(),
         this._cardsListService.getCardRarities(),
+        this._setsService.getSetGroupsList()
       ]);
 
       this.cardColors = colors;
       this.cardSets = sets;
       this.cardRarities = rarities;
+      this.cardSetGroups = setGroups;
     } catch (error) {
       this._onFiltersLoadError(error);
     }
